@@ -87,4 +87,6 @@ mamba install -c conda-forge -c bioconda busco=5.4.7
 #cd busco/
 #sudo python3 setup.py install
 
+mamba install -c conda-forge -c bioconda -c defaults mlst
+
 

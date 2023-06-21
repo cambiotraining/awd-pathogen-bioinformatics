@@ -13,4 +13,5 @@ dependencies:
   - maxbin2=2.2.7
   - bowtie2=2.5.1 # for maxbin2
   - busco=5.4.7
+  - mlst
 prefix: /home/bajuna/miniconda3/envs/cholera_workshop
