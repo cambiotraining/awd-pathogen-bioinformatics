@@ -1,0 +1,16 @@
+name: cholera_workshop
+channels:
+- bioconda
+- conda-forge
+dependencies:
+  - python=3.9
+  - mamba=1.2.0
+  - quast=5.2.0
+  - mash=2.3
+  - panaroo>=1.3
+  - multiqc=1.14
+  - checkm-genome=1.2.2
+  - maxbin2=2.2.7
+  - bowtie2=2.5.1 # for maxbin2
+  - busco=5.4.7
+prefix: /home/bajuna/miniconda3/envs/cholera_workshop
