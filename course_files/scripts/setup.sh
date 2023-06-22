@@ -87,6 +87,8 @@ mamba install -c conda-forge -c bioconda busco=5.4.7
 #cd busco/
 #sudo python3 setup.py install
 
+# Installing mlst package for sequence typeing
 mamba install -c conda-forge -c bioconda -c defaults mlst
 
-
+# Installing FastMLST for sequence typing
+#mamba install -c conda-forge -c bioconda fastmlst
