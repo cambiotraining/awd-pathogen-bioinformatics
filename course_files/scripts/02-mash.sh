@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir results/mash/
+
 for file in data/fastq_pass/clean/*.fastq.gz
 do
     mash screen reference_genomes/mash/refseq.genomes+plasmid.k21s1000.msh $file > results/mash/$(basename $file .fastq.gz)_screen.tab
