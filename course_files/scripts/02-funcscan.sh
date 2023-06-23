@@ -1,5 +1,7 @@
 #!/bin/bash
 
+mkdir results/funcscan
+
 nextflow run nf-core/funcscan -profile docker -resume \
 --input samplesheet.csv \
 --outdir results/funcscan \
