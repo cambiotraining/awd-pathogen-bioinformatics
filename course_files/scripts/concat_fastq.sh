@@ -6,4 +6,4 @@ do
     zcat $dir/*.fastq.gz > data/fastq_pass/clean/$(basename $dir).fastq.gz
 done
 
-cp -r data/fastq_pass/unclassified data/fastq_pass/clean/
+#cp -r data/fastq_pass/unclassified data/fastq_pass/clean/
