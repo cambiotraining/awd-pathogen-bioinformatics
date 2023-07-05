@@ -1,5 +1,13 @@
 book:
   chapters:
-    - part: "Developer Guidelines"
+    - part: "Introduction"
       chapters:
-        - materials/00-template.md
+        - materials/01-introduction/01-introduction_to_bioinformatics.md
+        - materials/01-introduction/02-cholera_genomic_surveillance.md
+        - materials/01-introduction/03-introduction_to_unix_commands.md
+    - part: "Case Studies"
+      chapters:
+        - materials/02-case_study/01-case_study_sudan_nanopore.md
+    - part: "Other approaches"
+      chapters:
+        - materials/02-other_techniques/01-introduction_to_metagenomics.md
