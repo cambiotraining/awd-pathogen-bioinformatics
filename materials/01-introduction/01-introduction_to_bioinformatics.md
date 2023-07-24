@@ -1,5 +1,5 @@
 ---
-title: Template Page
+title: Introduction to Bioinformatics
 ---
 
 ::: {.callout-tip}
