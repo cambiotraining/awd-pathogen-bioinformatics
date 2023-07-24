@@ -1,5 +1,5 @@
 ---
-title: Template Page
+title: Cholera Genomics for Surveillance
 ---
 
 ::: {.callout-tip}
