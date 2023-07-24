@@ -1,6 +1,5 @@
 ---
-title: "Sub-regional training for national reference laboratories on
-advanced laboratory diagnostics for AWD and genomic analysis for pathogen surveillance"
+title: "Bioinformatics for AWD-related Pathogens"
 author: "Bajuna Salehe, Hugo Tavares"
 date: today
 number-sections: false
