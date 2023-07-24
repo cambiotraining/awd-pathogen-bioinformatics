@@ -7,7 +7,7 @@ book:
         - materials/01-introduction/03-introduction_to_unix_commands.md
     - part: "Case Studies"
       chapters:
-        - materials/02-case_study/01-case_study_sudan_nanopore.md
+        - materials/02-case_study/01-case_study_cultured_nanopore.md
     - part: "Other approaches"
       chapters:
         - materials/03-other_techniques/01-introduction_to_metagenomics.md
