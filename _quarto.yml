@@ -46,8 +46,7 @@ book:
       - icon: twitter
         href: https://twitter.com/bioinfocambs
         aria-label: Bioinformatics Training Facility Twitter
-    title: "Sub-regional training for national reference laboratories on
-advanced laboratory diagnostics for AWD and genomic analysis for pathogen surveillance"
+    title: "Bioinformatics for AWD-related Pathogens"
   chapters:
     - part: "Welcome"
       chapters:
