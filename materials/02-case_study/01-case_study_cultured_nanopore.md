@@ -54,7 +54,7 @@ Therefore, our analysis will have the following sections:-
 - Identify possible strain typings of the isolates genomes and how close or likely they are evolutionary related with known pathogenic 7PET lineages. This can be further achieved using phylogenetic tree either by using pathogenwatch or other tools. We will use pathogenwatch.
 - Generate report.
 
-![Cholera bioinformatics analysis workflow for genomic surveillance](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Pipeline_workflow.png){#fig-pipeline-workflow}
+![Cholera bioinformatics analysis workflow for genomic surveillance](images/Pipeline_workflow.png){#fig-pipeline-workflow}
 
 ## Setting up Directories and Preparing files
 For convenience and desired reproducibility of the analysis, it is a good standard to set up the important directory/sub-directories and prepare necessary files which will be required to run your analysis. We will be using what we have learned from the Unix commands to accomplish this task. We will start by creating:
@@ -76,7 +76,7 @@ Our bioinformatics analysis will start by first viewing the FASTQ files generate
 
 Then we use the command 'ls' to view the raw data - `ls data/fastq_pass`. Your output will be looking similar like the one below screenshot:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/view_raw_file_ls.png){#fig-view-raw_fastq}
+![](images/view_raw_file_ls.png){#fig-view-raw_fastq}
 
 ### Metadata
 Having metadata (data about our raw FASTQ files) is important in order to get clear understanding on how the samples / raw data were generated. Information like sample names or ID, date of collection, the location where they were collected, sequencing platform used, protocol, etc. are important to be stored in spreadsheet file and savwed with TSV or CSV format. In addition, the metadata is extremely useful for downstream analysis, further interpretation of the results and reporting.
@@ -118,11 +118,11 @@ The winner-take-all strategy (-w) parameter removes much of the redundancy for e
 
 Typing in your terminal the command `ls results/mash` will list the mash result per sample barcode as shown in the screenshot below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_mash_result_files.png){#fig-mash-result-files}
+![](images/Screenshot_mash_result_files.png){#fig-mash-result-files}
 
 There are different ways to view the above results from mash. The easiest but very unpleasant way for Windows user is to use commands less, more or cat Unix commands inside WSL2 or Ubuntu VM you use for this workshop. For instance, the command `less results/mash/barcode25_screen_sorted.tsv` will show the percentage of the containment per sample reads for the sample with barcode25. See Figure below.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_mash_barcode25.png){#fig-mash-result-barcode25}
+![](images/Screenshot_mash_barcode25.png){#fig-mash-result-barcode25}
 
 You can also view this file using Google sheet or any spreadsheet software for instance MS Excel from your computer.
 
@@ -147,7 +147,7 @@ Using `less` or `more` commands we can view the contents of this file as shown b
 
 `less sample_sheet.csv`
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/sample_sheet_epi2me.png){#fig-view-sample_sheet}
+![](images/sample_sheet_epi2me.png){#fig-view-sample_sheet}
 
 ### Running epi2me-labs/wf-bacterial-genomes
 We will now start our analysis by running epi2me-labs/wf-bacterial-genomes pipeline which does genome assemblies of the isolates sequence reads. Make sure that you are inside the 'cholera' directory which contains 'data', 'scripts', 'reference_genomes' and other directories. The pipeline is intended to be running using reference guided assembly mode instead of de novo assembly. Therefore, we will need to download the reference genomes before running pipeline.
@@ -157,15 +157,15 @@ There are about 17 V.Cholerae well established reference genomes of which 14 bel
 ### Downloading reference genome
 There are different ways which you can download reference genomes. One of the easiest way is that, you can copy the link provided above to the address bar of your favourite browser preferably Google Chrome and then press enter. See the image below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/address_bar-1.png)
+![](images/address_bar-1.png)
 
 You will see the page like the one in the below image showing the information about the genome assembly of this strain. The assembly is complete with 99.69% of the genome recovered.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/ref_genome_download_page.png)
+![](images/ref_genome_download_page.png)
 
 In that genome assembly page, you will see the "Download" button. When you click that button, the pop-up window will be displayed as illustrated in the image below.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/ref_genome_download_pop_up_button.png)
+![](images/ref_genome_download_pop_up_button.png)
 
 Select by ticking the 'Genome sequences (FASTA)' and 'Annotation features (GFF)' formats. You can rename the file accordingly. Finally, click the 'Download' button to download the reference genome assembly.
 
@@ -282,27 +282,27 @@ firefox multiqc_report.html
 ```
 With GUI you need to open file explorer by clicking 'Files' in the [gnome dash](https://askubuntu.com/questions/1126811/what-are-the-elements-of-the-gnome-desktop) on your desktop. A similar window like the one in the image below will appear.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/file_exploerer_open2.png){#fig-file-explorer}
+![](images/file_exploerer_open2.png){#fig-file-explorer}
 
 Click on the Documents directory and you will see the cholera folder which you created earlier. See the image below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/file_exploerer_open3.png){#fig-file-explorer-cholera-dir}
+![](images/file_exploerer_open3.png){#fig-file-explorer-cholera-dir}
 
 Click 'cholera' directory and then click results followed by busco subdirectories then you will see a multiqc_report.html file. See the image below.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/file_exploerer_open6.png){#fig-file-explorer-cholera-results-busco-dir-multiqc_report}
+![](images/file_exploerer_open6.png){#fig-file-explorer-cholera-results-busco-dir-multiqc_report}
 
 Right click and open with your default browser.
 
 Now, if you look at the MultiQC report of the busco results you will see two major plots showing completeness of the genes in our genome assemblies based on the generic orthologs database of bateria and specific orthologs database of Vibrio bacteria. We observed that for our sampled barcodes all of them have significantly high completeness score. The plots will be looking similar to the two images below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_busco_results_bacteria.png){#fig-bacteria-results-busco-dir-multiqc_report}
+![](images/Screenshot_busco_results_bacteria.png){#fig-bacteria-results-busco-dir-multiqc_report}
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_busco_results_vibrio.png){#fig-vibrio-results-busco-dir-multiqc_report}
+![](images/Screenshot_busco_results_vibrio.png){#fig-vibrio-results-busco-dir-multiqc_report}
 
 We are more interested in the completeness of the genes (green bars) which show the highest percentage of scores for each assembled sampled barcode isolates and therefore we can have certain confidence in the quality of our assembled genomes. The red bars may give us further indication of the existence of other unrelated genes or contamination which we observed earlier using mash but also can be quantitatively further obtained using checkM as shown in the table below. Unfortunately, we cannot use MultiQC to visualise the checkM results, instead we are going to use previous approach of spreadsheet software to view the results as we did with mash in the earlier quality assessment of the sampled reads when we were checking possible contamination. We can regard this contamination check with checkM as confirmation check for contamination. To have a clear and nice view of the table you need to delete upper rows up to the row just before the 'Bin Id' and other column headers start which should be kept. You may need also to delete the last row as well. Once you do that, you will have a similar look of the results as shown in the image below when you open the checkM results using your favourite spreadsheet software.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_checkM_results.png){#fig-vibrio-results-busco-dir-multiqc_report}
+![](images/Screenshot_checkM_results.png){#fig-vibrio-results-busco-dir-multiqc_report}
   
 The interesting columns are 'Completeness'  and 'Contamination' which overwhelmingly show the confidence in the completeness of our assembled genome isolates and very low contamination. The completeness of the genome can be translated by looking at the total number of marker genes in the '# markers' column, and how many times certain number of the marker genes appear in the single-copy genes in the reference genomes trees when looking at the columns labeled 0, 1, 2, 3, 4, 5+ which represent zero, once, twice, etc, respectively. So for instance, for barcode25 we have total of 1130 marker genes of which 1092 appear once and hence they determine number of completeness, 3 appear twice while 35 genes do not appear at all, i.e. are missing. This can be further interpreted as follows: *the more missing genes the less completeness. The more genes appear more than once the more contamination in the genome isolates*.
 
@@ -320,27 +320,27 @@ Perform the following step to upload the FASTA files in the Pathogenwatch:
 
 - Go to the Pathogenwatch web portal by clicking [here](https://pathogen.watch/){target="_blank"}. In the page you will see **Upload** link in the top right corner of the page as shown in the image below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshotpathogenwatch_upload.png){#fig-vibrio-watch-upload}
+![](images/Screenshotpathogenwatch_upload.png){#fig-vibrio-watch-upload}
 
 Before uploading files to Pathogenwatch you need to create an account. You can easily do that using your Google account. If you don't have it you can use your Twitter or Facebook accounts or your email address in which a link will be sent to your email for verification. Once signed in then click the link and you will be directed to the **Upload** page as shown in the image below:
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_psthogenwatch_upload_fasta.png){#fig-vibrio-watch-upload_fasta}
+![](images/Screenshot_psthogenwatch_upload_fasta.png){#fig-vibrio-watch-upload_fasta}
 
 Click in the "Upload FASTA(s)" Single Genome FASTAs option which is pointed by a red arrow. 
 
 The new page as shown in the diagram below which will enable you to upload your single FASTA file (assembled genomes of your isolates) by drag and drop from you computer will pop up. In the **Settings** check both options (two red arrows) if the Internet connection is slow and unstable. 
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_psthogenwatch_upload_fasta1.png){#fig-vibrio-watch-upload_fasta_second}
+![](images/Screenshot_psthogenwatch_upload_fasta1.png){#fig-vibrio-watch-upload_fasta_second}
 
 Then you can upload each file by clicking on the "+" sign (red circle). You cannot upload FASTQ files as the Pathogenwatch does not support yet analysis of data generated from ONT directly. A window like the one shown in the image below will appear which will allow you to select the files from your local machine provided. You need to double click `Documents` -> `cholera` -> `results` -> `wf-bacterial-genomes` folders within the pop-up window to find the FASTA files. Instead of uploading each file one by one which will take a valuable amount of your time, you can upload all at once by clicking and selecting all of your FASTA files while holding 'Ctrl' keyboard. Click open on the dialogue window after you have selected all of your FASTA files.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_pathogenwatch_upload_fasta_all_selected.png){#fig-vibrio-watch-upload_fasta_all_selected}
+![](images/Screenshot_pathogenwatch_upload_fasta_all_selected.png){#fig-vibrio-watch-upload_fasta_all_selected}
 
 If you have metadata file associated with your samples you can download them as well. Make sure all metadata files are in **CSV** format with recommended five columns which are 'latitude', 'longitude', 'year', 'month', and 'day'. You can also use the template provided to prepare your metadata files.
 
 Once you uploaded your FASTA files and metadata files for each of your sampled barcodes, a new page showing samples being uploaded and processed will be seen and eventually all samples will be finished uploaded and processed as it is shown in the below image.
 
-![](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_fasta_files_uploaded.png){#fig-vibrio-watch-uploaded_fasta_all_selected_processed}
+![](images/Screenshot_fasta_files_uploaded.png){#fig-vibrio-watch-uploaded_fasta_all_selected_processed}
 
 Pathogenwatch performs the following major analyses with regards to the genomic surveillance; AMR, Sequence Typing (ST) which uses two methods tradional MLST and core-genome MLST (cgMLST), and provides General Stats.
 
@@ -351,7 +351,7 @@ For further reading on the typing methods used by Pathogenwatch read [here](http
 
 Click in the **VIEW GENOMES** to see the detail analysis of each uploaded genome. The page like the one in the below image will be shown:
 
-![The list of uploaded genomes shown in the table with other important fields](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_psthogenwatch_results_sampled_barcodes.png){#fig-vibrio-watch-results_page}
+![The list of uploaded genomes shown in the table with other important fields](images/Screenshot_psthogenwatch_results_sampled_barcodes.png){#fig-vibrio-watch-results_page}
 
 If you look at the image above (Figure 6.2) you will see a tabular structure of the results listing the uploaded images. Useful columns for your analysis are indicatedd using red arrows pointing downward to each column. Other useful information or links are red-circled. There are 10 genomes uploaded out of the 318,798 genomes of all species. The first column (`Name`) shows the names of the uploaded samples, the second column (`Organism`) shows the name a species name of the organism of our interest in this case Vibrio.cholerae, the third column shows the Type in which each of the uploaded genome has been assigned based on the MLST/cgMLST methods/schemes, the fourth column shows the Typing scheme used to assign typing in this case is 'MLST', the fifth column (`Country`) shows the country where the sample associated with the genome was collected, the fifth column (`Date`) shows the date in which the sample associated with the genome was collected and the last column (`Access`) shows the access mode of the genome file, that is whether it is public or private in this case it is private and not yet published for sharing with wider global community. The `Selected Genomes` button shows the number of genomes that have been selected from your table in your left side for further downstream analysis. The number will only appear if you have checked (ticked) the `Name` column at the top.
 
@@ -364,11 +364,11 @@ The next is to check (tick) in the `Name` field and select all of the uploaded g
 
 After checking you will see the similar image like the one below.
 
-![Creating a collection for the uploaded genomes](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_pathogenwatch_creating_collection.png){#fig-vibrio-watch-collection_page}
+![Creating a collection for the uploaded genomes](images/Screenshot_pathogenwatch_creating_collection.png){#fig-vibrio-watch-collection_page}
 
 After clicking `Create Collection` button another pop-up will appear as shown in the diagram below which will require you to write a detailed description of your collection. 
 
-![Further description for creating a collection for downstream analysis of your genomes](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_pathogenwatch_creating_collection1.png){#fig-vibrio-watch-creating_a_collection_page}
+![Further description for creating a collection for downstream analysis of your genomes](images/Screenshot_pathogenwatch_creating_collection1.png){#fig-vibrio-watch-creating_a_collection_page}
 
 It is highly recommended to provide detail of your project. For instance:-
 
@@ -379,7 +379,7 @@ It is highly recommended to provide detail of your project. For instance:-
 
 After clicking `Create now` button a Window similar to the image below will be displayed showing a table with the names of your barcoded samples and predicted typings (using MLST) with reference used to call the typing, in this case W3_T13. In addition, the profile for each genome isolate will be displayed.
 
-![Collection of the genomes isolates and their predicted typings](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/Screenshot_pathogenwatch_samples_collection.png){#fig-vibrio-watch-collection_analaysis_table}
+![Collection of the genomes isolates and their predicted typings](images/Screenshot_pathogenwatch_samples_collection.png){#fig-vibrio-watch-collection_analaysis_table}
 
 The table contains several columns. The first and second columns allow you to downlad the assembled genome and annotation in its FASTA AND GFF formats respectively. The third column contains the names of the barcodes. The fourth column is the reference used to call typings which in this case belongs to 7PET pandemic strain (W3_T13). However, we do not have enough information about the exact reference pandemic strain used to call typings for our samples. The fifth column is predicted sequence typing for each assembled enome isolate. All of these seem to novels (*). Click  [here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst) for further information on how Pathogenwatch uses MLST method for prediction of typing. The sixth column is 'PROFILE' which provides the individual loci codes.
 
@@ -394,7 +394,7 @@ The last step is to visualise tree for aiming of observing if there are any clus
 
 According to [WHO](https://www.who.int/publications/i/item/9789241564748), antimicrobial resistance (AMR) has become a global public health issue in which a lot of pathogenic bacterial strains have become resistant to antimicrobial drugs. Therefore, for improving cholera disease surveillance we need also to determine AMR associated with V.cholerae. To achieve this, we are going to use the nextflow pipeline **[nf-core/funcscan](https://nf-co.re/funcscan/1.1.2)** in addition to looking back to the AMR results from ep2me-lab/wf-bactrial-genomics pipeline. The image below demonstrates how the nf-core/funcscan works in predicting AMRs. When running, the nf-core/funcscan uses either Docker/Singularity within nextflow framework.
 
-![Overview of nf-core/funcscan](file:///home/bajuna/cholera-genomics/materials/02-case_study/images/funcscan_metro_workflow.png){#fig-nf-core-funcscan-overview}
+![Overview of nf-core/funcscan](images/funcscan_metro_workflow.png){#fig-nf-core-funcscan-overview}
 
 The following shell script runs the nf-core/funcscan with Docker to predict the AMRs from our assembled genomes isolates.
 
