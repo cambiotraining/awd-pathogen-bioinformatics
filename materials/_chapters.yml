@@ -10,4 +10,4 @@ book:
         - materials/02-case_study/01-case_study_sudan_nanopore.md
     - part: "Other approaches"
       chapters:
-        - materials/02-other_techniques/01-introduction_to_metagenomics.md
+        - materials/03-other_techniques/01-introduction_to_metagenomics.md
