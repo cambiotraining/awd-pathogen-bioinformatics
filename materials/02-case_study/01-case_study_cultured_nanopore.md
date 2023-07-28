@@ -381,9 +381,138 @@ After clicking `Create now` button a Window similar to the image below will be d
 
 ![Collection of the genomes isolates and their predicted typings](images/Screenshot_pathogenwatch_samples_collection.png){#fig-vibrio-watch-collection_analaysis_table}
 
-The table contains several columns. The first and second columns allow you to downlad the assembled genome and annotation in its FASTA AND GFF formats respectively. The third column contains the names of the barcodes. The fourth column is the reference used to call typings which in this case belongs to 7PET pandemic strain (W3_T13). However, we do not have enough information about the exact reference pandemic strain used to call typings for our samples. The fifth column is predicted sequence typing for each assembled enome isolate. All of these seem to novels (*). Click  [here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst) for further information on how Pathogenwatch uses MLST method for prediction of typing. The sixth column is 'PROFILE' which provides the individual loci codes.
+The table contains several columns. The first and second columns allow you to downlad the assembled genome and annotation in its FASTA AND GFF formats respectively. The third column contains the names of the barcodes. The fourth column is the reference used to call typings which in this case belongs to 7PET pandemic strain (W3_T13). However, we do not have enough information about which exact reference pandemic strain's NCBI accession used to call typings for our samples. The fifth column is predicted sequence typing for each assembled genome isolate. All of these seem to be novels (*). Click  [here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst) for further information on how Pathogenwatch uses MLST method for prediction of typing. The sixth column is 'PROFILE' which provides the individual loci codes.
 
-...
+### Phylogenetics and identification of sequence type (ST)
+
+When you click the button view tree, Pathogenwatch will automatically generate an unannotated phylogenetic tree like the one showed in the diagram in Figure.. showing the evolutionary relationship between different assembled genome isolates. To be able to annotate the tree you have to right click within the tree and a pop up window will show up aside the tree as shown in the same image which allows you to anonotate tree for instance by showing or aligning labels in which you need to click in the options to activate to be able to do the tasks. "Show labels" will show the barcode names/sample names associated with each tree node. You can also change the topology of the tree from the top right of the left frame.
+
+![The phylogenic tree showing Pathogenwtch phylogenetics tree without labels](images/Screenshot-pathogenwatch-tree_samples_only.png){#fig-pathogenwatch-tree_samples_only}
+
+We will start annotating this tree by showing labels, which will show the phylogentic relatedness of the assembled genomes isolates as shown below:
+
+![The activated phylogenic tree labels showing phylogenetic relatedness between assembled genomes isolates](images/Screenshot-pathogenwatch-tree-activated-labels.png){#fig-pathogenwatch-tree-activated-labels}
+
+We can further play around with a tree by changing the tree annotation by clicking accordingly on the column headers of the table shown in the Figure 6.5 above. For instance, we can click on the **Reference** header to see the phylogenetically closely related reference strains, which in this case will only show just one strain (W3_T13) for all assembled barcodes as they use single strain which is a recent 7PET one as shown in the image below.
+
+![Phylogenetic tree showing the relatedness of the samples based on the reference strain](images/Screenshot-pathogenwatch-phylogenetic-tree-reference-strains.png){#fig-pathogenwatch-phylogenetic-tree-reference-strains}
+
+The same way we can visualise tree based on the **ST** (sequence typing) header to show the phylogenetic relationship of the identified sequence typings, in this case all seems to be unusually novel (*).
+
+![Phylogenetic tree showing the relatedness of the sample barcodes with regard to their predicted sequence typing ](images/Screenshot-pathogenwatch-phylogenetic-tree-typing.png){#fig-pathogenwatch-phylogenetic-tree-typings}
+
+The above phylogenetics trees in Figures 6.8 and 6.9 do not give any information which would help us to determine the likely lineages or typing of any of our assembled genomes isolates with the known pathogenic strains or type as the tree is generated only based on aligning the annotated genome isolates with the single reference which was done automatically by Pathogenwatch. 
+
+Therefore, we need to download considerable number of the recently identified different reference genomes of the known strains from the NCBI database. That is the first step. Then uploading these genomes into the Pathogenwatch as the second step. Afterward, combining these with the collection of our assembled genomes that we created earlier in the Pathogenwatch as the third step. And lastly generate tree using Pathogenwatch to view how our samples co-cluster with the known strains.
+
+We maybe able to download recent publicly genomes of the assembled V.cholerae from this [NCBI website](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666) in you may have access to all publicly known assembled genomes strains of the V.cholerae from 1980 - to date (2023) which are estimated to be 5,958. However, we can filter how many of these we need to download from within the website. The filter would be based on which genomes from which dates, reference genome only, annotated genomes, or assembly levels of the strains as shown in the image below.
+
+![Available filtering options for downloading publicly available V.cholerae genomes](images/Screenshot-downloading-vibrio-genomes-ncbi.png){#fig-downloading-filtering-vibrio-genomes-ncbi}
+
+In our case, we may need to download only the very recent genomes from 2019-2023 as these are handful for easy visualisation in the pathogenwatch. So the filtering criteria would be "Annotated genomes", "Annotated by NCBI RefSeq" "Exclude atypical genomes", "ASSEMBLY LEVEL" should be complete (drag the slider to complete), and "YEAR RELEASED" should be dragged to 2019-2023. The selected filter is shown in the image below. Also, rember to tick the checkbox in the "Assembly" column header to activate "Download" button.
+
+![Selected filters for downloading publicly available genomes from NCBI database](images/Screenshot-filtering-ncbi-genomes-to-download.png){#fig-filtering-ncbi-genomes-to-download}
+
+Based on these filters we are expecting to download a total of 63 public available genomes to our machines. So clicking the "Download" button, you may see two download options which are "Download table" and "Download package". The "Download package" gives you ability to download actual filtered genomes (in FASTA) with their annotation files (in GFF) as well as the associated metadata in a single zipped file. The "Download table" option will only download the metadata information for the genomes. Click "Download package".
+
+![Options for downloading genomes or only metadata](images/Screenshot-ncbi-download-Download-options.png){#fig-ncbi-download-Download-options}
+
+When we click "Download package" a list of options for downloading genomic data will be shown. Select "Refseq only (63)" then tick two checkboxes "Genome sequences (FASTA)" and "Annotation features (GFF)". Then click download. Rename the "ncbi_dataset.zip" as "ncbi_vcholerae_63_genomes_dataset.zip".
+
+![Selected options for downloading genomic sequences and annotations for 63 V.cholerae](images/Screenshot-ncbi-download-genomes-package-options.png){#fig-ncbi-download-genomes-package-options}
+
+The next thing is to extract the downloaded zip folder. You can easily do that GUI or command line. Once you extract the zip files you will likely see the files are in the folder "data". Using terminal or GUI go to inside that folder. Now you need to use a Unix command to copy all files into a single folder for easy upload in the Pathogenwatch. From the terminal type `cd ~/Downloads/ncbi_vcholerae_63_genomes_dataset/ncbi_dataset/data` command. Then type the command `mkdir 63_concatenated_genomes` to create a single folder inside that directory in which we can copy to our downloaded genomes. Then use the command `cp *GCF_*/*.fna 63_concatenated_genomes/` to copy all files into that new folder.
+
+Let us stay in the same directory and look at another important file named "**data_summary.tsv**". This is actual metadata file which we also neeed to upload into the pathogenwatch for phylogenetic as well. Use any spreadsheet software to open the file. The file looks like the one below in the Figure ..
+
+![The metadata file showing the detailed information of the selected downloaded public V.cholerae public genomes](images/Screenshot-metadata-downloaded-genomes.png){#fig-Screenshot-metadata-downloaded-genomes}
+
+The table in that file has many columns. For the sake of this training, the most important ones seem to be "**Organism Scientific Name**", "**Organism Qualifier**" and "**Gene Count**". The first column gives information about whether the genome is in pathogenic or not i.e. known 7PET, the "Organism Qualifier" column tells us about the assigned strain name, and "Gene Count" gives number of genes for each genome. The latter may give us more confidence on the quality of assembled genomes isolates if you compare with the BUSCO or checkM results that we discussed earlier.
+
+The next step is to upload all these genomes files into the pathogenwatch by following the same steps we discussed in the section 6.6.1. These files are in `.fna` format which is one of the formats that are accepted by the pathogenwatch. Afterwards, you need to create a collection for these genomes and later combining them with "Cholera nanopore samples collection" which we created earlier OR we combine these files together with the collection we have already created. We will do the latter option. Once we download the genomes, you can view all genomes after being analysis or you can click to genomes menu option at the top of the website. You will see the table like the shown oin the screenshot below:
+
+![The uploaded genomes of V.cholerae are shown on top of the ticked genomes, which are our sample genomes](images/Screenshot-pathogenwatch-uploaded-public-genomes.png){#fig-Screenshot-pathogenwatch-uploaded-public-genomes}
+
+You will see the recently uploaded genomes are shown to be at the top of our sampled genomes and are unchecked while our sampled genomes are checked down below the uploaded genomes. See the red marked columns.
+
+### Exercise
+
+::: {.callout-exercise}
+{{< level 1 >}}
+
+Examine the red-marked column "Type". Determine the predicted novel sequence types of the public V.cholerae genomes.
+
+:::
+
+Now you need to check all public uploaded unchecked genomes which seen to be private in the pathogenwatch as indicated in the red-marked last column. Once you checked them, the total number of previous created collection will be 73 instead of 10 after we have added additional 63 genomes. Then create a new collwction named it accordingly as discussed earlier. You may name this collection as "Additional genomes for phylogenetics and typing identification". Then click "CREATE NOW" button.
+
+You need to wait for a bit of seconds while pathogenwatch is genereting a new tree. Meanwhile you can sroll down the table to observe the information about our genomes and those new ones we upload from NCBI. Two columns are of particular interest to examine. These are "REFERENCE" and "ST". No changes in our sample genomes, but you may observe changes with the newly uploaded genomes from NCBI.
+
+### Exercise
+
+::: {.callout-exercise}
+{{< level 2 >}}
+
+Discuss with your colleague what kind of information you can extract from the two columns (**REFERENCE** AND **ST**) with regard to the new uploaded genomes from the NCBI.
+
+:::
+
+When you click view tree you will see the unlabeled tree displayed. We want to label our tree based on the names of the genomes (default), reference strains, and sequence typing (ST). Point your mouse to the frame where the tree is displayed and right click and enable show labels to view the tree with genome names. See the images below which shows the tree in genome names, reference, and sequence typing respectively:
+
+![Tree view based on genome names which combine the selected 63 public genomes and 10 genomes from our sampled barcodes](images/Screenshot-pathogenwatch-phylo-tree-name.png){#fig-pathogenwatch-phylo-tree-name}
+
+![Tree view based on reference strain names](images/Screenshot-pathogenwatch-phylo-tree-ref.png){#fig-pathogenwatch-phylo-tree-ref}
+
+![Tree view based on known and unknown sequence typings](images/Screenshot-pathogenwatch-phylo-tree-st.png){#fig-pathogenwatch-phylo-tree}
+
+However the tree doesn't seem to be clearly visualised. Therefore, we need to export the tree to be able to view it in any other open tree viewing software tools that are available to see whether we can have any useful context from the tree with regard to the identification of lineages of our 10 samples and to have a certain confidence on presence of pandemic associated strain(s) in the samples. 
+
+Exporting tree from pathogenwatch is easy. You just right-click inside the frame where the tree is displayed and the pop up window which you see when you label the tree contains an option ("Export as newick file") to export tree in `.nwk` format. Automatically when you export the tree the newick file will be downloaded in the `Downloads` folder. We will export three files to be able to view it in genome names, reference and sequence typing, but each time you export, the file will have the same default name given by the pathogen watch. So, we need to rename the file in a meaningful way for easy interpretation.
+
+There are couple of open software tools that are used for viewing phylogenetic tree. At this time we are choosing a web based tool dedicated to generate tree from newick file format known as [ETEToolkit](http://etetoolkit.org/treeview/).
+
+![ETEToolkit for viewing tree in newick format](images/Screenshot-etetoolkit-treeview.png){#fig-etetoolkit-treeview}
+
+Click "Browse..." button just down below a text label saying "Paste your tree in newick format:". Upload each of the three newick files that we have exported from the Pathogenwatch. And each time when you upload the file make sure you click "View tree". You will likely see the trees which look like the ones below.
+
+![A phylogenetic tree showing the evolutionary relationship between the samples and NCBI downloaded public genomes displayed using Treeview software from ETETool. The red-highlighted clade show likely closest lineage](images/Screenshot-Tree-viewer-Online-visualization-of-phylogenetic-trees-newick-gnames.png){#fig-Tree-viewer-Online-visualization-of-phylogenetic-trees-newick-gnames}
+
+![A phylogenetic tree showing the reference strains names clusters. The red-highlighted clade show likely closest lineage](images/Screenshot-Tree-viewer-Online-visualization-phylogenetic-trees-ref.png){#fig-Tree-viewer-Online-visualization-phylogenetic-trees-ref}
+
+![A phylogenetic tree showing the sequence typing clusters. The red-highlighted clade show likely closest lineage](images/Screenshot-Tree-viewer-Online-visualization-phylogenetic-trees-st.png){#fig-Tree-viewer-Online-visualization-phylogenetic-trees-st}
+
+The three Figures above (Figure 6.20, 6.21, and 6.22) show how our samples clusters with the recently available downloaded public genomes with their associated reference strains and sequence typings (the red highlighted clades) in which one of the reference genome names was used earlier by epi2me-lab/wf-bacterial-genomics tool to generate assemblies for our isolates.
+
+### Exercise
+{{< level 3 >}}
+
+Read carefully the phylogenetic trees above in the Figures 6.20, 6.21, and 6.22 and answer the following questions:
+
+- What is the name of the NCBI reference genome that was used by epi2me-lab/wf-bacterial-genomic pipeline.
+- Which of the two reference genomes names closely related to our sample genomes have been recently shown to be associated with Cholera in Pakistan
+    + What is the Biotype of this strain (Is it O1 or O139)?
+    + What is drug resistance associated with this strain (refer section 6.7)?
+    + What is the most recent publication (paper) associated with this strain?
+    
+  ::: {.callout-tip}
+  Use the summary file that you downloaded from the NCBI with the 63 genomes to extract the name of this genome and its reference strain name.
+  Once you extract this, use Pubmed database to answer the three questions that follow.
+  
+  You can discuss with your colleagues. This question may somehow depend on the Exercise 6.6.4
+  
+  :::
+
+### Exercise
+{{< level 3 >}}
+
+Based on the answers from the previous exercise 6.6.5, can you definitively conclude that our samples isolates are pathogenic of the 7PET OR what samples seem to be of 7PET based on the above phylogenetic analysis?
+
+::: {.callout-tip}
+
+To be categorised into the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
+
+:::
+
 <!--The second step is to perform multiple sequence alignment between the public downloaded sequences and our genome assembled isolates. This step will be done automatically with Pathogenwatch but we will do it manually as well using MAFFT. 
 
 The next step is to perform phylogenetic analysis which will be also automatically done by using Pathogenwatch. This can be also manually done by using IQ-TREE software. The two tools are aimed to be used for constructing the phylogenetic MLST tree
@@ -410,10 +539,34 @@ nextflow run nf-core/funcscan -profile docker -resume \
 --arg_skip_deeparg
 
 ```
-The results of nf-core/funcscan are in the directory `/home/<username>/cholera/results/funcscan/arg` which contains several AMR results. Technically, the pipeline uses five different AMR tools which are **[ABRicate](https://github.com/tseemann/abricate)**, **[AMRFinderPlus (NCBI Antimicrobial Resistance Gene Finder)](https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/)**, **[fARGene (Fragmented Antibiotic Resistance Gene idENntifiEr)](https://github.com/fannyhb/fargene)**, **[RGI (Resistance Gene Identifier)](https://card.mcmaster.ca/analyze/rgi)**, and **[DeepARG](https://readthedocs.org/projects/deeparg/)** to pull AMRs, however in the shell script we skipped to run DeepARG as it uses deep learning approach which will be using much computing resources and take long time for the pipeline to finish. The results folder however contains individual predicted AMRs from four tools which are ABRicate, AMRFinderPlus, fARGene, RGI. In addition there is another folder within results directory named `hamronization` which pulls summary results of the AMRs for each tool and barcode. Type command `ls results/funcscan/arg`, you will most likely see the following folders:
+The results of nf-core/funcscan are in the directory `/home/<username>/cholera/results/funcscan/arg` which contains several AMR results. Technically, the pipeline uses five different AMR tools which are **[ABRicate](https://github.com/tseemann/abricate)**, **[AMRFinderPlus (NCBI Antimicrobial Resistance Gene Finder)](https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/)**, **[fARGene (Fragmented Antibiotic Resistance Gene idENntifiEr)](https://github.com/fannyhb/fargene)**, **[RGI (Resistance Gene Identifier)](https://card.mcmaster.ca/analyze/rgi)**, and **[DeepARG](https://readthedocs.org/projects/deeparg/)** to pull AMRs, however in the shell script we skipped to run DeepARG as it uses deep learning approach which will be using much computing resources and take long time for the pipeline to finish. The results folder however contains individual predicted AMRs from four tools which are ABRicate, AMRFinderPlus, fARGene, RGI. In addition there is another folder within results directory named `hamronization` which pulls summary results of the AMRs for each tool and barcode in bioinformaticians' favourite json format. 
+To view the outputs from the terminal type command `ls results/funcscan/arg/` and you will most likely see the following output folders:
 
+![Overview of funcscan outputs](images/Screenshot-funcscan-results.png){#fig-funcscan-results}
+
+For each individual tool's output folder shown above, there is a report, which is associated with the predicted AMRs for each of the sample barcodes. In most cases the report is in the tsv format, which can be viewed by using spreadsheet software like **Excel** or **GSheet**. For instance, we can view the AMR report from abricate folder for the sample **barcode25**, using graphical user interface (GUI) by double-clicking the window explorer of the directory `results/funcscan/arg/abricate/barcode25` which you will see a single text file like the one below in the Figure 6.8 Then you can view the report by double-clicking that file and a table can be seen as shown in the Figure 6.9.
+
+![A file which contains an AMR report from abricate with nf-core/funcscan for sample isolate barcode25](images/Screenshot_funcscan_abricate_barcode25_folder.png){#fig-funcscan-abricate-barcode25-folder}
+
+![An AMR report from abricate in the tabular format showing all predicted AMRs genes for sample isolate barcode25](images/Screenshot_funcscan_abricate_barcode25_amr_report.png){#fig-funcscan-abricate-barcode25-amr-report}
+
+From Figure 6.9, we can interpret the report as follows; for the assembled contigs from the sample barcode25, there are several putative AMR genes with their associated drugs which are quite similar to the sequences from the NCBI database. Example, the annotated gene "aadA2" in the contig_39 is quite similar with the AMR gene sequence AadA2 in the NCBI which is associated with the resistance of antibiotics drug "STREPTOMYCIN".
+
+Now for further interpretation, we can compare the nf-core/funcscan predicted AMRs with those from "epi2me-lab/wf-bacterial-genomics". which uses resfinder database in predicting AMRs. The AMR results from epi2me-lab/wf-bacterial-genomics for barcode25 is available at the `results/wf-bacterial-genomes/barcode25_resfinder_results/`. The relevant file for AMR within that folder is "ResFinder_results_tab.txt" which in this case has only one hit. The putative resistance gene is "catB9" which is shown to be likely similar to the resfinder gene sequence entry associated with "Chloramphenicol" antibiotics drug.
+
+### Exercise
+
+::: {.callout-exercise}
+{{< level 1 >}}
+
+Choose any of the three barcoded samples AMR reports from the `results/funcscan/arg/amrfinderplus` and `results/funcscan/arg/rgi` output folders and do the following: 1) compare to each other and 2) compare them with the results from those in in the folder `results/wf-bacterial-genomes/`. Here, you are required to first compare against each other the AMR reports for the barcodes of your choice between two nf-core/funcscan tools (i.e. amrfinderplus vs rgi), and finally compare them with those from `results/wf-bacterial-genomes/`. The comparison can be guided by looking at which putative resistance gene and its associated drug predicted by each tool, and if there are any differences or similarities among the tools, i.e those from `nf-core/funcscan` and `results/wf-bacterial-genomes/`.
 
 ...
+
+::: {.callout-answer collapse=true}
+Answer goes here
+:::
+:::
 
 ## Preparing Genomic Surveillance Report
 
