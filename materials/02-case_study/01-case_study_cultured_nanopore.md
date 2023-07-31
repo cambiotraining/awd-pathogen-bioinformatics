@@ -570,6 +570,39 @@ Answer goes here
 
 ## Preparing Genomic Surveillance Report
 
+After finishing your analysis, it is best practice or a gold standard approach to prepare a report which would most likely provide senior public health individuals with an informed decisions regarding strain identification, source of outbreaks and transmission, control, mitigation measures or even treatment of cholera or any other related AWD or infectious diseases. In our case, the report will be required to be written as an exercise () covering all sections that you have learned from the entire training. We will provide the general guidelines of the report below.
+
+The report will most likely contain the following sections:
+
+### Background
+This section will describe the overall background of the report. It will likely contain the current known about the disease from the literature and other recognised sources of information, objectives of integratin WGS in the disease surveillance.
+
+### Data collection
+
+
+### Data quality
+
+
+### Whole genome sequencing
+
+
+### Bioinformatics analysis
+
+
+### Results and findings
+
+
+#### Pyhlogenetics relatedness and typing identification
+
+
+#### Source of transmission
+
+
+#### Antimicrobial resistance genes
+
+
+### Reference
+
 
 ## Summary
 
