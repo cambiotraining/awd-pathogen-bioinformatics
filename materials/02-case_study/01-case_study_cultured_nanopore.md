@@ -578,28 +578,16 @@ The report will most likely contain the following sections:
 This section will describe the overall background of the report. It will likely contain the current known about the disease from the literature and other recognised sources of information such as WHO, objectives of integrating WGS in the disease surveillance, etc.
 
 ### Data collection
-You will explain in a little bit detailed manner how the sample data were collected, location. if it is cultured sample explain further on the protocol(s) used in culturing. libraries prep kit for sequencing also maybe included here in addition to the sequencing platform used whether it is ONT, Illumina, PacBio, etc.
+You will explain in a little bit detailed manner how the sample data were collected, location. if it is cultured sample explain further on the protocol(s) used in culturing. libraries prep kit for sequencing also maybe included here in addition to the sequencing platform used whether it is ONT, Illumina, PacBio, etc and type if sequencing appraoch used, i.e. whole genome sequencing (WGS) or amplicon based or metagenomic. In our case the approach used is WGS for the cultured data.
 
 ### Sequence reads quality
 You have to report on the quality of the data perhaps including all pre-processing including the software version used. For instance, if you have used FastQC for quality check then you have to explicitly mentioned the version used apart from any noticeable findings about about your reads quality. If you have used Mash for checking the containment of your reads or scanning for contamination then you have to report its version used apart from the contamination findings on your sample reads.
 
-### Whole genome sequencing
-
-
 ### Bioinformatics analysis
-
+Provide a summary report on bioinformatics analysis which will include genome assembly and further downstream analysis you performed. the summary may inckude the tools used for each analysis and their versions. You may use MultiQC reports if the tool(s) are part of the MultiQC suite. In our case, epi2me-lab, busco, and nf-core/funcscan are part of the MultiQC suite.
 
 ### Results and findings
-
-
-#### Pyhlogenetics relatedness and typing identification
-
-
-#### Source of transmission
-
-
-#### Antimicrobial resistance genes
-
+This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch.
 
 ### Reference
 
