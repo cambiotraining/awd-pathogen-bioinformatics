@@ -587,12 +587,22 @@ You have to report on the quality of the data perhaps including all pre-processi
 Provide a summary report on bioinformatics analysis which will include genome assembly and further downstream analysis you performed. the summary may inckude the tools used for each analysis and their versions. You may use MultiQC reports if the tool(s) are part of the MultiQC suite. In our case, epi2me-lab, busco, and nf-core/funcscan are part of the MultiQC suite.
 
 ### Results and findings
-This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch.
+This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch. You may want to include tables or/and plots that could be pulled from the individual tools output folders. This could be applied in each of the section above.
 
 ### Reference
+Include some references from the literature you have used in your report.
 
+### Exercise
 
-## Summary
+::: {.callout-tip}
+#### Reporting
+
+Using the above template for reporting write a full report for your samples. Be as comprehensive as possible. Consider you are reporting to the senior public health officials on AWD of your concern example Cholera so that the officials can possibly use the report for required policy changes. 
+
+:::
+
+### Summary
+
 
 ::: {.callout-tip}
 #### Key Points
