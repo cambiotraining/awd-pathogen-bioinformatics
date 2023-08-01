@@ -590,7 +590,7 @@ Provide a summary report on bioinformatics analysis which will include genome as
 This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch. You may want to include tables or/and plots that could be pulled from the individual tools output folders. This could be applied in each of the section above.
 
 ### Reference
-Include some references from the literature you have used in your report.
+Include some references from the literature which you have used in your report.
 
 ### Exercise
 
@@ -601,11 +601,14 @@ Using the above template for reporting write a full report for your samples. Be 
 
 :::
 
-### Summary
-
+## Summary
 
 ::: {.callout-tip}
 #### Key Points
 
-- Last section of the page is a bulleted summary of the key points
+- It is good practice in bioinformatics analysis to perform data quality check before you start analysis. This includes quality of your reads and genome assemblies.
+- The quality check on your reads will also include of any posiible contamination and its percentage. The investigation of whether the isolates in examination belong to the 7PET or not mau be started as early as during quality check.
+- Due to network latency (which may happen in some places), Pathogenwatch may not work well, therefore consideration for using alternative approach to for instance generating phylogeneies should be made. In our case study we used **Panaroo** with **IQ-TREE** and **Figtree** as analternative approach phylogenetic analysis.
+- Having genomic surveillance report which will be likely used as a main basis for informed decision making process among senior public helath officials is very important.
+
 :::
