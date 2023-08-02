@@ -8,7 +8,7 @@ nextflow run epi2me-labs/wf-bacterial-genomes \
   --out_dir FIXME \
   --threads 8 \
   --reference_based_assembly True \
-  --reference resources/vibrio_genomes/GCF_008369605.1_ASM836960v1_genomic.fna \
+  --reference resources/reference_genome/GCF_937000105.1_CNRVC190243_genomic.fna \
   --resfinder_version 4.3.2 \
   --mlst_version 2.23.0 \
   --isolates True \
