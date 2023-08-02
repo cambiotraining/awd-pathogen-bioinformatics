@@ -509,7 +509,7 @@ Based on the answers from the previous exercise 6.6.5, can you definitively conc
 
 ::: {.callout-tip}
 
-To be categorised into the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
+To be categorised as the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
 
 :::
 
@@ -570,7 +570,7 @@ Answer goes here
 
 ## Preparing Genomic Surveillance Report
 
-After finishing your analysis, it is best practice to prepare a report which would most likely provide senior public health individuals with an informed decisions regarding strain identification, source of outbreaks and transmission, control, mitigation measures or even treatment of cholera or any other related AWD or infectious diseases. In our case, the report will be required to be written as an exercise () covering all sections that you have learned from the entire training. We will provide the general guidelines of the report below.
+After finishing your analysis, it is best practice to prepare a report which would most likely provide senior public health individuals with an informed decisions regarding strain identification, source of outbreaks and transmission, control, mitigation measures or even treatment of cholera or any other related AWD or infectious diseases. In our case, the report will be required to be written as an exercise (6.8.7) covering all sections that you have learned from the entire training. We will provide the general guidelines of the report below.
 
 The report will most likely contain the following sections:
 
@@ -587,15 +587,28 @@ You have to report on the quality of the data perhaps including all pre-processi
 Provide a summary report on bioinformatics analysis which will include genome assembly and further downstream analysis you performed. the summary may inckude the tools used for each analysis and their versions. You may use MultiQC reports if the tool(s) are part of the MultiQC suite. In our case, epi2me-lab, busco, and nf-core/funcscan are part of the MultiQC suite.
 
 ### Results and findings
-This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch.
+This part of the report ar very critical for the follow up decision making process which is done by the public health individuals. The important results with regard to public health may inlcude AMR, what is the likely source of transmission, typing. This may help individual to design the better strategies for prevention and treatment of AWD of concern, e.g. Cholera. To write this section you may need to refer the outputs from nf-funcscan, mlst, epi2me-la, phylogenetics analysis and typing, and reports from Pathogenwatch. You may want to include tables or/and plots that could be pulled from the individual tools output folders. This could be applied in each of the section above.
 
 ### Reference
+Include some references from the literature which you have used in your report.
 
+### Exercise
+
+::: {.callout-tip}
+#### Reporting
+
+Using the above template for reporting write a full report for your samples. Be as comprehensive as possible. Consider you are reporting to the senior public health officials on AWD of your concern example Cholera so that the officials can possibly use the report for required policy changes. 
+
+:::
 
 ## Summary
 
 ::: {.callout-tip}
 #### Key Points
 
-- Last section of the page is a bulleted summary of the key points
+- It is good practice in bioinformatics analysis to perform data quality check before you start analysis. This includes quality of your reads and genome assemblies.
+- The quality check on your reads will also include of any posiible contamination and its percentage. The investigation of whether the isolates in examination belong to the 7PET or not mau be started as early as during quality check.
+- Due to network latency (which may happen in some places), Pathogenwatch may not work well, therefore consideration for using alternative approach to for instance generating phylogeneies should be made. In our case study we used **Panaroo** with **IQ-TREE** and **Figtree** as analternative approach phylogenetic analysis.
+- Having genomic surveillance report which will be likely used as a main basis for informed decision making process among senior public helath officials is very important.
+
 :::
