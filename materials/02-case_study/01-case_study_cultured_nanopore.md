@@ -570,7 +570,7 @@ Answer goes here
 
 ## Preparing Genomic Surveillance Report
 
-After finishing your analysis, it is best practice to prepare a report which would most likely provide senior public health individuals with an informed decisions regarding strain identification, source of outbreaks and transmission, control, mitigation measures or even treatment of cholera or any other related AWD or infectious diseases. In our case, the report will be required to be written as an exercise () covering all sections that you have learned from the entire training. We will provide the general guidelines of the report below.
+After finishing your analysis, it is best practice to prepare a report which would most likely provide senior public health individuals with an informed decisions regarding strain identification, source of outbreaks and transmission, control, mitigation measures or even treatment of cholera or any other related AWD or infectious diseases. In our case, the report will be required to be written as an exercise (6.8.7) covering all sections that you have learned from the entire training. We will provide the general guidelines of the report below.
 
 The report will most likely contain the following sections:
 
