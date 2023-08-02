@@ -509,7 +509,7 @@ Based on the answers from the previous exercise 6.6.5, can you definitively conc
 
 ::: {.callout-tip}
 
-To be categorised into the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
+To be categorised as the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
 
 :::
 
