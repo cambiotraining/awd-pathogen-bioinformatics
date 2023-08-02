@@ -381,9 +381,11 @@ After clicking `Create now` button a Window similar to the image below will be d
 
 ![Collection of the genomes isolates and their predicted typings](images/Screenshot_pathogenwatch_samples_collection.png){#fig-vibrio-watch-collection_analaysis_table}
 
-The table contains several columns. The first and second columns allow you to downlad the assembled genome and annotation in its FASTA AND GFF formats respectively. The third column contains the names of the barcodes. The fourth column is the reference used to call typings which in this case belongs to 7PET pandemic strain (W3_T13). However, we do not have enough information about which exact reference pandemic strain's NCBI accession used to call typings for our samples. The fifth column is predicted sequence typing for each assembled genome isolate. All of these seem to be novels (*). Click  [here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst) for further information on how Pathogenwatch uses MLST method for prediction of typing. The sixth column is 'PROFILE' which provides the individual loci codes.
+The table contains several columns. The first and second columns allow you to downlad the assembled genome and annotation in its FASTA AND GFF formats respectively. The third column contains the names of the barcodes. The fourth column is the reference used to call typings which in this case belongs to 7PET pandemic strain (W3_T13). However, we do not have enough information about which exact reference pandemic strain's NCBI accession used to call typings for our samples. The fifth column is predicted sequence typing for each assembled genome isolate. All of these seem to be novels (*). Click  [here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst) for further information on how Pathogenwatch uses MLST method for prediction of typing. The sixth column is 'PROFILE' which provides the individual loci codes. In addition, you can click in the table to view a report of each individual sample barcode. The report will have several things including sequence typing (ST), Genotypes (i.e. strain's biotype and serogroup), Antimicrobial resistance (AMR), etc.
 
-### Phylogenetics and identification of sequence type (ST)
+Unfortunately for each of the sample barcode there is no any detected Biotype or Serogroup in its report which would indicate that the strain's genotype is either pathogenic or not.
+
+### Phylogenetics and identification of sequence typing (ST)
 
 When you click the button view tree, Pathogenwatch will automatically generate an unannotated phylogenetic tree like the one showed in the diagram in Figure.. showing the evolutionary relationship between different assembled genome isolates. To be able to annotate the tree you have to right click within the tree and a pop up window will show up aside the tree as shown in the same image which allows you to anonotate tree for instance by showing or aligning labels in which you need to click in the options to activate to be able to do the tasks. "Show labels" will show the barcode names/sample names associated with each tree node. You can also change the topology of the tree from the top right of the left frame.
 
@@ -401,7 +403,7 @@ The same way we can visualise tree based on the **ST** (sequence typing) header 
 
 ![Phylogenetic tree showing the relatedness of the sample barcodes with regard to their predicted sequence typing ](images/Screenshot-pathogenwatch-phylogenetic-tree-typing.png){#fig-pathogenwatch-phylogenetic-tree-typings}
 
-The above phylogenetics trees in Figures 6.8 and 6.9 do not give any information which would help us to determine the likely lineages or typing of any of our assembled genomes isolates with the known pathogenic strains or type as the tree is generated only based on aligning the annotated genome isolates with the single reference which was done automatically by Pathogenwatch. 
+The above phylogenetics trees in Figures 6.8 and 6.9 do not give any information which would help us to determine the likely lineages or typing of any of our assembled genomes isolates with the known pathogenic strains or typing as the tree is generated only based on aligning the annotated genome isolates with the single reference which was done automatically by Pathogenwatch. 
 
 Therefore, we need to download considerable number of the recently identified different reference genomes of the known strains from the NCBI database. That is the first step. Then uploading these genomes into the Pathogenwatch as the second step. Afterward, combining these with the collection of our assembled genomes that we created earlier in the Pathogenwatch as the third step. And lastly generate tree using Pathogenwatch to view how our samples co-cluster with the known strains.
 
@@ -467,7 +469,7 @@ When you click view tree you will see the unlabeled tree displayed. We want to l
 
 However the tree doesn't seem to be clearly visualised. Therefore, we need to export the tree to be able to view it in any other open tree viewing software tools that are available to see whether we can have any useful context from the tree with regard to the identification of lineages of our 10 samples and to have a certain confidence on presence of pandemic associated strain(s) in the samples. 
 
-Exporting tree from pathogenwatch is easy. You just right-click inside the frame where the tree is displayed and the pop up window which you see when you label the tree contains an option ("Export as newick file") to export tree in `.nwk` format. Automatically when you export the tree the newick file will be downloaded in the `Downloads` folder. We will export three files to be able to view it in genome names, reference and sequence typing, but each time you export, the file will have the same default name given by the pathogen watch. So, we need to rename the file in a meaningful way for easy interpretation.
+Exporting tree from Pathogenwatch is easy. You just right-click inside the frame where the tree is displayed and the pop up window which you see when you label the tree contains an option ("Export as newick file") to export tree in `.nwk` format. Automatically when you export the tree the newick file will be downloaded in the `Downloads` folder. We will export three files to be able to view it in genome names, reference and sequence typing, but each time you export, the file will have the same default name given by the pathogen watch. So, we need to rename the file in a meaningful way for easy interpretation.
 
 There are couple of open software tools that are used for viewing phylogenetic tree. At this time we are choosing a web based tool dedicated to generate tree from newick file format known as [ETEToolkit](http://etetoolkit.org/treeview/).
 
@@ -512,6 +514,9 @@ Based on the answers from the previous exercise 6.6.5, can you definitively conc
 To be categorised as the 7PET usually the isolates have to be in the Biotypes of O1 or O139, and closely related with the reference strain of W3_T13 and sequence typing (69). Our typings seem to be all novel (*) though. You need to discuss this with your colleagues as well.
 
 :::
+
+## Pathogenwatch free typing approach
+In the previous section we used Pathogenwatch to assign which typing would most likely our isolates belong based on the phylogenetic analysis using downloaded public genomes. This approach maybe useful in some cases in particular when you are in the high resources setting countries where Internet speed is relatively high. This might not be the case for many low resource setting countries and therefore, this approach might not scale well. We might need to think of another approach which may scale well in our case. This approach is not very different in some steps with Pathogenwatch except that we are going to use different tools/pipeline to generate for us the phylogenetic tree. The tools we are going to use are **[Panaroo]()**, **[IQ-TREE]()**, and **[Figtree]()**, which will be used to generate
 
 <!--The second step is to perform multiple sequence alignment between the public downloaded sequences and our genome assembled isolates. This step will be done automatically with Pathogenwatch but we will do it manually as well using MAFFT. 
 
