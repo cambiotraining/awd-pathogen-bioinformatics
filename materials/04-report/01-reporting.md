@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: Reporting
 ---
 
 ::: {.callout-tip}

@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: Introduction to NGS
 ---
 
 ::: {.callout-tip}

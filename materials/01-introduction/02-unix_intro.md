@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: The Unix command line
 ---
 
 ::: {.callout-tip}

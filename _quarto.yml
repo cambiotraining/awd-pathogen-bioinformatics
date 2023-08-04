@@ -50,8 +50,10 @@ book:
   chapters:
     - part: "Welcome"
       chapters:
-        - text: "Introduction"
+        - text: "Overview"
           href: index.md
         - text: "Data & Setup"
           href: setup.md
+        - text: "Introduction"
+          href: materials/01-introduction/01-awd_genomic_surveillance.md
     

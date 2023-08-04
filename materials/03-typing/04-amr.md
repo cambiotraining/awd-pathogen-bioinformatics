@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: AMR analysis
 ---
 
 ::: {.callout-tip}

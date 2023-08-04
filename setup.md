@@ -29,14 +29,7 @@ Download and unzip the folder to your Desktop to follow along with the materials
 
 ## Setup
 
-### Quarto
-
-To develop and render the course materials website, you will need to install _Quarto_:
-
-- Download and install [Quarto](https://quarto.org/docs/get-started/) (available for all major OS). 
-- If you are developing materials using executable `.qmd` documents, it is recommended that you also install the extensions for your favourite IDE (e.g. RStudio, VS Code).
-- If you are developing materials using **JupyterLab** or **Jupyter Notebooks**, please install [Jupytext](https://jupytext.readthedocs.io/en/latest/install.html).
-  - Use the [paired notebook](https://jupytext.readthedocs.io/en/latest/paired-notebooks.html) feature to have synchronised `.ipynb`/`.qmd` files. Only `.qmd` files should be pushed to the repository (`.ipynb` files have been added to `.gitignore`).
+TODO
 
 <!--
 ### R and RStudio

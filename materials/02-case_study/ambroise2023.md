@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: Ambroise et al. 2023
 ---
 
 ::: {.callout-tip}

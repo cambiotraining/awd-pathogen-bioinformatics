@@ -1,5 +1,5 @@
 ---
-title: Introduction to Bioinformatics
+title: Pathogen genomic surveillance
 ---
 
 ::: {.callout-tip}
