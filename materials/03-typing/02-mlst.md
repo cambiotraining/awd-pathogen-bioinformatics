@@ -31,7 +31,7 @@ This analysis can be done using _Pathogenwatch_ or using a standalone command li
 
 _Pathogenwatch_ uses [PubMLST](https://pubmlst.org/) to run its typing analysis ([details here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst)) and the results can be seen on the collection view page (@fig-pathogenwatch).
 
-![Example table from the collection view from Pathogenwatch (top), with example of an individual report (bottom)](images/mlst_pathogenwatch.png){#fig-pathogenwatch}
+![Example table from the collection view from Pathogenwatch (top), with example of an individual report (bottom)](images/mlst_pathogenwatch.svg){#fig-pathogenwatch}
 
 All of the sequence types determined by MLST in our samples seem to be novel (this is indicated by an `*` before the name). 
 This seems very surprising, as there must be other strains similar to ours identified in recent outbreaks. 
