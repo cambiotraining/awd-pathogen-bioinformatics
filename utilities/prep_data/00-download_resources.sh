@@ -54,9 +54,6 @@ done
 # move FASTAs
 mv ncbi_dataset/data/*/*.fna resources/vibrio_genomes/
 
-# move GFF for panaroo
-mv ncbi_dataset/data/*/*.gff resources/vibrio_genomes/
-
 # remove unnecessary files
 rm -r ncbi_dataset ncbi_dataset.zip README.md convert_refseq_to_prokka_gff.py
 
