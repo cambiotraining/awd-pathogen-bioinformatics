@@ -99,13 +99,13 @@ do
   
   # move final FASTA & GFF files to parent output directory
   mv $outdir/03-medaka/$sample/consensus.fasta $outdir/$sample.fasta
-  mv $outdir/04-bakta/$sample/consensus.gff3 $outdir/$sample.gff3.gz
+  mv $outdir/04-bakta/$sample/consensus.gff3 $outdir/$sample.gff
   # gzip -c $outdir/03-medaka/$sample/consensus.fasta > $outdir/$sample.fasta.gz
   # gzip -c $outdir/04-bakta/$sample/consensus.gff3 > $outdir/$sample.gff3.gz
   
   # print messages
   echo "  Finished assembly pipeline for '$sample'."
-  echo "  Assembly file in: $outdir/$sample.fasta.gz"
-  echo "  Annotation file in: $outdir/$sample.gff3.gz"
+  echo "  Assembly file in: $outdir/$sample.fasta"
+  echo "  Annotation file in: $outdir/$sample.gff"
 
 done
