@@ -84,3 +84,12 @@ conda activate awd
 
 mkdir -p resources/mash_db
 wget -O resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh --no-check-certificate https://gembox.cbcb.umd.edu/mash/refseq.genomes%2Bplasmid.k21s1000.msh
+
+
+### Bakta database ###
+
+# activate environment
+conda activate assembly
+
+mkdir -p resources/bakta_db
+bakta_db download --output resources/bakta_db/ --type light
