@@ -11,33 +11,34 @@ title: Genome assembly
 
 ## Genome Assembly
 
-The next step in our bioinformatics analysis is to assemble a genome from our Nanopore sequencing reads. 
-Genome assembly consists of identifying how the sequencing reads fit together to reconstruct the genome of the organism. 
-In our case, we expect to reconstruct the genome sequences of the _Vibrio cholerae_ isolates we obtained, to later identify presence of toxigenic and/or antimicrobial resistance genes. 
+Now, we'll do the next part of our bioinformatics work. 
+We want to put together a genome from the Nanopore sequencing data we have, a process known as **genome assembly**. 
+This means figuring out how our sequencing reads fit together to make the whole genome of the organism.
+In our case, we have _Vibrio cholerae_ samples that we want to produce genome assemblies for.
+This will allow us to identify which strains we have (and whether they are pathogenic) and to identify the presence of toxigenic and/or antimicrobial resistance genes. 
 
-There are different methods to assemble genomes, broadly falling in two categories: **de-novo assembly** and **reference-based consensus assembly**.  
-The first method uses no prior information, attempting to reconstruct the genome from the sequencing reads only. 
-This method is useful when we either don't know which organism(s) to expect, or if the organism we are working with is very diverse, so there is no single reference genome that is representative of the full diversity observed in the species. 
-While de novo assembly is an unbiased way to reconstruct genomes, it is both computationally intense and challenging to achieve high-quality complete genomes, as it is often difficult to bridge gaps and repetitive regions.  
+There are different methods to assemble genomes, broadly falling in two categories: 
 
-An alternative to de novo assembly is reference-based assembly, which generates an assembly by using a reference genome as a "scaffold". 
-In this case, reads are aligned to the reference genome and used to generate a _consensus_ sequence based on the new mutations identified from the reads. 
-This method is less computionally intense and can be used when we know which organism we're working with. 
-The disadvantage of this method is that it doesn't work so well when our organism is very diverged from the reference (for example due to large genome rearrangments such as insertions, inversions and repeats). 
+- **De-novo assembly:** this uses no prior information, attempting to reconstruct the genome from the sequencing reads only. 
+  It's suitable when we're unsure about the organism or when it's genetically diverse (so there is no single reference genome that is representative of the full diversity observed in the species). 
+  However, it's computationally intensive and challenging to achieve highly accurate results due to difficulties in handling gaps and repetitive regions.  
+- **Reference-based consensus assembly:** this method uses a known genome as a guide. 
+  It aligns the reads to the reference genome and identifies new variations from those reads. 
+  It's less computationally demanding and works well when we have a good idea of the organism's identity. 
+  Yet, it might not perform well if the organism is significantly different from the reference genome.
 
-In our example study, we are working with cultured _V. cholerae_ samples. 
+In our study of _Vibrio cholerae_, we have opted for the **de novo** approach. 
 Although there are many [high-quality genomes available on NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true), this species is notorious for having a plastic genome, with the presence of several mobile genetic elements and gene exchange happening through conjugation and phage-mediated transduction ([Montero et al. 2023](https://doi.org/10.3389/fmed.2023.1155751) and [Ramamurthy et al. 2019](https://doi.org/10.3389%2Ffpubh.2019.00203)). 
 Therefore, a reference-based assembly may not be the most suited for this species, as we might miss important genes from our samples, if they are not present in the reference genome that we choose. 
 
-As such, we will perform _de novo assembly_ of our genomes, starting from the basecalled FASTQ files. 
-The general procedure is as follows: 
+Here's a breakdown of the steps we'll take:
 
-* Downsample the FASTQ files for a target depth of coverage of ~100x.
-* Assemble the reads into contiguous fragments.
-* "Polish" those fragments to correct systematic sequencing errors common in Nanopore data.
-* Annotate the assembled fragments, by identifying the position of known bacterial genes.
+* **Downsample** the FASTQ files for a target depth of coverage of ~100x.
+* **Assemble** the reads into contiguous fragments.
+* **Polish** those fragments to correct systematic sequencing errors common in Nanopore data.
+* **Annotate** the assembled fragments, by identifying the position of known bacterial genes.
 
-In the following section we explain the step-by-step procedure for a single sample, but we later provide a script that performs all these steps automatically for several samples. 
+We'll provide a detailed procedure for a single sample, and later on, we'll offer a script that automates these steps for multiple samples simultaneously.
 
 
 ## Step-by-step bacterial assembly
@@ -57,12 +58,24 @@ While this is generally the case, it turns out that for genome assembly there is
 For example, assembling a _Vibrio_ genome with an average depth of coverage of 500x might take 5h, while one with 100x might take 1h, with very similar results in the final assembly. 
 The computational burden is especially relevant when we are running analysis on a local computer, rather than on a HPC cluster (where we can run analysis in parallel), as each sample will have to be processed sequentially. 
 
-Since we are running our analysis on a local computer, we will downsample our FASTQ reads to achieve a target depth of coverage of ~100x, using the software [_Rasusa_](https://github.com/mbhall88/rasusa). 
-This software has been specifically designed to work with reads of different lengths (as is the case with ONT data), randomly sampling the reads to achieve an average coverage of a genome of a certain size (specified by the user). 
-This sampling procedure takes the read lenghts into account, so for example if the average read length from the ONT run is longer then fewer reads will be needed than if the average read length is shorter (more reads are needed to cover the genome). 
-As an example, let's say that our genome was estimated to be 1Mb (1 million bases) long and we wanted a target depth of coverage of 20x. 
-If our reads were on average 1Kb long then we would need 10^6 / 10^3 * 20 = 200,000 reads, whereas if our reads were 10Kb long on average, then we would only need 2000 reads instead. 
-This is a very simplified example, as our reads are not all the same length, but that's the general objective that _Rasusa_ is trying to achieve. 
+:::{.callout-note}
+#### Terminology: genome coverage
+
+Genome coverage refers to the average number of times a specific base pair in a genome is read or sequenced during the process of DNA sequencing. 
+It indicates how thoroughly the genome has been sampled by the sequencing technique. 
+Higher coverage means that a base pair has been read multiple times, increasing the confidence in the accuracy of the sequencing data for that particular region of the genome. 
+Genome coverage is an important factor in determining the quality of genome assemblies and the ability to detect variations (such as new mutations or sequence rearragements).
+:::
+
+Because we're using our local computer for analysis, we'll adjust the number of FASTQ reads we're working with to reach a coverage depth of about 100 times, using a tool called [_Rasusa_](https://github.com/mbhall88/rasusa). 
+This tool is designed to handle reads of various lengths, which is common with ONT data. 
+It randomly picks reads to make sure the average coverage across a genome of a certain size (chosen by us) is achieved.  
+This process considers the lengths of the reads. 
+For instance, if the average ONT read is longer, we'll need fewer reads to cover the genome compared to when the average read is shorter. 
+Imagine our genome is around 1 million bases long, and we aim for a 20-fold coverage. 
+If our reads average around 1,000 bases, we'd need about 200,000 reads. 
+But if the average read is 10,000 bases, we'd only need 2,000 reads instead. 
+This is a simplified explanation, as our reads have various lengths, but it captures what _Rasusa_ is working towards.
 
 To run _Rasusa_ on a single sample (in this example we are doing `barcode26`), the following commands can be used: 
 
@@ -104,7 +117,7 @@ After `rasusa` runs, it informs us of how many reads it sampled:
 Note that the sampling procedure is random, so you may get slightly different results every time you run it. 
 
 Sometimes, you may not have enough reads to achieve the desired coverage. 
-In that case, `rasusa` instead keeps all the reads, with an appropriate message, for example: 
+In that case, `rasusa` instead keeps all the reads, with an appropriate message, for example for our `barcode25` sample we got: 
 
 ```
 Requested coverage (100.00x) is not possible as the actual coverage is 37.27x - output will be the same as the input
@@ -113,8 +126,9 @@ Requested coverage (100.00x) is not possible as the actual coverage is 37.27x - 
 
 ### Assembly: `flye`
 
-Now that we have downsampled our reads, we are ready for the next step of the analysis, which is the actual assembly. 
-We perform this using the [_Flye_](https://github.com/fenderglass/Flye) software, although [many other assemblers](https://en.wikipedia.org/wiki/De_novo_sequence_assemblers) are available.
+Now that we have downsampled our reads, we are ready for the next step of the analysis, which is the genome assembly. 
+We will use the software [_Flye_](https://github.com/fenderglass/Flye), which is designed for de novo assembly of long-read sequencing data, particularly from technologies like Oxford Nanopore or PacBio.
+However, [many other assembly tools](https://en.wikipedia.org/wiki/De_novo_sequence_assemblers) are available, and you could explore alternatives.
 
 Continuing from our example `barcode26` sample, here is the `flye` command that we could use: 
 
@@ -141,9 +155,10 @@ ls results/flye/isolate2
 ```
 
 ```
-00-assembly  10-consensus  20-repeat  30-contigger  40-polishing 
-assembly.fasta  assembly.fasta.fai  assembly.fasta.map-ont.mmi  
-assembly_graph.gfa  assembly_graph.gv  assembly_info.txt  flye.log  params.json
+00-assembly   40-polishing                assembly_graph.gfa  params.json
+10-consensus  assembly.fasta              assembly_graph.gv
+20-repeat     assembly.fasta.fai          assembly_info.txt
+30-contigger  assembly.fasta.map-ont.mmi  flye.log
 ```
 
 The main file of interest to us is `assembly.fasta`, which is the genome assembly in the standard FASTA file format. 
@@ -175,17 +190,18 @@ We should still have recovered a lot of the genes, and even a fragmented assembl
 
 ### Polishing: `medaka`
 
-As we mentioned earlier, ONT reads typically has higher error rates compared to other technologies such as short-read Illumina sequencing (often achieving << 1% error). 
-Even the latest chemistry still has error rates of ~5%, which is substantial and may cause the wrong base to be present in our final assembly. 
-Although `flye` tries to correct some of these mistakes, that is not its main focus (its main focus is to "stich" our reads together into a contiguous sequence). 
-Therefore, as an additional step after assembly, we can go through the FASTA file of our assembly and correct any potential errors that may have been kept from the original reads, often referred to as **polishing** our assembly. 
+As previously mentioned, ONT reads generally come with higher error rates compared to other technologies like the short-read Illumina sequencing, which often has less than 1% error rate. 
+Even with the most recent ONT chemistry updates, the error rates are still around 5%, a significant figure that can potentially introduce incorrect base calls into our final assembly. 
+While the `flye` software does address some of these errors, its error-correcting algorithm wasn't tailored specifically to address the systematic errors observed in ONT data.
+Consequently, as an added step following assembly, we can review the FASTA file of our assembly and rectify any potential errors that may have been retained from the original reads. This process is commonly known as **polishing** the assembly.
 
-Polishing can be done using the _Medaka_ software developed by ONT.
-In particular, the tool `medaka_consensus`, which was specifically designed to work with genome assemblies from _Flye_. 
-The procedure consists of aligning the original reads to the newly assembled genome, and then identifying what the correct base at each position of the genome should be, based on the "pileup" of reads aligning to that position. 
-This is done using a machine learning model trained on ONT data, which therefore accounts for specific error patterns and biases in these type of data. 
+To perform polishing, we can employ the _Medaka_ software developed by ONT. 
+More specifically, we can utilize the `medaka_consensus` tool, which is expressly designed to complement genome assemblies created using _Flye_. 
+The approach involves aligning the original reads to the newly assembled genome. 
+Then, it involves identifying the correct base for each position in the genome, determined by analyzing the "pileup" of reads that align to that specific position. 
+This is facilitated by a machine learning model trained on ONT data, which accounts for the distinct error patterns and biases inherent in this type of sequencing information.
 
-Continuing from our example for `barcode26` / `isolate2`, we would run the following: 
+Continuing our example for `barcode26` / `isolate2`, we could run the following command: 
 
 ```bash
 medaka_consensus -t 8 -i results/rasusa/barcode26_downsampled.fastq.gz -d results/flye/isolate2/assembly.fasta -o results/medaka/isolate2 -m r941_min_fast_g507
@@ -220,9 +236,12 @@ The most important of which is the file `consensus.fasta`, which contains our fi
 ### Annotation: `bakta`
 
 Although we now have a genome assembly, we don't yet know which genes might be present in our assembly or where they are located. 
-This process is called genome annotation, and for bacterial genomes we can do this using the software [_Bakta_](https://github.com/oschwengers/bakta). 
-This software takes advantage of the huge number of available bacterial gene sequences in public databases, to aid in the identification of genes in our new assembly.
+This process is called **genome annotation**, and for bacterial genomes we can do this using the software [_Bakta_](https://github.com/oschwengers/bakta). 
+This software takes advantage of the vast number of bacterial gene sequences in public databases, to aid in the identification of genes in our new assembly.
 _Bakta_ achieves this by looking for regions of our genome that have high similarity with those public sequences. 
+
+
+#### `bakta` database
 
 In order to run `bakta` we first need to download the database that it will use to aid the annotation. 
 This can be done with the `bakta_db` command. 
@@ -255,20 +274,21 @@ antifam.h3m       ncRNA-genes.i1i                ncRNA-regions.i1m  pfam.h3i  rR
 antifam.h3p       ncRNA-genes.i1m                ncRNA-regions.i1p  pfam.h3m  rRNA.i1m
 ```
 
-The main file we will need is `bakta.db`, which we use in our next step.
-
 :::{.callout-important}
 You only need to download the `bakta` database once, and it may be a good idea to save it in a separate folder that you can use again for a new analysis. 
 This should save you substantial time and storage space. 
 :::
 
-To run the annotation we use the `bakta` command, continuing with our example of `barcode26` / `isolate2`:
+
+#### `bakta` annotation
+
+To run the annotation step we use the `bakta` command, which would be the following for our `barcode26` / `isolate2` sample:
 
 ```bash
-bakta --db resources/bakta_db/db-light/bakta.db --output results/bakta/isolate2 --threads 8 results/medaka/isolate2/consensus.fasta
+bakta --db resources/bakta_db/db-light/ --output results/bakta/isolate2 --threads 8 results/medaka/isolate2/consensus.fasta
 ```
 
-- `--db` is the path to the database file we downloaded above.
+- `--db` is the path to the database folder we downloaded earlier.
 - `--output` is the directory we want to output our results to.
 - `--threads` is the number of CPUs (threads) we have available for parallel computation.
 - At the end of the command we give the path to the FASTA file that we want to annotate.
@@ -285,10 +305,10 @@ consensus.faa   consensus.fna  consensus.gff3  consensus.hypotheticals.tsv  cons
 ```
 
 Many of these files contain the same information but in different file formats. 
-The main file of interest is `consensus.gff3`, which we will use in a later chapter about [phylogenetic analysis](../03-typing/03-phylogeny.md). 
-The tab-delimited file `consensus.tsv` is convenient as it can be opened in a spreadsheet program such as _Excel_. 
+The main file of interest is `consensus.gff3`, which we will use in a later chapter covering [phylogenetic analysis](../03-typing/03-phylogeny.md). 
+The tab-delimited file `consensus.tsv` can conveniently be opened in a spreadsheet program such as _Excel_. 
 
-Using the command line tool `grep`, we can quickly search for genes of interest. 
+Also, using the command line tool `grep`, we can quickly search for genes of interest. 
 For example, we can see if the genes from the CT phage (CTX) are present in your samples (these include the toxin-encoding genes _ctxA_ and _ctxB_):
 
 ```bash
@@ -302,7 +322,7 @@ contig_2        cds     2237286 2237660 +       LBGGEL_19390    ctxB    cholera 
 
 Both subunits are found in our assembly, suggesting our isolate is a pathogenic strain of _Vibrio cholerae_. 
 
-And this concludes our assembly workflow: we now have an **annotated genome assembly** produced from our ONT reads. 
+And this concludes our assembly steps: we now have an **annotated genome assembly** produced from our ONT reads. 
 
 
 ## Assembly workflow
@@ -312,26 +332,27 @@ But what if we had 20 samples?
 It would be quite tedious and error-prone to have to copy/paste and modify these commands so many times. 
 
 Instead, we can automate our analysis using some programming techniques, such as a _for loop_, to repeat the analysis across a range of samples. 
-This is what we've done for you, having already prepared a shell script that runs through these steps sequentially for any number of samples (the script is available here). 
+This is what we've done for you, having already prepared a shell script that runs through these steps sequentially for any number of samples (the full script is available [here](TODO)). 
 Our script is composed of two parts: 
 
-- At the top of the script you will find a section called `#### Settings ####`, where you can define several options to run the analysis (we will detail these below).
-- Another section is called `#### Assembly pipeline ####` and that is where the code to run the analysis we detailed step-by-step earlier is done. 
-  You can have a look at the code, but be careful making any changes here (as we use more advanced shell programming techniques).
-  
-We have the following settings available: 
+- At the top of the script you will find a section `#### Settings ####`, where you can define several options to run the analysis (we will detail these below).
+- Further down you find a section `#### Assembly pipeline ####`, which contains the commands to run the full analysis from raw sequences to an annotated assembly. 
+  The code we use looks more complex, as we make use of several (more advanced) programming techniques, but the basic steps are the same as those we detailed step-by-step in the previous section.
 
-- `--samplesheet` → the path to a CSV file with at least two columns:  
+As a user of our script, the most important part is the `#### Settings ####`. 
+The following settings are available: 
+
+- `samplesheet` → the path to a CSV file with at least two columns:  
   - `sample` - sample name of your choice for each barcode; for example "isolate1", "isolate2", etc.
   - `barcode` - barcode folder names of each samples; this should essentially match the folder names in the `fastq_pass` folder output by the _Guppy_ basecaller, for example "barcode01", "barcode02", "barcode34", etc. 
   - you can include other columns in this sheet (such as metadata information), as long as the first two columns are the ones explained above.
-- `--fastq_dir` → the path to the directory where the FASTQ files are in. The pipeline expects to find individual barcode folders within this, so we use the `fastq_pass` directory generated by the _Guppy_ basecaller. 
-- `--outdir` → the path to the output directory where all the results files will be saved.
-- `--threads` → how many CPUs are available for parallel processing. 
-- `--genome_size` → the predicted genome size for the bacterial we are assembling (4m is recommended for _Vibrio_).
-- `--coverage` → the desired coverage for subsampling our reads to.
-- `--medaka_model` → the medaka model to use for the polishing step (as explained above). 
-- `--bakta_db` → the path to the `bakta` database file.
+- `fastq_dir` → the path to the directory where the FASTQ files are in. The pipeline expects to find individual barcode folders within this, so we use the `fastq_pass` directory generated by the _Guppy_ basecaller. 
+- `outdir` → the path to the output directory where all the results files will be saved.
+- `threads` → how many CPUs are available for parallel processing. 
+- `genome_size` → the predicted genome size for the bacterial we are assembling (4m is recommended for _Vibrio_).
+- `coverage` → the desired coverage for subsampling our reads to.
+- `medaka_model` → the medaka model to use for the polishing step (as explained above). 
+- `bakta_db` → the path to the `bakta` database folder.
 
 Here is an example of the samplesheet for our samples: 
 
@@ -349,7 +370,7 @@ isolate09,barcode33
 isolate10,barcode34
 ```
 
-In this example, we have 10 isolates (number 1 to 10), corresponding to different barcodes. 
+We have 10 isolates (number 1 to 10), corresponding to different barcodes. 
 The samplesheet therefore makes the correspondence between each sample's name and its respective barcode folder. 
 
 One we have this samplesheet and we edit all the options in the script, we can run the script using `bash`: 
@@ -362,7 +383,7 @@ Our script in this case was called `02-assembly.sh` and we had saved it in a fol
 Note that all the file paths specified in the "Settings" of the script are relative to the folder where we run the script from. 
 In our case, we had a folder named `awd_workshop`, where we are running the analysis from, and that is where we ran the script from. 
 
-The script will take quite a while to run (around 1h per sample using 16 CPUs on our computers), so you may have to leave your computer doing the hard work overnight. 
+The script will take quite a while to run (up to 1h per sample, using 16 CPUs on our computers), so you may have to leave your computer doing the hard work overnight. 
 As it runs, the script prints some progress messages on the screen: 
 
 ```
@@ -379,69 +400,20 @@ Starting sample 'isolate02' with barcode 'barcode26'...
   Assembling with flye...
 ```
 
-Also, it starts producing several output files in the directory you specified. 
-For example, in our case, at the end of the run we have: 
+Several output files are generated in the directory you specified as `outdir`. 
+Here is what we have for our example data: 
 
 ```bash
 ls results/assemblies
 ```
 
 ```
-01-rasusa  04-bakta         isolate02.fasta  isolate03.gff    isolate05.fasta  isolate06.gff    isolate08.fasta
-02-flye    isolate01.fasta  isolate02.gff    isolate04.fasta  isolate05.gff    isolate07.fasta  isolate09.fasta
-03-medaka  isolate01.gff    isolate03.fasta  isolate04.gff    isolate06.fasta  isolate07.gff    isolate10.fasta
+TODO
 ```
 
 We get a folder with the results of each step of the analysis (this matches what we went through in detail in the step-by-step section) and two files per sample: a FASTA file with the polished assembly and a GFF file with the gene annotations. 
-
-:::{.callout-note}
-#### Command line tricks for QC
-
-Earlier we saw that the _Flye_ assembler outputs some statistics of interest in a `flye.log` file, such as the average coverage of the assembly. 
-We could look at each file from our samples indivually, but that would be very repetitive. 
-Instead, we can use some command line trics to achieve this, namely using the `grep` command together with the `*` wildcard: 
-
-```bash
-grep "Mean coverage:" results/assemblies/02-flye/*/flye.log
-```
-
-```
-results/assemblies/02-flye/isolate01/flye.log:  Mean coverage:  31
-results/assemblies/02-flye/isolate02/flye.log:  Mean coverage:  98
-results/assemblies/02-flye/isolate03/flye.log:  Mean coverage:  100
-results/assemblies/02-flye/isolate04/flye.log:  Mean coverage:  98
-results/assemblies/02-flye/isolate05/flye.log:  Mean coverage:  21
-results/assemblies/02-flye/isolate06/flye.log:  Mean coverage:  44
-results/assemblies/02-flye/isolate07/flye.log:  Mean coverage:  40
-results/assemblies/02-flye/isolate08/flye.log:  Mean coverage:  43
-results/assemblies/02-flye/isolate09/flye.log:  Mean coverage:  22
-results/assemblies/02-flye/isolate10/flye.log:  Mean coverage:  48
-```
-
-In one command we get the mean coverage for all our 10 samples - great!
-
-How about the number of fragments? 
-
-```bash
-grep "Fragments:" results/assemblies/02-flye/*/flye.log
-```
-
-```
-results/assemblies/02-flye/isolate01/flye.log:  Fragments:      37
-results/assemblies/02-flye/isolate02/flye.log:  Fragments:      3
-results/assemblies/02-flye/isolate03/flye.log:  Fragments:      2
-results/assemblies/02-flye/isolate04/flye.log:  Fragments:      3
-results/assemblies/02-flye/isolate05/flye.log:  Fragments:      236
-results/assemblies/02-flye/isolate06/flye.log:  Fragments:      52
-results/assemblies/02-flye/isolate07/flye.log:  Fragments:      51
-results/assemblies/02-flye/isolate08/flye.log:  Fragments:      22
-results/assemblies/02-flye/isolate09/flye.log:  Fragments:      121
-results/assemblies/02-flye/isolate10/flye.log:  Fragments:      3
-```
-
-Wow, we can see that some of our assemblies are very fragmented - isolate05 has 236 fragments!
-Can you see why this might be the case?
-:::
+We also get a CSV file called `summary_metrics.csv`, which contains some useful statistics about our assemblies. 
+We will look at these in the next chapter on [quality control](04-assembly_quality.md).
 
 
 ## Exercises
@@ -450,6 +422,14 @@ Can you see why this might be the case?
 #### Running assembly script
 
 TODO
+
+:::
+
+:::{.callout-exercise}
+#### Looking for genes of interest
+
+The _varG_ gene is part of the antibiotic resistance var regulon in _Vibrio cholerae_ ([source](https://card.mcmaster.ca/ontology/41453)). 
+Do any of your samples contain the _varG_ gene?
 
 :::
 
