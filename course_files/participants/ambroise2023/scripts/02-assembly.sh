@@ -119,9 +119,9 @@ do
   fragments=$(grep "Fragments:" $outdir/02-flye/$sample/flye.log | awk '{ print $NF }')
   n50=$(grep "Fragments N50:" $outdir/02-flye/$sample/flye.log | awk '{ print $NF }')
   largest=$(grep "Largest frg:" $outdir/02-flye/$sample/flye.log | awk '{ print $NF }')
-  coverage=$(grep "Mean coverage:" $outdir/02-flye/$sample/flye.log | awk '{ print $NF }')
+  final_coverage=$(grep "Mean coverage:" $outdir/02-flye/$sample/flye.log | awk '{ print $NF }')
   
-  echo "${sample},${reads},${downsampled},${length},${fragments},${n50},${largest},${coverage}" >> $outdir/summary_metrics.csv
+  echo "${sample},${reads},${downsampled},${length},${fragments},${n50},${largest},${final_coverage}" >> $outdir/summary_metrics.csv
   
   # print messages
   echo -e "\t$(printf '%(%Y-%m-%d %H:%M:%S)T\n' -1)\t Finished assembly pipeline for '$sample'."
