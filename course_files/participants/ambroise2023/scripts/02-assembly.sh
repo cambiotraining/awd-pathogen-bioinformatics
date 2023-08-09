@@ -58,7 +58,7 @@ do
   # get sample name and barcode from samplesheet
   sample=$(head -n $i $samplesheet | tail -n 1 | cut -d "," -f 1)
   barcode=$(head -n $i $samplesheet | tail -n 1 | cut -d "," -f 2)
-  echo "Processing sample '$sample' with barcode '$barcode'"
+  echo -e "\nProcessing sample '$sample' with barcode '$barcode'"
   
   # concatenate reads
   echo -e "\t$(printf '%(%Y-%m-%d %H:%M:%S)T\n' -1)\t Concatenating reads..."
@@ -104,7 +104,7 @@ do
     --db "$bakta_db" \
     --output "$outdir/04-bakta/$sample" \
     --threads "$threads" \
-    --verbose \
+    --verbose --force \
     $outdir/03-medaka/$sample/consensus.fasta \
     > $current_log 2>&1
   
@@ -130,4 +130,4 @@ do
 
 done
 
-echo -e "\nAnalysis complete! Summary metrics in: $outdir/summary_metrics.csv"
+echo -e "\nAnalysis complete! Summary metrics in: $outdir/summary_metrics.csv\n"
