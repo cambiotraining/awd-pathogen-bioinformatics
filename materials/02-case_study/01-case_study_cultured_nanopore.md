@@ -516,7 +516,49 @@ To be categorised as the 7PET usually the isolates have to be in the Biotypes of
 :::
 
 ## Pathogenwatch free typing approach
-In the previous section we used Pathogenwatch to assign which typing would most likely our isolates belong based on the phylogenetic analysis using downloaded public genomes. This approach maybe useful in some cases in particular when you are in the high resources setting countries where Internet speed is relatively high. This might not be the case for many low resource setting countries and therefore, this approach might not scale well. We might need to think of another approach which may scale well in our case. This approach is not very different in some steps with Pathogenwatch except that we are going to use different tools/pipeline to generate for us the phylogenetic tree. The tools we are going to use are **[Panaroo]()**, **[IQ-TREE]()**, and **[Figtree]()**, which will be used to visualise the phylogenetic tree.
+In the previous section we used Pathogenwatch to automatically assign typing and classify whether the isolates at hands are pathogenic or not. The phylogenetic tree which was also automatically generated usually enhances the typing process in which in our case tree was based on the downloaded public genomes in additional to our genome isolates. 
+
+The use of Pathogenwatch for this purpose maybe useful in some cases in particular when you are in the high resources setting countries where Internet speed is relatively high, however for many low resource setting countries this approach might not scale well. Therefore, we need to think of another approach which may scale well in our case. 
+
+We are going to use the phylogenetic approach in which we do not entirely rely on the pathogenwatch for typing rather we are going to manually build phylogenetic tree to potentially assign typing as well as the pathogenicity of the isolates. The following steps are aimed to be followed:-
+
+- Download public genomes (refseq FASTA and GFF files) using command line approach.
+- Convert the downloaded GFF genomes to prokka supported format.
+- Generate core genomes for vibrio cholera using Panaroo  **[Panaroo](https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart)**.
+- Using core genomes to build multiple sequence alignments also this would be accomplished by Panaroo
+- Using the alignment as an input to IQ-TREE [IQ-TREE](http://www.iqtree.org/doc/)** for phylogenies reconstruction.
+- Using **[Figtree](http://tree.bio.ed.ac.uk/software/figtree/)** to visualise the tree.
+
+The command for downloading public genomes is given below:
+
+```md
+
+```
+
+The script for downloading the genomes is provided here[]()
+
+To generate core genomes we use panaroo with the following script. Fill the FIX parts and run the script below:
+
+```md
+
+```
+
+To run the IQ-TREE use the following script
+
+```md
+
+```
+
+Run Figtree which has been installed by typing `figtre` to visualise the generated trees from IQ-TREE tree file(s).
+
+### Exercise
+
+::: {.callout-exercise}
+{{< level 1 >}}
+
+Follow the steps above with the script provided to run on your data. Identify typing of your isolates. Compare the results with Pathogenwatch reconstructed phylogenetic tree.
+...
+
 
 <!--The second step is to perform multiple sequence alignment between the public downloaded sequences and our genome assembled isolates. This step will be done automatically with Pathogenwatch but we will do it manually as well using MAFFT. 
 
