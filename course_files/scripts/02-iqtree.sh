@@ -1,7 +1,9 @@
 #!/bin/bash
 
-mkdir results/iqtree
+## Change these accordingly
+output_dir=results/iqtree/uae_denovo
+input_dir=results/panaroo/uae_denovo
 
-iqtree -s results/panaroo/core_gene_alignment.aln -pre results/iqtree/awd -m GTR+F+I
+mkdir -p $output_dir
 
-
+iqtree -s $input_dir/core_gene_alignment.aln -pre $output_dir/awd -m GTR+F+I
