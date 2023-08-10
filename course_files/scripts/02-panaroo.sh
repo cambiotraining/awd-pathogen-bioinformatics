@@ -14,4 +14,4 @@ assembly_results="results/assemblies/UAE"
 mkdir -p $panaroo_out  
 
 # Run panaroo
-panaroo -i  $assembly_results/*ibrio*.gff resources/public_genomes/vcholerae/data/GCF_*/*_genomic.gff -o $panaroo_out  --clean-mode strict -a core --core_threshold 0.98 -t 8 --remove-invalid-genes
+panaroo -i  $assembly_results/*.gff resources/public_genomes/vcholerae/data/GCF_*/*_genomic.gff -o $panaroo_out  --clean-mode strict -a core --core_threshold 0.98 -t 8 --remove-invalid-genes
