@@ -29,7 +29,29 @@ Download and unzip the folder to your Desktop to follow along with the materials
 
 ## Setup
 
-TODO
+### Conda/Mamba
+
+
+### Software environments
+
+Due to the complexities of the different tools we will use, there are several software dependency incompatibilities between them.
+Therefore, rather than creating a single software environment with all the tools, we will create separate environments for different applications. 
+
+**Mash** environment:
+
+```bash
+mamba create -n mash mash
+```
+
+**Assembly** environment:
+
+```bash
+mamba create -n assembly flye rasusa bakta
+mamba activate assembly
+pip install medaka
+```
+
+
 
 <!--
 ### R and RStudio

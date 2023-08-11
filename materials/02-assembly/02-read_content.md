@@ -73,14 +73,16 @@ less results/mash/barcode25_screen.tsv
 ```
 
 ```
-1       1000/1000       425     0       GCF_000279455.1_ASM27945v1_genomic.fna.gz       [25 seqs] NZ_ALDQ01000001.1 Vibrio cholerae HC-46A1 vcoHC46A1.contig.0, w>
-0.999857        997/1000        428     0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
-0.99655 930/1000        811     0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
-0.978312        631/1000        379     0       ref|NC_010072.1|        Yersinia pestis plasmid pIP1203, aph(3'')-Ib gene and aph(6)-Id gene for aminoglycoside p>
-0.959532        420/1000        553     0       ref|NC_008690.1|        Vibrio sp. TC68 plasmid pTC68, complete sequence
-0.932215        229/1000        366     0       ref|NC_005862.1|        Salmonella enterica enterica sv Choleraesuis plasmid cryptic, complete sequence
-0.931825        227/1000        478     0       ref|NC_017329.1|        Shigella flexneri 2002017 plasmid pSFxv_3, complete sequence
-0.922791        185/1000        402     0       ref|NC_011378.1|        Pasteurella multocida plasmid pCCK1900, complete sequence
+0.99957   991/1000  46  0  GCF_001187225.1_ASM118722v1_genomic.fna.gz     [97 seqs] NZ_LGNX01000001.1 Vibrio cholerae O1 strain NHCC-079 Contig1, whole genome shotgun sequence [...]
+0.999377  987/1000  36  0  GCF_000893195.1_ViralProj63437_genomic.fna.gz  NC_015209.1 Vibrio phage CTX chromosome I, complete genome
+0.994519  891/1000  63  0  ref|NC_004982.1|                               Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+0.993445  871/1000  90  0  ref|NC_008613.1|                               Photobacterium damselae subsp. piscicida plasmid pP91278, complete sequence
+0.967069  495/1000  74  0  ref|NZ_CP013143.1|                             Alcaligenes faecalis strain ZD02 plasmid pZD02, complete sequence
+0.962791  451/1000  83  0  ref|NZ_CP007487.1|                             Salmonella enterica subsp. enterica strain SA972816 plasmid p972816 sequence
+0.959749  422/1000  96  0  ref|NZ_CP007486.1|                             Salmonella enterica subsp. enterica strain SA972816 plasmid p972816 sequence
+0.952766  362/1000  96  0  ref|NZ_CP007485.1|                             Salmonella enterica subsp. enterica strain SA972816 plasmid p972816 sequence
+0.952135  357/1000  99  0  ref|NC_011511.1|                               Klebsiella pneumoniae plasmid p169, complete sequence
+0.95188   355/1000  32  0  ref|NC_017172.1|                               Acinetobacter baumannii MDR-ZJ06 plasmid pMDR-ZJ06, complete sequence
 ```
 
 The output file contains one row for each organism (or plasmid) from the Mash database that was found in our sequencing reads. 
@@ -123,8 +125,11 @@ do
     # get the barcode name
     barcode=$(basename $filepath)
     
+    # print a message
+    echo "Processing ${barcode}"
+    
     # run mash command
-    mash screen -w -p 8 resources/mash_database/refseq.genomes+plasmid.k21s1000.msh ${filepath}/*.fastq.gz | sort -n -r > results/mash/${barcode}_screen_sorted.tsv
+    mash screen -w -p 8 resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh ${filepath}/*.fastq.gz | sort -n -r > results/mash/${barcode}_screen_sorted.tsv
 done
 ```
 
@@ -137,20 +142,22 @@ head -n 3 results/mash/barcode*.tsv
 ```
 
 ```
-==> results/mash/barcode25.tsv <==
+==> results/mash/barcode25_screen_sorted.tsv <==
 0.999473        989/1000        12      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
-0.999135        982/1000        11      0       GCF_000348385.2_ASM34838v2_genomic.fna.gz       [86 seqs] NZ_KB662481.1 Vibrio cholerae O1 str. NHCC-004A genomic scaffold vcoNHCC004A.contig.0, whole genome sh>
+0.999135        982/1000        11      0       GCF_000348385.2_ASM34838v2_genomic.fna.gz       [86 seqs] NZ_KB662481.1 Vibrio cholerae O1 str. NHCC-004A genomic scaffold vcoNHCC004A.contig.0, whole genome shotgun sequence [...]
 0.994092        883/1000        13      0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
 
-==> results/mash/barcode26.tsv <==
+==> results/mash/barcode26_screen_sorted.tsv <==
 0.99957 991/1000        46      0       GCF_001187225.1_ASM118722v1_genomic.fna.gz      [97 seqs] NZ_LGNX01000001.1 Vibrio cholerae O1 strain NHCC-079 Contig1, whole genome shotgun sequence [...]
 0.999377        987/1000        36      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
 0.994519        891/1000        63      0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
 
-==> results/mash/barcode27.tsv <==
-0.999522        990/1000        44      0       GCF_000348385.2_ASM34838v2_genomic.fna.gz       [86 seqs] NZ_KB662481.1 Vibrio cholerae O1 str. NHCC-004A genomic scaffold vcoNHCC004A.contig.0, whole genome sh>
+==> results/mash/barcode27_screen_sorted.tsv <==
+0.999522        990/1000        44      0       GCF_000348385.2_ASM34838v2_genomic.fna.gz       [86 seqs] NZ_KB662481.1 Vibrio cholerae O1 str. NHCC-004A genomic scaffold vcoNHCC004A.contig.0, whole genome shotgun sequence [...]
 0.999377        987/1000        36      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
 0.995206        904/1000        68      0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+
+... some output ommitted to save space ...
 ```
 
 We can see that the results for individual barcodes (here we show 3 barcodes as an example) are similar to each other, which we expect as all these samples come from the same outbreak event and so should be related to each other.
@@ -158,23 +165,183 @@ We can see that the results for individual barcodes (here we show 3 barcodes as 
 
 ## Exercises
 
+For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+
 :::{.callout-exercise}
 #### Mash screening
 
-Run the _Mash_ analysis on one of the barcodes.
+Screen the sequencing reads for known organisms, by running _Mash_ on one of the barcodes of your choice.
 
-TODO: finish exercise description
+- Make sure you start from your analysis directory: `cd ~/Documents/awd_workshop/YOUR_FOLDER`.
+- Create an output directory for the results called `results/mash`.
+- Activate the software environment: `conda activate mash`.
+- Run the `mash screen` command on a barcode of your choice:
+  - Save the results to a file called `results/mash/barcodeXX_screen.tsv` (replace "XX" with the barcode number you are analysing).
+  - The _Mash_ database is already available at `resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh`
+
+The command might take some time to run (maybe 10 minutes). 
+Once it completes, examine the output file to investigate if your reads contained the organism you were expecting.
+
+:::{.callout-hint}
+- Remember that to create a directory from the command line you can use the `mkdir` command.
+- The general command to run `mash` is:  
+  `mash screen -w -p 8  PATH_TO_DB_FILE  PATH_TO_INPUT_FASTQS  |  sort -n -r >  OUTPUT_FILE`
+:::
+
+:::{.callout-answer collapse=true}
+
+These solutions are for the "Ambroise 2023" dataset.
+We first made sure that were were on that folder: 
+
+```bash
+cd ~/Documents/awd_workshop/ambroise2023
+```
+
+We then created an output directory and activated our software environment:
+
+```bash
+mkdir results/mash
+conda activate mash
+```
+
+We could confirm the software environment was active as our terminal showed `(mash)` at the start.
+
+Finally, we ran the `mash screen` command for "barcode01": 
+
+```bash
+mash screen -w -p 8  resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh  data/fastq_pass/barcode01/*.fastq.gz  |  sort -n -r >  results/mash/barcode01_screen.tsv
+```
+
+The output file is in tab-delimited (TSV) format. We can open this file in _Excel_, or directly from the command line:
+
+```bash
+# look at the top 3 lines of the file
+head -n 3 results/mash/barcode01_screen.tsv
+```
+
+```
+1         1000/1000  42  0  GCF_000279245.1_ASM27924v1_genomic.fna.gz      [23 seqs] NZ_ALDE01000001.1 Vibrio cholerae CP1041(14) vcoCP1041.contig.0, whole genome shotgun sequence [...]
+0.999618  992/1000   39  0  GCF_000893195.1_ViralProj63437_genomic.fna.gz  NC_015209.1 Vibrio phage CTX chromosome I, complete genome
+0.995779  915/1000   73  0  ref|NC_004982.1|                               Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+```
+
+Indeed, we can confirm that our reads contain _Vibrio cholerae_ sequences. 
+The second hit is to the CTX phage, which indicates this is a pathogenic strain. 
+:::
 :::
 
 :::{.callout-exercise}
-#### Screening by barcode
-{{< level 3 >}}
+#### Screening multiple samples
 
-In the previous exercise the analysis was for a single sample. 
-Use a _for loop_ to run the analysis for each barcode individually, using a script we provide. 
+In the previous exercise, you ran the analysis for a single sample. 
+However running the analysis individually is impractical when you have many samples/barcodes to process. 
 
-TODO: finish exercise description
+In the folder `scripts` (within your analysis directory) you will find a script named `01-mash.sh`. 
+This script contains the code to use a programatic technique known as a _for loop_ to automatically repeat the analysis for each barcode. 
+
+- Open the script and examine its code to see if you can understand what it is doing. 
+  The script is composed of two sections: 
+    - `#### Settings ####` where we define some variables for input and output files names. 
+      You shouldn't have to change these settings, but you can if your data is located in a different folder than what we specified by default.
+    - `#### Analysis ####` this is where the _Mash_ analysis is run on each sample. 
+      You should not change the code in this section, although examining it is a good way to learn about [Bash programming](https://cambiotraining.github.io/unix-shell/materials/02-programming/01-scripts.html).
+- Run the script using `bash scripts/01-mash.sh`.
+  If the script is running successfully it should print a message on the screen for each barcode that it processes. 
+  Depending on how many barcodes you have, this will take quite a while to finish. <i class="fa-solid fa-mug-hot"></i>
+- One the analysis is over, examime the output files to see if all barcodes contain the organism you were expecting. 
+
+:::{.callout-answer collapse=true}
+
+We ran the script as instructed using:
+
+```bash
+bash scripts/01-mash.sh
+```
+
+While it was running it printed a message on the screen: 
+
+```
+Processing barcode01
+Loading resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh...
+   20679266 distinct hashes.
+Streaming from data/fastq_pass/barcode01/ERR10146532.fastq.gz...
+   Estimated distinct k-mers in mixture: 210848305
+Summing shared...
+Reallocating to winners...
+Computing coverage medians...
+Writing output...
+Processing barcode02
+Loading resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh...
+   20679266 distinct hashes.
+Streaming from data/fastq_pass/barcode02/ERR10146551.fastq.gz...
+```
+
+After it finished we see several files in the output folder: 
+
+```bash
+ls results/mash
+```
+
+```
+barcode01_screen_sorted.tsv  barcode04_screen_sorted.tsv  barcode07_screen_sorted.tsv
+barcode02_screen_sorted.tsv  barcode05_screen_sorted.tsv  barcode08_screen_sorted.tsv
+barcode03_screen_sorted.tsv  barcode06_screen_sorted.tsv  barcode09_screen_sorted.tsv
+```
+
+We examined the first 10 lines of every file using the `head` command and the `*` to help us select all files at once: 
+
+```bash
+head -n 10 results/mash/*_screen_sorted.tsv
+```
+
+```
+==> results/bkp-mash/barcode01_screen_sorted.tsv <==
+1       1000/1000       42      0       GCF_000279245.1_ASM27924v1_genomic.fna.gz       [23 seqs] NZ_ALDE01000001.1 Vibrio cholerae CP1041(14) vcoCP1041.contig.0, whole genome shotgun sequence [...]
+0.999618        992/1000        39      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
+0.995779        915/1000        73      0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+0.977192        616/1000        33      0       ref|NC_010072.1|        Yersinia pestis plasmid pIP1203, aph(3'')-Ib gene and aph(6)-Id gene for aminoglycoside phosphotransferases, APH(3'')-Ib and APH(6)-Id
+0.958764        413/1000        53      0       ref|NC_008690.1|        Vibrio sp. TC68 plasmid pTC68, complete sequence
+0.931825        227/1000        40      0       ref|NC_017329.1|        Shigella flexneri 2002017 plasmid pSFxv_3, complete sequence
+0.93163 226/1000        35      0       ref|NC_005862.1|        Salmonella enterica enterica sv Choleraesuis plasmid cryptic, complete sequence
+0.922553        184/1000        34      0       ref|NC_011378.1|        Pasteurella multocida plasmid pCCK1900, complete sequence
+0.904677        122/1000        37      0       ref|NC_020280.1|        Edwardsiella ictaluri plasmid pEI3, complete sequence
+0.886148        79/1000 38      2.69788e-223    ref|NC_010912.1|        Avibacterium paragallinarum strain A14 plasmid pYMH5, complete sequence
+
+==> results/bkp-mash/barcode02_screen_sorted.tsv <==
+1       1000/1000       35      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
+0.999761        995/1000        35      0       GCF_000763075.1_ASM76307v1_genomic.fna.gz       [451 seqs] NZ_JPOP01000001.1 Vibrio cholerae strain RND81 contig_1, whole genome shotgun sequence [...]
+0.995882        917/1000        102     0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+0.977192        616/1000        36      0       ref|NC_010072.1|        Yersinia pestis plasmid pIP1203, aph(3'')-Ib gene and aph(6)-Id gene for aminoglycoside phosphotransferases, APH(3'')-Ib and APH(6)-Id
+0.958543        411/1000        55      0       ref|NC_008690.1|        Vibrio sp. TC68 plasmid pTC68, complete sequence
+0.932021        228/1000        34      0       ref|NC_005862.1|        Salmonella enterica enterica sv Choleraesuis plasmid cryptic, complete sequence
+0.931825        227/1000        42      0       ref|NC_017329.1|        Shigella flexneri 2002017 plasmid pSFxv_3, complete sequence
+0.922314        183/1000        40      0       ref|NC_011378.1|        Pasteurella multocida plasmid pCCK1900, complete sequence
+0.904677        122/1000        38      0       ref|NC_020280.1|        Edwardsiella ictaluri plasmid pEI3, complete sequence
+0.892135        91/1000 43      1.09991e-265    ref|NC_010912.1|        Avibacterium paragallinarum strain A14 plasmid pYMH5, complete sequence
+
+==> results/bkp-mash/barcode03_screen_sorted.tsv <==
+0.999905        998/1000        33      0       GCF_000893195.1_ViralProj63437_genomic.fna.gz   NC_015209.1 Vibrio phage CTX chromosome I, complete genome
+0.999618        992/1000        34      0       GCF_000234395.1_ASM23439v2_genomic.fna.gz       [15 seqs] NZ_AGUM01000015.1 Vibrio cholerae HC-23A1 vcoHC23A1.contig.14, whole genome shotgun sequence [...]
+0.995519        910/1000        53      0       ref|NC_004982.1|        Vibrio cholerae strain O395P plasmid pTLC, complete sequence
+0.977569        621/1000        33      0       ref|NC_010072.1|        Yersinia pestis plasmid pIP1203, aph(3'')-Ib gene and aph(6)-Id gene for aminoglycoside phosphotransferases, APH(3'')-Ib and APH(6)-Id
+0.958208        408/1000        43      0       ref|NC_008690.1|        Vibrio sp. TC68 plasmid pTC68, complete sequence
+0.931825        227/1000        40      0       ref|NC_017329.1|        Shigella flexneri 2002017 plasmid pSFxv_3, complete sequence
+0.931825        227/1000        29      0       ref|NC_005862.1|        Salmonella enterica enterica sv Choleraesuis plasmid cryptic, complete sequence
+0.922553        184/1000        36      0       ref|NC_011378.1|        Pasteurella multocida plasmid pCCK1900, complete sequence
+0.905377        124/1000        33      0       ref|NC_020280.1|        Edwardsiella ictaluri plasmid pEI3, complete sequence
+0.884515        76/1000 33      1.0071e-217     ref|NC_010912.1|        Avibacterium paragallinarum strain A14 plasmid pYMH5, complete sequence
+
+
+... more lines omitted to save space ...
+```
+
+We could confirm from this output that all our samples contained a high fraction of _Vibrio cholerae_ sequences. 
+This was confirmed by a high percentage of sequence identify (first column) and a high fraction of the database sequences matching our sequences (second column). 
+
+By the 4th or 5th entries in the results tables, although the sequence identity is relatively high (first column), there's a much smaller fraction of matches (second column) suggesting these may be spurious, perhaps due to conserved sequences across species. 
 :::
+:::
+
 
 ## Summary
 

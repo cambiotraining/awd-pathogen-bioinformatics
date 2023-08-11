@@ -23,10 +23,18 @@ In this section we will introduce a workflow aimed at combining the results from
 We will compare its results with AMR analysis performed by _Pathogenwatch_. 
 
 :::{.callout-note}
-#### _Nextflow_ workflows
+#### What is _Nextflow_?
 
-TODO: briefly explain what nextflow is and how it can be used
+_Nextflow_ is a program designed for building and running complex workflows (also known as pipelines). 
+It simplifies the process of orchestrating complex computational pipelines that involve various tasks, inputs and outputs, and parallel processing. 
+Nextflow is particularly well-suited for bioinformatics, where workflows often involve many steps, tools, and data transformations.
+It's designed to work across different environments, including local machines, clusters, and cloud platforms.
 
+There are many publicly-available _Nextflow_ pipelines available, which users can take advantage of.
+In particular, _nf-core_ is an community-driven, open-source project aimed at providing [high-quality bioinformatics pipelines](https://nf-co.re/pipelines) for a wide range of applications. 
+The project's goal is to offer standardized and well-documented workflows, allowing researchers to more easily set up and run complex analyses while following best practices and ensuring reproducibility.
+
+By using _nf-core_ pipelines, researchers can save time and effort that would otherwise be spent developing and fine-tuning their own analysis workflows.
 :::
 
 
@@ -61,7 +69,7 @@ isolate09,results/assemblies/isolate09.fasta
 isolate10,results/assemblies/isolate10.fasta
 ```
 
-Once we have the samplesheet read, we can run the `nf-core/funcscan` workflow using the following commands:
+Once we have the samplesheet ready, we can run the `nf-core/funcscan` workflow using the following commands:
 
 ```bash
 #!/bin/bash
@@ -70,8 +78,9 @@ Once we have the samplesheet read, we can run the `nf-core/funcscan` workflow us
 mkdir results/funcscan
 
 # run the pipeline
-nextflow run nf-core/funcscan -profile docker \
-  --input samplesheet.csv \
+nextflow run nf-core/funcscan -profile singularity \
+  --max_memory 16.GB --max_cpus 16 \
+  --input samplesheet_funcscan.csv \
   --outdir results/funcscan \
   --run_arg_screening \
   --arg_skip_deeparg
@@ -79,20 +88,51 @@ nextflow run nf-core/funcscan -profile docker \
 
 The options we used are: 
 
-- `--input` - the samplesheet detailing the input files.
+- `-profile singularity` - indicates we want to use the _Singularity_ program to manage all the software required by the pipeline (another option is to use `docker`).
+- `--max_memory` and `--max_cpus` - sets the available RAM memory and CPUs. You can check this with the commands `free -h` and `nproc --all`, respectively.
+- `--input` - the samplesheet with the input files, as explained above.
 - `--outdir` - the output directory for the results. 
-- `--run_arg_screening` - this runs the "antimicrobial resistance gene screening tools". There are also options to run antimicrobial peptide and biosynthetic gene cluster screening ([see documentation](https://nf-co.re/funcscan/1.1.2/parameters#screening-type-activation)).
-- `--arg_skip_deeparg` - this skips a step in the analysis which uses the software _DeepARG_, simply because it takes too long to run - but in a real analysis you may want to leave this option on. 
+- `--run_arg_screening` - indicates we want to run the "antimicrobial resistance gene screening tools". There are also options to run antimicrobial peptide and biosynthetic gene cluster screening ([see documentation](https://nf-co.re/funcscan/1.1.2/parameters#screening-type-activation)).
+- `--arg_skip_deeparg` - this skips a step in the analysis which uses the software _DeepARG_. We did this simply because this software takes a very long time to run. But in a real analysis you may want to leave this option on. 
 
-The main output of interest from this pipeline is a CSV file, which contains a summary of the results from all the AMR tools used by the pipeline. 
+While the pipeline runs, you will get a progress printed on the screen, and then a message once it finishes. 
+Here is an example from our samples:  
+
+```
+[4a/77ac77] process > NFCORE_FUNCSCAN:FUNCSCAN:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet_funcscan.csv) [100%] 1 of 1 ✔
+[-        ] process > NFCORE_FUNCSCAN:FUNCSCAN:GUNZIP_FASTA_PREP                                        -
+[97/6d505c] process > NFCORE_FUNCSCAN:FUNCSCAN:BIOAWK (isolate09)                                       [100%] 10 of 10 ✔
+[4f/aa117b] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:AMRFINDERPLUS_UPDATE (update)                        [100%] 1 of 1 ✔
+[9b/ba9bf2] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:AMRFINDERPLUS_RUN (isolate10)                        [100%] 10 of 10 ✔
+[15/0eaa8c] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_AMRFINDERPLUS (isolate10)              [100%] 10 of 10 ✔
+[d8/3ed91e] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:FARGENE (isolate10)                                  [100%] 100 of 100 ✔
+[2f/ab7c5c] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_FARGENE (isolate10)                    [100%] 102 of 102 ✔
+[4a/7116be] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:RGI_MAIN (isolate09)                                 [100%] 10 of 10 ✔
+[34/82b92c] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_RGI (isolate09)                        [100%] 10 of 10 ✔
+[5d/c349c5] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:ABRICATE_RUN (isolate09)                             [100%] 10 of 10 ✔
+[93/162a59] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_ABRICATE (isolate09)                   [100%] 10 of 10 ✔
+[79/725687] process > NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_SUMMARIZE                              [100%] 1 of 1 ✔
+[4a/1f36ad] process > NFCORE_FUNCSCAN:FUNCSCAN:CUSTOM_DUMPSOFTWAREVERSIONS (1)                          [100%] 1 of 1 ✔
+[be/0d7355] process > NFCORE_FUNCSCAN:FUNCSCAN:MULTIQC                                                  [100%] 1 of 1 ✔
+-[nf-core/funcscan] Pipeline completed successfully-
+Completed at: 10-Aug-2023 11:52:22
+Duration    : 34m 54s
+CPU hours   : 3.0
+Succeeded   : 277
+```
+
+
+### `funcscan` outputs
+
+The main output of interest from this pipeline is a CSV file, which contains a summary of the results from all the AMR tools used 
 This summary is produced by a software called [_hAMRonization_](https://github.com/pha4ge/hAMRonization) and the corresponding CSV file is saved in `results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv`. 
 You can open this file using any standard spreadsheet software such as _Excel_ (@fig-hamronization). 
 
 This file is quite large, containing many columns and rows (we detail all the columns in the information box below). 
-The easiest way to query this table is to filter the table based on the column "antimicrobial_agent" to remove rows where no AMR gene was detected (@fig-harmonization). 
+The easiest way to query this table is to filter the table based on the column "antimicrobial_agent" to remove rows where no AMR gene was detected (@fig-hamronization). 
 This way you are left with only the results which were positive for the AMR analysis. 
 
-![To analyse the table output by _hAMRonization_ in _Excel_ you can go to "Data" --> "Filter". Then, select the dropdown button on the "antimicrobial_agent" column and untick the box "blank". This will only show the genes associated with resistance to antimicrobial drugs.](images/amr_hamronization.svg){#fig-harmonization}
+![To analyse the table output by _hAMRonization_ in _Excel_ you can go to "Data" --> "Filter". Then, select the dropdown button on the "antimicrobial_agent" column and untick the box "blank". This will only show the genes associated with resistance to antimicrobial drugs.](images/amr_hamronization.svg){#fig-hamronization}
 
 :::{.callout-note collapse=true}
 #### _hAMRonization_ report columns (click to expand)
@@ -117,11 +157,55 @@ For each individual tool's output folder shown above, there is a report, which i
 In most cases, the report is in tab-delimited TSV format, which can be opened in a standard spreadsheet software such as _Excel_. 
 For instance, the AMR report from _Abricate_ for one of our samples looks like this: 
 
-TODO: table
+```bash
+less -S results/funcscan/arg/abricate/isolate02/isolate02.txt
+```
 
-For this sample there were two putative AMR genes detected by _Abicate_, with their associated drugs. 
+```
+#FILE            SEQUENCE  START    END      STRAND  GENE      COVERAGE     COVERAGE_MAP     GAPS  %COVERAGE  %IDENTITY  DATABASE  ACCESSION    PRODUCT                                                         RESISTANCE
+isolate02.fasta  contig_2  1696     2623     -       blaPER-7  1-927/927    ========/======  1/1   100.00     99.89      ncbi      NG_049966.1  class A extended-spectrum beta-lactamase PER-7                  CEPHALOSPORIN
+isolate02.fasta  contig_2  4895     5738     -       sul1      1-840/840    ========/======  4/4   100.00     98.93      ncbi      NG_048091.1  sulfonamide-resistant dihydropteroate synthase Sul1             SULFONAMIDE
+isolate02.fasta  contig_2  6243     7036     -       aadA2     1-792/792    ========/======  2/2   100.00     99.50      ncbi      NG_047343.1  ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2  STREPTOMYCIN
+isolate02.fasta  contig_3  966452   967081   +       catB9     1-630/630    ===============  0/0   100.00     99.84      ncbi      NG_047621.1  type B-5 chloramphenicol O-acetyltransferase CatB9              CHLORAMPHENICOL
+isolate02.fasta  contig_4  778899   780023   +       varG      1-1125/1125  ===============  0/0   100.00     100.00     ncbi      NG_057468.1  VarG family subclass B1-like metallo-beta-lactamase             CARBAPENEM
+isolate02.fasta  contig_4  2573875  2574348  -       dfrA1     1-474/474    ===============  0/0   100.00     100.00     ncbi      NG_047676.1  trimethoprim-resistant dihydrofolate reductase DfrA1            TRIMETHOPRIM
+isolate02.fasta  contig_7  4178     5099     -       mph(A)    1-921/921    ========/======  1/1   100.00     99.35      ncbi      NG_047986.1  Mph(A) family macrolide 2'-phosphotransferase                   MACROLIDE
+isolate02.fasta  contig_7  6594     8069     +       msr(E)    1-1476/1476  ===============  0/0   100.00     100.00     ncbi      NG_048007.1  ABC-F type ribosomal protection protein Msr(E)                  MACROLIDE
+isolate02.fasta  contig_7  8125     9009     +       mph(E)    1-885/885    ===============  0/0   100.00     100.00     ncbi      NG_064660.1  Mph(E) family macrolide 2'-phosphotransferase                   MACROLIDE
+isolate02.fasta  contig_7  131405   132197   +       aadA2     1-792/792    ========/======  1/1   100.00     99.62      ncbi      NG_047343.1  ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2  STREPTOMYCIN
+```
+
+For this sample there were several putative AMR genes detected by _Abricate_, with their associated drugs. 
 These genes were identified based on their similarity with annotated sequences from the NCBI database.
-For example, the gene "_varG_" was detected in our sample, being similar to the _VarG_ NCBI accession [NG_057468.1](https://www.ncbi.nlm.nih.gov/nuccore/NG_057468.1), which is annotated as as a reference for antimicrobial resistance, in this case to the drug "CARBAPENEM".
+For example, the gene _varG_ was detected in our sample, matching the NCBI accession [NG_057468.1](https://www.ncbi.nlm.nih.gov/nuccore/NG_057468.1).
+This is annotated as as a reference for antimicrobial resistance, in this case to the drug "CARBAPENEM".
+
+:::{.callout-note}
+#### Command line trick <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+Here is a trick using standard commands to count how many times each drug was identified by `funcscan`:
+
+```bash
+cat results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv | cut -f 10 | sort | uniq -c
+```
+
+- `cat` prints the content of the file
+- `cut` extracts the 10th column from the file
+- `sort` and `uniq -c` are used in combination to count unique output values
+
+The result of the above command is: 
+
+```
+ 9 CARBAPENEM
+ 8 CEPHALOSPORIN
+ 8 CHLORAMPHENICOL
+27 MACROLIDE
+13 QUATERNARY AMMONIUM
+10 STREPTOMYCIN
+ 1 SULFONAMIDE
+10 TRIMETHOPRIM
+```
+:::
 
 
 ## AMR with _Pathogenwatch_
@@ -131,27 +215,59 @@ The results from this analysis can be seen from the individual sample report, or
 
 ![AMR analysis from _Pathogenwatch_. The summary table (top) can be accessed from the sample collections view, by selecting "Antibiotics" from the drop-down on the top-left. The table summarises resistance to a range of antibiotics (red = resistant; yellow = intermediate). More detailed results can be viewed for each individual sample by clicking on its name and opening the sample report (bottom).](images/amr_pathogenwatch.png){#fig-amr_pathogenwatch}
 
-@fig-amr_pathogenwatch shows an example report for the same sample we looked at above with _Abricate_. 
-We can see that _Pathogenwatch_ detects AMR for many more antibiotics. 
-It does include both carbapenem and chloramphenicol, although it determines that there is "intermediate" resistance for the latter. 
 
-We can conclude that _Pathogenwatch_ is much less conservative in its analysis, compared to the `funcscan` analysis we ran earlier, where we only detected resistance for those two antibiotics. 
- 
+## Which AMR do my isolates have?
 
-:::{.callout-important}
-#### Which AMR resistance do my strains have?
+At this stage you may notice that different tools will give you a different answer to this question and it is therefore recommended to **compare the results across multiple tools**.
+For example, _Pathogenwatch_ generally detects AMR for comparatively more antimicrobial drugs compared to the `funcscan` analysis. 
+However, some of the drugs detected by `funcscan` were either not reported by _Pathogenwatch_ (possibly because they are not part of its database) or have a disagreeing result. 
 
-As you saw from this analysis, it is not easy to answer this question, as different software may give different answers. 
-It seems like _Pathogenwatch_ is much less conservative compared to the other software packages, giving resistance to many more antibiotics. 
-However, it could be that some of these are "false positives", i.e. the strain circulating in the population is not really resistant to all those antibiotics. 
+Let's take a specific example. 
+_Pathogenwatch_ determined that none of our isolates were resistant to Streptomycin. 
+However, in the _hAMRonization_ summary table (output by `funcscan`) we can see that this drug was reported for several of our samples. 
+Upon closer inspection, however, we can see that we only had partial matches to the reference NCBI sequence ([WP_001206356.1](https://www.ncbi.nlm.nih.gov/protein/WP_001206356.1)), or in the case of one sample with a higher match the sequence identity was less than 100% (table below, showing some of the columns from the _hAMRonization_ table).
 
-We do know from this analysis however that we should probably not use antibiotics based on chloramphenicol or carbapenems to treat infected people, and that is very useful information to communicate to the professionals treating hospitalised patients. 
-:::
+```
+input_file_name               gene_symbol   reference_accession   antimicrobial_agent   coverage_percentage   sequence_identity  
+isolate01.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate02.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate02.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate04.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate05.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate06.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate07.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate08.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate09.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate10.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          100                   92.05              
+```
+
+It is also important to take into consideration our earlier [assembly quality assessments](../02-assembly/04-assembly_quality.md) as they may result in **false negative results**.
+For example, we can see that "isolate05" has the lowest AMR detection of all samples. 
+However, this was the sample with the lowest genome coverage (only 21x) and with a resulting highly fragmented genome (229 fragments). 
+Therefore, it is very possible that we missed parts of its genome during assembly, and that some of those contained AMR genes or plasmids. 
+
+In conclusion, always be critical of the analysis of your results at this stage, comparing the output from different tools as well as considering the quality of your assemblies. 
 
 
 ## Exercises
 
+:::{.callout-exercise}
+#### Funcscan
+
+Run funcscan on your samples. 
+
 TODO
+
+:::
+
+:::{.callout-exercise}
+#### AMR with _Pathogenwatch_
+
+How do the results compare with Pathogenwatch?
+
+TODO
+
+:::
 
 ## Summary
 

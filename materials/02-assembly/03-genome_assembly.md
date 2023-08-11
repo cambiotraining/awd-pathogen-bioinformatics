@@ -280,7 +280,7 @@ This should save you substantial time and storage space.
 :::
 
 
-#### `bakta` annotation
+#### `bakta` annotation {#sec-bakta-annot}
 
 To run the annotation step we use the `bakta` command, which would be the following for our `barcode26` / `isolate2` sample:
 
@@ -325,7 +325,7 @@ Both subunits are found in our assembly, suggesting our isolate is a pathogenic 
 And this concludes our assembly steps: we now have an **annotated genome assembly** produced from our ONT reads. 
 
 
-## Assembly workflow
+## Assembly workflow {#sec-workflow}
 
 In the previous section we applied our assembly workflow to a single sample. 
 But what if we had 20 samples? 
@@ -387,17 +387,21 @@ The script will take quite a while to run (up to 1h per sample, using 16 CPUs on
 As it runs, the script prints some progress messages on the screen: 
 
 ```
-Starting sample 'isolate01' with barcode 'barcode25'...
-  Subsampling reads with rasusa...
-  Assembling with flye...
-  Polishing with medaka...
-  Annotating with bakta...
-  Finished assembly pipeline for 'isolate01'.
-  Assembly file in: results/assemblies/isolate01.fasta
-  Annotation file in: results/assemblies/isolate01.gff
-Starting sample 'isolate02' with barcode 'barcode26'...
-  Subsampling reads with rasusa...
-  Assembling with flye...
+Processing sample 'isolate01' with barcode 'barcode25'
+        2023-08-09 22:41:38      Concatenating reads...
+        2023-08-09 22:41:42      Subsampling reads with rasusa...
+        2023-08-09 22:42:47      Assembling with flye...
+        2023-08-09 22:55:37      Polishing with medaka...
+        2023-08-09 22:59:41      Annotating with bakta...
+        2023-08-09 23:24:47      Finished assembly pipeline for 'isolate01'.
+                                 Assembly file in: results/assemblies/isolate01.fasta
+                                 Annotation file in: results/assemblies/isolate01.gff
+
+Processing sample 'isolate02' with barcode 'barcode26'
+        2023-08-09 23:24:47      Concatenating reads...
+        2023-08-09 23:24:56      Subsampling reads with rasusa...
+        2023-08-09 23:26:32      Assembling with flye...
+        2023-08-09 23:52:36      Polishing with medaka...
 ```
 
 Several output files are generated in the directory you specified as `outdir`. 
@@ -408,7 +412,13 @@ ls results/assemblies
 ```
 
 ```
-TODO
+01-rasusa        isolate02.gff    isolate06.fasta  isolate09.gff
+02-flye          isolate03.fasta  isolate06.gff    isolate10.fasta
+03-medaka        isolate03.gff    isolate07.fasta  isolate10.gff
+04-bakta         isolate04.fasta  isolate07.gff    summary_metrics.csv
+isolate01.fasta  isolate04.gff    isolate08.fasta
+isolate01.gff    isolate05.fasta  isolate08.gff
+isolate02.fasta  isolate05.gff    isolate09.fasta
 ```
 
 We get a folder with the results of each step of the analysis (this matches what we went through in detail in the step-by-step section) and two files per sample: a FASTA file with the polished assembly and a GFF file with the gene annotations. 
@@ -416,21 +426,116 @@ We also get a CSV file called `summary_metrics.csv`, which contains some useful 
 We will look at these in the next chapter on [quality control](04-assembly_quality.md).
 
 
-## Exercises
+## Exercises {#sec-ex-assembly}
+
+For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
 
 :::{.callout-exercise}
 #### Running assembly script
 
-TODO
+As covered in the sections above, the genome assembly process involves several steps and software.
+We provide a script that performs the assemly pipeline for a set of samples specified by the user (using a _for loop_ as detailed in @sec-workflow). 
 
+- In the folder `scripts` (within your analysis directory) you will find a script named `02-assembly.sh`. 
+- Open the script, which you will notice is composed of two sections: 
+    - `#### Settings ####` where we define some variables for input and output files names. 
+      We already include default settings which are suitable for the "Ambroise 2023" data, but **you may have to change some settings** to suit your data.
+    - `#### Analysis ####` this is where the assembly workflow is run on each sample as detailed in @sec-workflow. 
+      You should not change the code in this section, although examining it is a good way to learn about [Bash programming](https://cambiotraining.github.io/unix-shell/materials/02-programming/01-scripts.html) (this one is quite advanced, so don't worry if you don't understand some of it).
+- One of the main inputs to the script is a CSV file with two columns specifying your sample IDs and their respective barcode folder name. 
+  Using _Excel_, create this file for your samples, as explained in @sec-workflow.
+  Save it as `samplesheet.csv` in your analysis directory.
+- Activate the software environment: `mamba activate assembly`
+- Run the script using `bash scripts/02-assembly.sh`.
+  If the script is running successfully it should print a message on the screen as the samples are processed. 
+  Depending on how many barcodes you have, this will take quite a while to finish (up to 1h per sample). <i class="fa-solid fa-mug-hot"></i>
+- One the analysis finishes you can confirm that you have several files in the output folder. 
+  We will analyse these files in the [next chapter](04-assembly_quality.md)
+
+:::{.callout-answer collapse=true}
+
+We opened the script `02-assembly.sh` and these are the settings we used: 
+
+- `samplesheet="samplesheet.csv"` - the name of our samplesheet CSV file, detailed below.
+- `fastq_dir="data/fastq_pass"` - the name of the directory where we have our barcode folders from basecalling with Guppy.
+- `outdir="results/assemblies"` - the name of the directory where we want to save our results.
+- `threads="16"` - the number of CPUs we have available for parallel computations. You can check how many CPUs you have using the command `nproc --all`.
+- `genome_size="4m"` - the predicted genome size for the organism we are assembling. We use the _Vibrio cholerae_ genome size. 
+- `coverage="100"` - the coverage we want to downsample our sequencing reads to.
+- `medaka_model="r941_min_hac_g507"` - the model for the _Medaka_ software. For the "Ambroise 2023" data basecalling was performed using the high accuracy ("hac") mode, sequenced on a MinION platform using R9.4.1 pores. So, we chose the model that fits with this. 
+- `bakta_db="resources/bakta_db/db-light/"` - the path to the _Bakta_ database used for gene annotation. This was already pre-downloaded for us. 
+
+Our `samplesheet.csv` file looked as follows: 
+
+```
+sample,barcode
+CTMA_1402,barcode01
+CTMA_1421,barcode02
+CTMA_1427,barcode05
+CTMA_1432,barcode06
+CTMA_1473,barcode09
+```
+
+We used the sample identifiers from the original publication, and their respective barcodes. 
+If these were our own samples, we would have used identifiers that made sense to us. 
+
+We then ran the script using `bash scripts/02-assembly.sh`.
+The script prints a message while it's running: 
+
+```
+Processing sample 'CTMA_1402' with barcode 'barcode01'
+        2023-08-09 22:41:38      Concatenating reads...
+        2023-08-09 22:41:42      Subsampling reads with rasusa...
+        2023-08-09 22:42:47      Assembling with flye...
+        2023-08-09 22:55:37      Polishing with medaka...
+        2023-08-09 22:59:41      Annotating with bakta...
+        2023-08-09 23:24:47      Finished assembly pipeline for 'isolate01'.
+                                 Assembly file in: results/assemblies/isolate01.fasta
+                                 Annotation file in: results/assemblies/isolate01.gff
+
+Processing sample 'CTMA_1421' with barcode 'barcode02'
+        2023-08-09 23:24:47      Concatenating reads...
+        2023-08-09 23:24:56      Subsampling reads with rasusa...
+        2023-08-09 23:26:32      Assembling with flye...
+        2023-08-09 23:52:36      Polishing with medaka...
+```
+
+This took a long time to run, it was around 5h for us. <i class="fa-solid fa-mug-hot"></i> <i class="fa-solid fa-mug-hot"></i> <i class="fa-solid fa-mug-hot"></i>
+:::
 :::
 
 :::{.callout-exercise}
 #### Looking for genes of interest
 
 The _varG_ gene is part of the antibiotic resistance var regulon in _Vibrio cholerae_ ([source](https://card.mcmaster.ca/ontology/41453)). 
-Do any of your samples contain the _varG_ gene?
 
+Using the command line tool `grep`, search for this gene in the annotation files produced by _Bakta_. 
+
+:::{.callout-hint collapse=true}
+- See @sec-bakta-annot for an example of how we did this for the _ctxA_ and _ctxB_ genes. 
+- The pipeline script we used outputs the _Bakta_ results to `results/assemblies/04-bakta/SAMPLE/consensus.tsv` (where "SAMPLE" is the sample name).
+- Remember that you can use the `*` wildcard to match multiple file/directory names
+:::
+
+:::{.callout-answer collapse=true}
+
+To search for this gene across all our samples, we did: 
+
+```bash
+grep -i "varG" results/assemblies/04-bakta/*/consensus.tsv
+```
+
+```
+results/assemblies/04-bakta/CTMA_1402/consensus.tsv:contig_2    cds     1452034 1453002 +       FHBCKO_14010    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1421/consensus.tsv:contig_4    cds     1469496 1470620 -       GBDILF_14250    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1427/consensus.tsv:contig_1    cds     1682677 1683801 -       CJLKCO_09705    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1432/consensus.tsv:contig_2    cds     1363185 1364309 +       BDJHLF_13895    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1473/consensus.tsv:contig_2    cds     1373351 1374475 +       DGGMCP_08610    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+```
+
+We can see that all 5 samples contain this gene. 
+According to this [gene's description on CARD](https://card.mcmaster.ca/ontology/41453), this suggests that all of these isolates might be resistant to antimicrobial drugs using penicillins, carbapenems or cephalosporins.
+:::
 :::
 
 

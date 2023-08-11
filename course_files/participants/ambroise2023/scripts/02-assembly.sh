@@ -1,14 +1,11 @@
 #!/bin/bash
 
-# mamba create --name assembly
-# mamba install --name assembly flye rasusa bakta
-# mamba activate assembly
-# pip install medaka
-
 #### Settings #####
 
 # CSV file with two columns: sample,barcode
 samplesheet="samplesheet.csv"
+
+# directory with barcode folders from Guppy
 fastq_dir="data/fastq_pass"
 
 # output directory for results

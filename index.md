@@ -19,9 +19,9 @@ We use cholera as a case study, however the tools and concepts covered also appl
 - Describe how genome sequencing data can be used in the surveillance of bacterial pathogens.
 - Understand how sequencing data is generated and the most common file formats and conventions used in the bioinformatics field. 
 - Use the command line to run software tools for the bioinformatic analysis of sequencing data.
-- Perform genome assembly from Oxford Nanopore Techologies (ONT) data of bacterial isolates.
+- Perform bacterial genome assembly from Oxford Nanopore Techologies (ONT) sequencing data.
 - Characterise the assembled genomes by identifying strains and lineages, phylogeny and presence of antibiotic resistance genes. 
-- Produce a report summarising the main findings of your analysis, to use for public health decisions.
+- Produce a report summarising the main findings of the analysis, to use for public health decisions.
 :::
 
 ### Target Audience

@@ -4,5 +4,5 @@
 mkdir results/mlst
 
 # run mlst
-mlst --scheme vcholerae results/wf-bacterial-genomes/assemblies/*.fasta > results/mlst/cholera_beirut_mlst.tsv
+mlst --scheme vcholerae FIX_PATH_TO_FASTA_FILES > results/mlst/mlst_typing.tsv
 

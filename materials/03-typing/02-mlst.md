@@ -47,7 +47,7 @@ The first step is to download selected public available complete whole genomes o
 -->
 
 
-## MLST with command line
+## MLST with command line {#sec-mlst-cli}
 
 Running MLST from the command line can be done with a single command, as exemplified on this script:
 
@@ -58,55 +58,116 @@ Running MLST from the command line can be done with a single command, as exempli
 mkdir results/mlst
 
 # run mlst
-mlst --scheme vcholerae results/assemblies/*.fasta > results/mlst/awd_workshop_mlst.tsv
+mlst --scheme vcholerae results/assemblies/*.fasta > results/mlst/mlst_typing.tsv
 ```
 
 This command outputs a tab-delimited file (TSV), which we can open in a spreadsheet software such as _Excel_. 
+Here is the result for our samples:
 
-|  |  |  |  |  |  |  |  |  |  |
-| ---------------------- | --------- | -- | ------ | ---------- | --------- | -------- | ---------- | ---------- | --------- |
-| barcode25.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(~133) | metE(37) | pntA(12)   | purM(1)    | pyrC(20)  |
-| barcode26.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(4)    | metE(37) | pntA(227?) | purM(1)    | pyrC(~20) |
-| barcode27.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(~121) | metE(37) | pntA(~12)  | purM(1)    | pyrC(~20) |
-| barcode28.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(4)    | metE(37) | pntA(227?) | purM(1)    | pyrC(~20) |
-| barcode29.medaka.fasta | vcholerae | \- | adk(7) | gyrB(120?) | mdh(209?) | metE(37) | pntA(227?) | purM(172?) | pyrC(~20) |
-| barcode30.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(209?) | metE(37) | pntA(227?) | purM(1)    | pyrC(20)  |
-| barcode31.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(4)    | metE(37) | pntA(~12)  | purM(1)    | pyrC(~20) |
-| barcode32.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(4)    | metE(37) | pntA(227?) | purM(172?) | pyrC(20)  |
-| barcode33.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(4)    | metE(37) | pntA(12)   | purM(1)    | pyrC(~20) |
-| barcode34.medaka.fasta | vcholerae | \- | adk(7) | gyrB(11)   | mdh(121)  | metE(37) | pntA(~12)  | purM(1)    | pyrC(~20) |
+```
+results/assemblies/isolate01.fasta  vcholerae  -  adk(7)  gyrB(11)    mdh(~133)  metE(37)   pntA(12?)   purM(1)     pyrC(20?)
+results/assemblies/isolate02.fasta  vcholerae  -  adk(7)  gyrB(~11)   mdh(4)     metE(37)   pntA(227?)  purM(1)     pyrC(20?)
+results/assemblies/isolate03.fasta  vcholerae  -  adk(7)  gyrB(11)    mdh(~121)  metE(37)   pntA(227?)  purM(1)     pyrC(20?)
+results/assemblies/isolate04.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(~4)    metE(37)   pntA(227?)  purM(1)     pyrC(20?)
+results/assemblies/isolate05.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(~121)  metE(37)   pntA(227?)  purM(1)     pyrC(~20)
+results/assemblies/isolate06.fasta  vcholerae  -  adk(7)  gyrB(195?)  mdh(~121)  metE(37)   pntA(227?)  purM(1)     pyrC(20?)
+results/assemblies/isolate07.fasta  vcholerae  -  adk(7)  gyrB(195?)  mdh(~121)  metE(37)   pntA(-)     purM(1)     pyrC(20?)
+results/assemblies/isolate08.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(209?)  metE(37)   pntA(227?)  purM(172?)  pyrC(20?)
+results/assemblies/isolate09.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(~121)  metE(~37)  pntA(12?)   purM(176?)  pyrC(20?)
+results/assemblies/isolate10.fasta  vcholerae  -  adk(7)  gyrB(195?)  mdh(~121)  metE(37)   pntA(227?)  purM(1)     pyrC(20?)
+```
 
 We get a column for each of the 7 genes used for _Vibrio_ sequence typing, with the gene name followed by the allele number in parenthesis. 
-The allele number is simply an identifier used by PubMLST, and it means that allele has a specific sequence with a certain set of variants ([search for alleles here](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=alleleQuery)). 
+The allele number is an identifier used by PubMLST, and it means that allele has a specific sequence with a certain set of variants ([search for alleles here](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=alleleQuery)). 
 For example, `adk(7)` corresponds to [allele 7 of the _adk_ gene](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=alleleInfo&locus=VCHOL0445&allele_id=7).
 
 The command line version of `mlst` also reports when an allele has an inexact match to the allele in the database, with the following notation (copied from [the README documentation](https://github.com/tseemann/mlst)):
 
-Symbol | Meaning | Length | Identity
----   | --- | --- | ---
-`n`   | a number means exact intact allele      | 100%            | 100%
-`~n`  | novel full length allele _similar_ to n | 100%            | &ge; `--minid`
-`n?`  | _partial match_ to known allele         | &ge; `--mincov` | &ge; `--minid`
-`-`   | allele _missing_                        | &lt; `--mincov` | &lt; `--minid`
-`n,m` | _multiple alleles_                      | &nbsp;          | &nbsp;
+| Symbol | Meaning                                   | Length            | Identity       |
+| ------ | ----------------------------------------- | ----------------- | -------------- |
+| `n`    | Exact intact allele                       | 100%              | 100%           |
+| `~n`   | Novel full length allele _similar_ to `n` | 100%              | ≥ `--minid`    |
+| `n?`   | Partial match to known allele             | ≥ `--mincov`      | ≥ `--minid`    |
+| `-`    | Allele missing                            | < `--mincov`      | < `--minid`    |
+| `n,m`  | Multiple alleles                          |                   |                |
+
+
+The third column of the output (which in our case is `-` for all samples) would indicate if our samples matched a known sequence type from the _PubMLST_ database. 
+It seems like all our samples are "new" sequence types, i.e. their profile doesn't exactly match any of the curated types. 
+We can further interpret our results by [searching for their closest-matching profiles](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=profiles) on the _PubMLST_ website.
+If we search on that page for the profiles of each isolate, we will find that they always come closest to the sequence type [ST69](https://pubmlst.org/bigsdb?page=profileInfo&db=pubmlst_vcholerae_seqdef&scheme_id=1&profile_id=69), which includes the pathogenic _O1 El Tor_ strain.
+For example, "isolate02" matches ST69 for six out of the seven genes. 
+
+While somewhat inconclusive about an exact sequence type, this analysis further reinforces that we are faced with pathogenic strains of _Vibrio cholerae_. 
+In the [next chapter](03-phylogeny.md) we will turn to phylogenetic analysis to further investigate the relationship between these strains and other previously sequenced strains of this species. 
+
+<!-- TODO - add `vcholerae_2` scheme (for 01 and 0139) -->
 
 
 ## Exercises 
+
+For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+You also need to have completed the genome assembly exercise in @sec-ex-assembly.
+
+:::{.callout-exercise}
+#### MLST (command line)
+
+Perform MLST analysis from the command line:
+
+- Activate the software environment: `mamba activate typing`
+- Use the command line version of `mlst` to analyse your sequences, as explained in @sec-mlst-cli.
+  You can either run the commands shown in that section directly on the terminal, or you can save them in a script called `scripts/04-mlst.sh`.
+  Writing the commands in a script will make sure you have a record to run again in the future. 
+  
+The analysis will take some time to complete. 
+You can do the next exercise while you wait for it to finish, and then come back to this one.
+
+- After the analysis runs, answer the following questions: 
+  - Did any of your assemblies get assigned to known types?
+  - Go to the [_PubMLST_ allelic profile search](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=profiles) and search for the closest profile to your samples. 
+  - Do you think all your samples are likely from the same outbreak event or transmission chain?
+
+:::{.callout-answer collapse=true}
+
+To run this analysis, we created a shell script with the following code: 
+
+```bash
+#!/bin/bash
+
+# create output directory
+mkdir results/mlst
+
+# run mlst
+mlst --scheme vcholerae results/assemblies/*.fasta > results/mlst/mlst_typing.tsv
+```
+
+We then opened the output file in _Excel_, which contained the following:
+
+```
+results/assemblies/CTMA_1402.fasta  vcholerae  -  adk(7)  gyrB(~11)   mdh(121?)  metE(206)  pntA(12)  purM(1)     pyrC(20)
+results/assemblies/CTMA_1421.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(~45)   metE(206)  pntA(12)  purM(176?)  pyrC(~20)
+results/assemblies/CTMA_1427.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(223?)  metE(37)   pntA(12)  purM(1)     pyrC(20)
+results/assemblies/CTMA_1432.fasta  vcholerae  -  adk(7)  gyrB(~11)   mdh(223?)  metE(37)   pntA(12)  purM(1)     pyrC(20)
+results/assemblies/CTMA_1473.fasta  vcholerae  -  adk(7)  gyrB(120?)  mdh(209?)  metE(206)  pntA(12)  purM(176?)  pyrC(20)
+```
+
+None of our samples were assigned to standard sequence types (third column, with `-`). 
+
+When we search for these profiles on _PubMLST_, some of them seem to have closest resemblance to ST515. 
+Others have some resemblance to ST69. 
+Both of these sequence types are associated with _O1 El Tor_ pathogenic strains, confirming we are dealing with pathogenic strains. 
+
+The fact that our samples seem to have different profiles may suggest they represent different outbreak events or sources of transmission. 
+We would need to investigate this more thoroughly by considering any metadata associated with these samples (such as date and place of origin). 
+:::
+:::
+
 
 :::{.callout-exercise}
 #### MLST (Pathogenwatch)
 
 - Which sequence type were your sequences assigned to?
 - How similar are they to ST69?
-
-TODO - improve description of exercise.
-
-:::
-
-:::{.callout-exercise}
-#### MLST (command line)
-
-Run your samples through the command line tool `mlst`.
 
 TODO - improve description of exercise.
 
