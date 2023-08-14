@@ -515,7 +515,7 @@ To be categorised as the 7PET usually the isolates have to be in the Biotypes of
 
 :::
 
-## Pathogenwatch free typing approach
+## Phlogenies with other tool
 In the previous section we used Pathogenwatch to automatically assign typing and classify whether the isolates at hands are pathogenic or not. The phylogenetic tree which was also automatically generated usually enhances the typing process in which in our case tree was based on the downloaded public genomes in additional to our genome isolates. 
 
 The use of Pathogenwatch for this purpose maybe useful in some cases in particular when you are in the high resources setting countries where Internet speed is relatively high, however for many low resource setting countries this approach might not scale well. Therefore, we need to think of another approach which may scale well in our case. 
