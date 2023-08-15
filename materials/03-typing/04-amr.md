@@ -398,4 +398,3 @@ However, _Pathogenwatch_ identified resistance to several other drugs: ampicilin
 
 - TODO
 :::
-7

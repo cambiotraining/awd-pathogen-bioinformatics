@@ -19,17 +19,187 @@ If you want to setup your own computer to run the analysis demonstrated on this 
 
 ## Data
 
-The data used in these materials is provided as a zip file. 
-Download and unzip the folder to your Desktop to follow along with the materials.
+The data provided to run these materials is provided as a set of Zip files. 
+We provide instructions to download and uncompress the data via the command line, which is the recommended way to make sure you can follow the analysis as shown in the materials. 
+However, we also provide the direct links to the Zip files, in case you prefer to download them manually. 
 
-<!-- Note for Training Developers: add the link to 'href' -->
-<a href="">
-  <button class="btn"><i class="fa fa-download"></i> Download</button>
-</a>
+First create a directory to store the files. 
+Here, we create a directory for the workshop in the home folder (you can change this if you want to):
 
-## Setup
+```bash
+# create variable for working directory - change this if you want
+workdir="~/awd_bioinfo"
+mkdir $workdir
+```
+
+### Resources
+
+We provide files for databases and public genomes used in different parts of the analysis. 
+These files are **required in addition to all other datasets**.
+In summary, this contains four directories: 
+
+- `mash_db` - database for the software _Mash_, covered in the [Read content](materials/02-assembly/02-read_content.md) chapter.
+- `bakta_db` - database for the software _Bakta_, covered in the [Genome assembly](materials/02-assembly/03-genome_assembly.md) chapter.
+- `CheckM2_database` - database for the _CheckM2_ program covered in the [Assembly quality](materials/02-assembly/04-assembly_quality.md) chapter.
+- `vibrio_genomes` - public genomes downloaded from NCBI and used in the [Phylogenetics](materials/03-typing/03-phylogeny.md) chapter.
+
+We recommend downloading this file once and then creating a _symbolic link_ (aka shortcut) to this folder from each of the analysis directories. 
+This will reduce the storage space required for analysis. 
+
+Download this file using the command line:
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O resources.zip "TODO_DROPBOX_LINK"
+unzip resources.zip
+rm resources.zip  # remove original zip file to save space
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download resources](TODO_DROPBOX_LINK).
+
+
+### Ambroise 2023
+
+This dataset includes 5 samples sequenced on an ONT platform, and published in [Ambroise et al. 2023](https://doi.org/10.1101/2023.02.17.23286076). 
+Here are the details about these data: 
+
+- Number of samples: 5
+- Origin: samples from cholera patients from the Democratic Republic of the Congo.
+- Sample preparation: stool samples were collected and used for plate culture in media appropriate to grow _Vibrio_ species; ONT library preparation and barcoding were done using standard kits.
+- Sequencing platform: MinION
+- Basecalling: Guppy version 6 in high accuracy ("hac") mode (this information is not actually specified in the manuscript, but we are making this assumption, just as an example).
+
+To download the data, you can run the following commands: 
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O ambroise.zip "TODO_DROPBOX_LINK"
+unzip ambroise.zip
+rm ambroise.zip  # remove original zip file to save space
+
+# create link to resources directory
+ln -s $PWD/resources/ $PWD/ambroise2023/resources
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download Ambroise 2023](TODO_DROPBOX_LINK).
+
+
+### Scripts only
+
+We also provide a folder containing only the scripts used in the exercises. 
+This is useful if you are **working with your own data**. 
+
+Here are the commands to download these data: 
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O minimal.zip "TODO_DROPBOX_LINK"
+unzip minimal.zip
+rm minimal.zip  # remove original zip file to save space
+
+# create link to resources directory
+ln -s $PWD/resources/ $PWD/awd_workshop/resources
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download scripts only](TODO_DROPBOX_LINK).
+
+
+## Software
+
+### Install Linux
+
+::: {.panel-tabset group="os"}
+#### Ubuntu
+
+The recommendation for bioinformatic analysis is to have a dedicated computer running a Linux distribution. 
+The kind of distribution you choose is not critical, but we recommend **Ubuntu** if you are unsure.
+
+You can follow the [installation tutorial on the Ubuntu webpage](https://ubuntu.com/tutorials/install-ubuntu-desktop#1-overview). 
+
+:::{.callout-warning}
+Installing Ubuntu on the computer will remove any other operating system you had previously installed, and can lead to data loss. 
+:::
+
+#### Windows WSL
+
+The **Windows Subsystem for Linux (WSL2)** runs a compiled version of Ubuntu natively on Windows. 
+
+There are detailed instructions on how to install WSL on the [Microsoft documentation page](https://learn.microsoft.com/en-us/windows/wsl/install). 
+But briefly:
+
+- Click the Windows key and search for  _Windows PowerShell_, right-click on the app and choose **Run as administrator**. 
+- Answer "Yes" when it asks if you want the App to make changes on your computer. 
+- A terminal will open; run the command: `wsl --install`. 
+  - This should start installing "ubuntu". 
+  - It may ask for you to restart your computer. 
+- After restart, click the Windows key and search for _Ubuntu_, click on the App and it should open a new terminal. 
+- Follow the instructions to create a username and password (you can use the same username and password that you have on Windows, or a different one - it's your choice). 
+- You should now have access to a Ubuntu Linux terminal. 
+  This (mostly) behaves like a regular Ubuntu terminal, and you can install apps using the `sudo apt install` command as usual. 
+
+After WSL is installed, it is useful to create shortcuts to your files on Windows. 
+Your `C:\` drive is located in `/mnt/c/` (equally, other drives will be available based on their letter). 
+For example, your desktop will be located in: `/mnt/c/Users/<WINDOWS USERNAME>/Desktop/`. 
+It may be convenient to set shortcuts to commonly-used directories, which you can do using _symbolic links_, for example: 
+
+- **Documents:** `ln -s /mnt/c/Users/<WINDOWS USERNAME>/Documents/ ~/Documents`
+  - If you use OneDrive to save your documents, use: `ln -s /mnt/c/Users/<WINDOWS USERNAME>/OneDrive/Documents/ ~/Documents`
+- **Desktop:** `ln -s /mnt/c/Users/<WINDOWS USERNAME>/Desktop/ ~/Desktop`
+- **Downloads**: `ln -s /mnt/c/Users/<WINDOWS USERNAME>/Downloads/ ~/Downloads`
+
+#### Virtual machine
+
+Another way to run Linux within Windows (or macOS) is to install a Virtual Machine.
+However, this is mostly suitable for practicing and **not suitable for real data analysis**.
+
+Detailed instructions to install an Ubuntu VM using Oracle's Virtual Box is available from the [Ubuntu documentation page](https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview).
+
+:::
+
+
+#### Update Ubuntu
+
+After installing Ubuntu (through either of the methods above), open a terminal and run the following commands to update your system and install some essential packages: 
+
+```bash
+sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
+sudo apt install -y git
+sudo apt install -y default-jre
+```
+
 
 ### Conda/Mamba
+
+We recommend using the _Conda_ package manager to install your software. 
+In particular, the newest implementation called _Mamba_. 
+
+To install _Mamba_, run the following commands from the terminal: 
+
+```bash
+wget "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-$(uname)-$(uname -m).sh"
+bash Mambaforge-$(uname)-$(uname -m).sh -b
+rm Mambaforge-$(uname)-$(uname -m).sh
+```
+
+Restart your terminal (or open a new one) and confirm that your shell now starts with the word `(base)`.
+Then run the following commands: 
+
+```bash
+conda config --add channels defaults; conda config --add channels bioconda; conda config --add channels conda-forge
+conda config --set remote_read_timeout_secs 1000
+```
 
 
 ### Software environments
@@ -37,121 +207,141 @@ Download and unzip the folder to your Desktop to follow along with the materials
 Due to the complexities of the different tools we will use, there are several software dependency incompatibilities between them.
 Therefore, rather than creating a single software environment with all the tools, we will create separate environments for different applications. 
 
-**Mash** environment:
+#### Mash
 
 ```bash
-mamba create -n mash mash
+mamba create -y -n mash mash
 ```
 
-**Assembly** environment:
+#### Assembly
+
+Run all these commands in order:
 
 ```bash
-mamba create -n assembly flye rasusa bakta
+mamba create -y -n assembly flye rasusa bakta
 mamba activate assembly
 pip install medaka
+mamba deactivate
 ```
 
-
-
-<!--
-### R and RStudio
-
-::: {.tabset group="os"}
-
-#### Windows
-
-Download and install all these using default options:
-
-- [R](https://cran.r-project.org/bin/windows/base/release.html)
-- [RTools](https://cran.r-project.org/bin/windows/Rtools/)
-- [RStudio](https://www.rstudio.com/products/rstudio/download/#download)
-
-#### Mac OS
-
-Download and install all these using default options:
-
-- [R](https://cran.r-project.org/bin/macosx/)
-- [RStudio](https://www.rstudio.com/products/rstudio/download/#download)
-
-#### Linux
-
-- Go to the [R installation](https://cran.r-project.org/bin/linux/) folder and look at the instructions for your distribution.
-- Download the [RStudio](https://www.rstudio.com/products/rstudio/download/#download) installer for your distribution and install it using your package manager.
-
-:::
--->
-
-
-<!--
-### Conda
-
-Open a terminal and run:
+#### Typing/phylogeny
 
 ```bash
-wget -q -O - https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh -b
-rm Miniconda3-latest-Linux-x86_64.sh
-conda init
-conda config --add channels defaults; conda config --add channels bioconda; conda config --add channels conda-forge; conda config --set channel_priority strict
-conda install -y mamba
+mamba create -y -n typing mlst panaroo iqtree figtree
 ```
 
-Note: Windows users can use WSL2 (see @wsl).
--->
+#### Nextflow
 
-<!--
+```bash
+mamba create -y -n nextflow nextflow
+```
+
+Also run these commands to set _Nextflow_ correctly (copy/paste this entire code):
+
+```bash
+mkdir -p $HOME/.nextflow
+echo "
+conda {
+  conda.enabled = true
+  singularity.enabled = false
+  docker.enabled = false
+  useMamba = true
+  createTimeout = '4 h'
+  cacheDir = \"$HOME/.nextflow-conda-cache/\"
+}
+singularity {
+  singularity.enabled = true
+  conda.enabled = false
+  docker.enabled = false
+  pullTimeout = '4 h'
+  cacheDir = \"$HOME/.nextflow-singularity-cache/\"
+}
+docker {
+  docker.enabled = true
+  singularity.enabled = false
+  conda.enabled = false
+}
+" >> $HOME/.nextflow/config
+```
+
 ### Singularity
 
-::: {.panel-tabset group="os"}
-
-#### Windows
-
-You can use _Singularity_ from the _Windows Subsystem for Linux_ (see @wsl).  
-Once you setup WSL, you can follow the instructions for Linux.
-
-#### Mac OS
-
-Singularity is [not available for Mac OS](https://docs.sylabs.io/guides/3.0/user-guide/installation.html#install-on-windows-or-mac).
-
-#### Linux
-
-These instructions are for _Ubuntu_ or _Debian_-based distributions[^1].
-
-[^1]: See the [Singularity documentation page](https://docs.sylabs.io/guides/3.0/user-guide/installation.html#install-on-linux) for other distributions.
+We recommend that you install _Singularity_ and use the `-profile singularity` option when running _Nextflow_ pipelines. 
+On Ubuntu, you can install _Singularity_ using the following commands: 
 
 ```bash
-sudo apt update && sudo apt upgrade && sudo apt install runc
-CODENAME=$(lsb_release -c | sed 's/Codename:\t//')
-wget -O singularity.deb https://github.com/sylabs/singularity/releases/download/v3.10.2/singularity-ce_3.10.2-${CODENAME}_amd64.deb
+sudo apt install -y runc cryptsetup-bin
+CODENAME=$(lsb_release -cs)
+wget -O singularity.deb https://github.com/sylabs/singularity/releases/download/v3.11.4/singularity-ce_3.11.4-${CODENAME}_amd64.deb
 sudo dpkg -i singularity.deb
 rm singularity.deb
 ```
 
+If you have a different Linux distribution, you can find more detailed instructions on the [_Singularity_ documentation page](https://docs.sylabs.io/guides/3.0/user-guide/installation.html#install-on-linux). 
+
+If you have issues running _Nextflow_ pipelines with _Singularity_, then you can follow the instructions below for _Docker_ instead. 
+
+
+### Docker
+
+An alternative for software management when running _Nextflow_ pipelines is to use _Docker_. 
+
+::: {.panel-tabset group="os"}
+#### Ubuntu
+
+For Ubuntu Linux, here are the installation instructions: 
+
+```bash
+sudo apt install curl
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+After the last step, you will need to **restart your computer**. 
+From now on, you can use `-profile docker` when you run _Nextflow_.
+
+#### Windows WSL
+
+When using WSL2 on Windows, running _Nextflow_ pipelines with `-profile singularity` sometimes doesn't work. 
+
+As an alternative you can instead use _Docker_, which is another software containerisation solution. 
+To set this up, you can follow the full instructions given on the Microsoft Documentation: [Get started with Docker remote containers on WSL 2](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-containers#install-docker-desktop).
+
+We briefly summarise the instructions here (but check that page for details and images): 
+
+- Download [_Docker_ for Windows](https://desktop.docker.com/win/main/amd64/Docker%20Desktop%20Installer.exe).
+- Run the installer and install accepting default options. 
+- Restart the computer.
+- Open Docker and go to **Settings > General** to tick "Use the WSL 2 based engine".
+- Go to **Settings > Resources > WSL Integration** to enable your Ubuntu WSL installation.
+
+Once you have _Docker_ set and installed, you can use `-profile docker` when running your _Nextflow_ command.
+
+#### Virtual machine
+
+You can follow the same instructions as for "Ubuntu".
 :::
--->
 
 
-<!-- 
 ### Visual Studio Code
 
 ::: {.panel-tabset group="os"}
 
-#### Windows
+#### Ubuntu
+
+- Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for your Linux distribution. Install the package using your system's installer.
+
+#### Windows WSL
 
 - Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for your operating system. 
   Double-click the downloaded file to install the software, accepting all the default options. 
 - After completing the installation, go to your Windows Menu, search for "Visual Studio Code" and launch the application. 
-- Go to "_File > Preferences > Settings_", then select "_Text Editor > Files_" on the drop-down menu on the left. Scroll down to the section named "_EOL_" and choose "_\\n_" (this will ensure that the files you edit on Windows are compatible with the Linux operating system).
+- Go to **File > Preferences > Settings**, then select **Text Editor > Files** on the drop-down menu on the left. Scroll down to the section named "_EOL_" and choose "_\\n_" (this will ensure that the files you edit on Windows are compatible with the Linux operating system).
+- Click <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>X</kbd>, which will open an "Extensions" panel on the left.
+- Search for "WSL" and click "Install". 
 
-#### Mac OS
-
-- Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for Mac.
-- Go to the Downloads folder and double-click the file you just downloaded to extract the application. Drag-and-drop the "Visual Studio Code" file to your "Applications" folder. 
-- You can now open the installed application to check that it was installed successfully (the first time you launch the application you will get a warning that this is an application downloaded from the internet - you can go ahead and click "Open").
-
-#### Linux (Ubuntu)
-
-- Go to the [Visual Studio Code download page](https://code.visualstudio.com/Download) and download the installer for your Linux distribution. Install the package using your system's installer.
-
+From now on, you can open VS code directly from a WSL terminal by typing `code .`.
 :::
- -->
+
