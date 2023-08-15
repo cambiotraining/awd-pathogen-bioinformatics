@@ -165,7 +165,8 @@ We can see that the results for individual barcodes (here we show 3 barcodes as 
 
 ## Exercises
 
-For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
 
 :::{.callout-exercise}
 #### Mash screening
@@ -182,7 +183,7 @@ Screen the sequencing reads for known organisms, by running _Mash_ on one of the
 The command might take some time to run (maybe 10 minutes). 
 Once it completes, examine the output file to investigate if your reads contained the organism you were expecting.
 
-:::{.callout-hint}
+:::{.callout-hint collapse=true}
 - Remember that to create a directory from the command line you can use the `mkdir` command.
 - The general command to run `mash` is:  
   `mash screen -w -p 8  PATH_TO_DB_FILE  PATH_TO_INPUT_FASTQS  |  sort -n -r >  OUTPUT_FILE`

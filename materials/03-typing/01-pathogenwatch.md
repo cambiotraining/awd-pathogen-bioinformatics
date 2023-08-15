@@ -121,17 +121,43 @@ This table contains several columns:
 We will further analyse these results in the following chapters. 
 
 
-## Exercises 
+## Exercises {#sec-ex-pathogenwatch}
+
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
+You also need to have completed the genome assembly exercise in @sec-ex-assembly.
 
 :::{.callout-exercise}
 #### Loading data into _Pathogenwatch_
 
-Load your sequences to pathogenwatch and create a new collection from them.
-Which reference lineage do they group with?
+- Load your newly assembled sequences to [_Pathogenwatch_](https://pathogen.watch/upload) 
+- Create a new collection from your sequences with a name of your choice.
+- Are they identified as a known biotype? Do you think these are pathogenic strains?
 
-TODO - improve description of exercise.
+:::{.callout-answer collapse=true}
+
+For the "Ambroise 2023" data, we have 5 genomes saved in `results/assemblies/`, from the assembly pipeline we ran in sec-ex-assembly.
+We loaded all the FASTA files from that folder into _Pathogenwatch_:
+
+![](images/pathogenwatch-ambroise01.png)
+
+Clicking on "View Genomes" takes us to the table of genomes, where we can select the genomes to create a new collection: 
+
+![](images/pathogenwatch-ambroise02.png)
+
+We name our collection accordingly, and in this case we even added the associated [publication DOI](https://doi.org/10.1101/2023.02.17.23286076): 
+
+![](images/pathogenwatch-ambroise03.png)
+
+After clicking on "Create Now" we are shown the default analysis table:
+
+![](images/pathogenwatch-ambroise05.png)
+
+We will analyse some of these results in a later section, but we can see from the last two columns that our samples were assigned biotype "O1 pathogenic", confirming that these are pathogenic strains circulating in the population.
 
 :::
+:::
+
 
 :::{.callout-exercise}
 #### Collections with public data
@@ -140,6 +166,11 @@ Create a new collection including your samples and other _Vibrio_ genomes we dow
 
 TODO - improve description of exercise.
 
+:::{.callout-answer collapse=true}
+
+TODO
+
+:::
 :::
 
 

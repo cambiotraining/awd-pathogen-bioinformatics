@@ -213,7 +213,8 @@ We are therefore ready to proceed with downstream analysis, where we will furthe
 
 ## Exercises 
 
-For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
 You also need to have completed the genome assembly exercise in @sec-ex-assembly.
 
 :::{.callout-exercise}

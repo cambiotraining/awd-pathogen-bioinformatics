@@ -106,7 +106,8 @@ In the [next chapter](03-phylogeny.md) we will turn to phylogenetic analysis to 
 
 ## Exercises 
 
-For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
 You also need to have completed the genome assembly exercise in @sec-ex-assembly.
 
 :::{.callout-exercise}
@@ -118,9 +119,6 @@ Perform MLST analysis from the command line:
 - Use the command line version of `mlst` to analyse your sequences, as explained in @sec-mlst-cli.
   You can either run the commands shown in that section directly on the terminal, or you can save them in a script called `scripts/04-mlst.sh`.
   Writing the commands in a script will make sure you have a record to run again in the future. 
-  
-The analysis will take some time to complete. 
-You can do the next exercise while you wait for it to finish, and then come back to this one.
 
 - After the analysis runs, answer the following questions: 
   - Did any of your assemblies get assigned to known types?
@@ -166,11 +164,29 @@ We would need to investigate this more thoroughly by considering any metadata as
 :::{.callout-exercise}
 #### MLST (Pathogenwatch)
 
+Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "Ambroise 2023" collection that you created and answer the following questions:
+
 - Which sequence type were your sequences assigned to?
-- How similar are they to ST69?
+- How do the results compare with output from the command line version of the software? (You need to complete the previous exercise to answer this question)
 
-TODO - improve description of exercise.
+:::{.callout-answer collapse=true}
 
+First, we make sure to be on the collection view screen for our "AWD Workshop - Ambroise 2023" collection created earlier (@sec-ex-pathogenwatch). 
+In case you don't have it open, you can get it from the account menu (top-left button, as shown on image below) and click on "My Collections".
+Your collection should be listed and you can click on "View Colection". 
+
+![](images/pathogenwatch-frontpage.svg)
+
+Once inside the collection view, the MLST table is usually the one shown by default, or you can choose it from the drop-down menu on the top-left of the table: 
+
+![](images/pathogenwatch-ambroise05.png)
+
+From this table we can see that: 
+
+- All of our samples were assigned a new type. This is indicated by the `*` in the `ST` column. 
+- The results are very similar to the command line version of the tool, except we don't get information about similar alleles that were matched to the new gene alleles found. 
+
+:::
 :::
 
 

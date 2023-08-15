@@ -79,12 +79,12 @@ Therefore, we introduce an alternative using command line tools suitable for loc
 The methodology we use here is similar to _Pathogenwatch_'s, but it employs distinct tools for generating the core genome and performing tree inference. 
 Our toolkit consists of three software components:
 
-- **[Panaroo]()** - used to identify a set of "core genes" (genes occurring in most samples) and generate a multiple sequence alignment from them.
-- **[IQ-TREE]()** - used to infer a tree from the aligned core genes.
-- **[Figtree]()** - used to visualise and/or annotate our tree.
+- **[Panaroo](https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart)** - used to identify a set of "core genes" (genes occurring in most samples) and generate a multiple sequence alignment from them.
+- **[IQ-TREE](http://www.iqtree.org/doc/)** - used to infer a tree from the aligned core genes.
+- **[Figtree](http://tree.bio.ed.ac.uk/software/figtree/)** - used to visualise and/or annotate our tree.
 
 
-### Core genome alignment: `panaroo`
+### Core genome alignment: `panaroo` {#sec-panaroo}
 
 The software [_Panaroo_](https://gtonkinhill.github.io/panaroo/) was developed to analyse bacterial pangenomes. 
 It is able to identify orthologous sequences between a set of sequences, which it uses to produce a multiple sequence alignment of the core genome. 
@@ -133,11 +133,61 @@ ls results/panaroo
 ```
 
 ```
-TODO
+aligned_gene_sequences/                core_alignment_header.embl        gene_presence_absence_roary.csv
+alignment_entropy.csv                 core_gene_alignment.aln           pan_genome_reference.fa
+combined_DNA_CDS.fasta                core_gene_alignment_filtered.aln  pre_filt_graph.gml
+combined_protein_CDS.fasta            final_graph.gml                   struct_presence_absence.Rtab
+combined_protein_cdhit_out.txt        gene_data.csv                     summary_statistics.txt
+combined_protein_cdhit_out.txt.clstr  gene_presence_absence.Rtab
+core_alignment_filtered_header.embl   gene_presence_absence.csv
 ```
 
+There are several output files generated, which can be generated for more advanced analysis and visualisation (see [_Panaroo_ documentation](https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart) for details). 
+For our purpose of creating a phylogeny from the core genome alignment, we need the file `core_gene_alignment.aln`, which is a file in FASTA format. 
+We can take a quick look at this file: 
 
-### Tree inference: `iqtree`
+```bash
+head results/panaroo/core_gene_alignment.aln
+```
+
+```
+>GCF_015482825.1_ASM1548282v1_genomic
+atggctatttatctgactgaattatcgccggaaacgttgacattcccctctccttttact
+gcgttagatgaccctaacggcctgcttgcatttggcggcgatctccgtcttgaacgaatt
+tgggcggcttatcaacaaggcattttcccttggtatggccctgaagacccgattttgtgg
+tggagcccttccccacgtgccgtgtttgaccctactcggtttcaacctgcc-aaaagcgt
+gaagaagttccaacgtaaacatcagtatcgggttagcgtcaatcacgcgacgtcgcaagt
+gattgagcagtgcgcgctcactcgccctgcggatcaacgttggctcaatgactcaatgcg
+ccatgcgtatggcgagttggcgaaacaaggtcgttgccattctgttgaggtgtggcaggg
+cgaacaactggtgggtgggctttatggcatttccgttggccaactgttttgtggcgaatc
+catgtttagcctcgcaaccaatgcctcgaaaattgcgctttggta-tttttgcgaccatt
+```
+
+We can see this contains a sequence named "GCF_015482825.1_ASM1548282v1_genomic", which corresponds to one of the NCBI genomes we downloaded. 
+We can look at all the sequence names in the FASTA file: 
+
+```bash
+grep ">" results/panaroo/core_gene_alignment.aln
+```
+
+```
+>GCF_015482825.1_ASM1548282v1_genomic
+>GCF_019704235.1_ASM1970423v1_genomic
+>GCF_013357625.1_ASM1335762v1_genomic
+>GCF_017948285.1_ASM1794828v1_genomic
+>GCF_009763825.1_ASM976382v1_genomic
+>isolate01
+>GCF_013357665.1_ASM1335766v1_genomic
+>GCF_009762915.1_ASM976291v1_genomic
+>GCF_009762985.1_ASM976298v1_genomic
+
+... more output omitted to save space ...
+```
+
+We can see each input genome appears once, including the "isolateXX" genomes assembled and annotated by us.
+
+
+### Tree inference: `iqtree` {#sec-iqtree}
 
 There are different methods for inferring phylogenetic trees from sequence alignments. 
 Regardless of the method used, the objective is to construct a tree that represents the evolutionary relationships between different species or genetic sequences.
@@ -164,24 +214,229 @@ We run _IQ-TREE_ on the output from _Panaroo_, i.e. using the core genome alignm
 mkdir results/iqtree
 
 # run iqtree2
-iqtree2  -s results/panaroo/TODO.fasta --prefix results/iqtree/TODO
+iqtree -s results/panaroo/core_gene_alignment.aln --prefix results/iqtree/awd -m GTR+F+I
 ```
 
-TODO output
+The options used are: 
+
+- `-s` - the input alignment file.
+- `--prefix` - the name of the output files. This will be used to name all the files with a "prefix". In this case we are using the "awd" prefix, which is very generic. In your own analysis you may want to use a more specific prefix (for example, the name of the collection batch). 
+- `-m` - specifies the DNA substitution model we'd like to use. We give more details of this option below. 
+
+When not specifying the `-m` option, `iqtree` employs _ModelFinder_ to pinpoint the substitution model that best maximizes the data's likelihood, as previously mentioned. 
+Nevertheless, this can be time-consuming (as `iqtree` needs to fit trees numerous times). 
+An alternative approach is utilizing a versatile model, like the one chosen here, "GTR+F+I," which is a [generalized time reversible (GTR) substitution model](https://en.wikipedia.org/wiki/Substitution_model#Generalised_time_reversible). 
+This model requires an estimate of the base frequencies within the sample population, determined in this instance by tallying the base frequencies from the alignment (indicated by "+F" in the model name). 
+Lastly, the model accommodates variations in rates across sites, including a portion of invariant sites (noted by "+I" in the model name).
+
+We can look at the output folder: 
+
+```bash
+ls results/iqtree
+```
+
+```
+
+```
+
+There are several files with the following extension: 
+
+- `.iqtree` - a text file containing a report of the IQ-Tree run, including a representation of the tree in text format.
+- `.treefile` - the estimated tree in NEWICK format. We can use this file with other programs, such as _FigTree_, to visualise our tree. 
+- `.log` - the log file containing the messages that were also printed on the screen. 
+- `.bionj` - the initial tree estimated by neighbour joining (NEWICK format).
+- `.mldist` - the maximum likelihood distances between every pair of sequences.
+- `ckp.gz` - this is a "checkpoint" file, which IQ-Tree uses to resume a run in case it was interrupted (e.g. if you are estimating very large trees and your job fails half-way through).
+- `.model.gz` - this is also a "checkpoint" file for the model testing step. 
+
+The main files of interest are the report file (`.iqtree`) and the tree file (`.treefile`) in standard [Newick format](https://en.wikipedia.org/wiki/Newick_format).
+
+
+### Visualising trees: FigTree
+
+There are many programs that can be used to visualise phylogenetic trees. 
+In this course we will use _FigTree_, which has a simple graphical user interface.
+You can open _FigTree_ from the terminal by running the command `figtree`. 
+
+To open the tree, go to <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd> and browse to the folder with the _IQ-TREE_ output files. 
+Select the file with `.treefile` extension and click <kbd>Open</kbd>.
+You will be presented with a visual representation of the tree. 
+
+We can also import a "tab-separated values" (TSV) file with annotations to add to the tree, if you have any available (e.g. country of origin, date of collection, etc.). 
+To add annotations:
+
+- Go to <kbd><kbd>File</kbd> > <kbd>Import annotations...</kbd></kbd> and open the annotation file. This file has to be in tab-delimited format.
+- On the menu on the left, click <kbd>Tip Labels</kbd> and under "Display" choose one of the fields of our metadata table. 
+
+There are many ways to further configure the tree, including highlighting clades in the tree, and change the labels. 
+See the @fig-phylo-figtree for an example. 
+
+![Annotated phylogenetic tree obtained with _FigTree_. We identified a clade in the tree that corresponded to our samples, and used the "Highlight" function to give them different colours. To do this, change the "Selection Mode" at the top to "Clade", then select the branch at the base of the clade you want to highlight, and press the "Highlight" button on the top to pick a colour.](images/phylo_figtree.png){#fig-phylo-figtree}
+
+<!-- we need to add some metadata to this, otherwise very difficult to interpret -->
 
 
 ## Exercises
 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
+You also need to have completed the genome assembly exercise in @sec-ex-assembly.
+
+:::{.callout-exercise}
+#### Pathogenwatch phylogeny
+
+Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "Ambroise 2023" collection that you created and answer the following questions:
+
+- Does any of your sequences look like an outlier (i.e. a very long branch) in the sample tree view?
+- Change the tree view to "Population". Which transmission wave do your samples cluster with?
+- Looking within the population(s) where your samples cluster in, do your samples cluster together or are they interspersed between other samples from the _Pathogenwatch_ collection?
+
+:::{.callout-answer collapse=true}
+
+Looking at our samples' tree doesn't reveal any sample as a particular outlier. 
+
+Looking at the "Population" view (from the dropdown on the top-left, as shown below), we can see that all of the "Ambroise 2023" samples fall within the "W3_T10" clade. 
+This is a recent transmission wave, confirming our strains are pathogenic and related to other recent strains ([Weill et al. 2017](https://doi.org/10.1126/science.aad5901)). 
+
+![](images/phylo_pathogenwatch_ambroise01.png)
+
+Looking inside the clade, we can see that our samples cluster somewhat apart from the rest, suggesting they are more similar to each other than they are with the samples from the _Pathogenwatch_ collection. 
+This might be because our samples are from 2023, whereas the collection from _Pathogenwatch_ is from 2017, so it is likely that these strains have accumulated new mutations since then.
+
+![](images/phylo_pathogenwatch_ambroise02.png)
+
+Note that in the image above we changed our tree layout to a "circle". Sometimes this view is helpful when we have too many sequences. 
+
+:::
+:::
+
 :::{.callout-exercise}
 #### Core genome alignment
 
-TODO
+Using _Panaroo_, perform a core genome alignment for your assembled sequences together with the public genomes we provide in `resources/vibrio_genomes/`. 
+
+- Activate the software environment: `mamba activate typing`.
+- Fix the script we provide in `scripts/05-panaroo.sh`. See @sec-panaroo if you need a hint of how to fix the code in the script.
+- Run the script using `bash scripts/05-panaroo.sh`.
+
+When the analysis starts you will get several messages and progress bars print on the screen.
+This analysis takes a long time to run (several hours), so you will have to leave it running before continuing to the next exercise. 
+
+:::{.callout-answer collapse=true}
+
+The fixed code for our script is:
+
+```bash
+#!/bin/bash
+
+# create output directory
+mkdir -p results/panaroo/
+
+# Run panaroo
+panaroo \
+  --input results/assemblies/*.gff resources/vibrio_genomes/*.gff \
+  --out_dir results/panaroo \
+  --clean-mode strict \
+  --alignment core \
+  --core_threshold 0.98 \
+  --remove-invalid-genes \
+  --threads 8
+```
+
+We have specified two sets of input files:
+
+- `results/assemblies/*.gff` specifies all the GFF annotation files for our assembled genomes.
+- `resources/vibrio_genomes/*.gff` specifies the GFF annotation files for the public genomes downloaded from NCBI. 
+
+In both cases we use the `*` wildcard to match all the files with `.gff` extension. 
+
+As it runs, _Panaroo_ prints several messages to the screen. 
+The analysis took 7h to run on our computers! 
+It's quite a long time, so it is advisable to run it on a high performance computing cluster, if you have one available. 
+Otherwise, you will have to leave it running on your computer overnight. 
+
+Once it finishes, we can see several output files: 
+
+```bash
+ls results/panaroo
+```
+
+```
+aligned_gene_sequences                core_alignment_header.embl        gene_presence_absence_roary.csv
+alignment_entropy.csv                 core_gene_alignment.aln           pan_genome_reference.fa
+combined_DNA_CDS.fasta                core_gene_alignment_filtered.aln  pre_filt_graph.gml
+combined_protein_CDS.fasta            final_graph.gml                   struct_presence_absence.Rtab
+combined_protein_cdhit_out.txt        gene_data.csv                     summary_statistics.txt
+combined_protein_cdhit_out.txt.clstr  gene_presence_absence.Rtab
+core_alignment_filtered_header.embl   gene_presence_absence.csv
+```
+
+The main file of interest is `core_gene_alignment_filtered.aln`, which we will use for tree inference in the next exercise.
+
+:::
 :::
 
 :::{.callout-exercise}
 #### Tree inference
 
-TODO
+Produce a tree from the core genome alignment from the previous step. 
+
+- Activate the software environment: `mamba activate typing`.
+- Fix the script provided in `scripts/06-iqtree.sh`. See @sec-iqtree if you need a hint of how to fix the code in the script.
+- Run the script using `bash scripts/06-iqtree.sh`. Several messages will be printed on the screen while `iqtree` runs. 
+- Once the run completes, load the generated tree into _FigTree_ and answer the following questions:
+  - Do all your samples cluster together?
+  - What is the closest public sequence to your samples? 
+  - Look up that sample on [NCBI's genomes page](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true&assembly_level=3%3A3&release_year=2019%3A2023). Is it annotated as being O1 serotype?
+
+:::{.callout-answer collapse=true}
+
+The fixed script is: 
+
+```bash
+#!/bin/bash
+
+# create output directory
+mkdir -p results/iqtree/
+
+# Run iqtree
+iqtree -s results/panaroo/core_gene_alignment_filtered.aln --prefix results/iqtree/ambroise -m GTR+F
+```
+
+- We specify as input the `core_gene_alignment.aln` produced in the previous step by _Panaroo_.
+- We use as prefix for our output files "ambroise" (since we are using the "Ambroise 2023" data), so all the output file names will be named as such.
+- We are using the DNA substitution model "GTR+F", which is a [generalized time reversible (GTR) substitution model](https://en.wikipedia.org/wiki/Substitution_model#Generalised_time_reversible), commonly used in maximum likelihood tree inference due to its flexibility.
+
+After the analysis runs we get several output files in our directory: 
+
+```bash
+ls results/iqtree/
+```
+
+```
+ambroise.bionj  ambroise.ckp.gz  ambroise.iqtree  #
+ambroise.log    ambroise.mldist  ambroise.treefile
+```
+
+The main file of interest is `ambroise.treefile`, which contains our tree in the standard Newick format. 
+We can load this tree into _FigTree_ from <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd>. 
+
+The resulting tree file is shown in the image below:
+
+![](images/phylo_figtree_ambroise.png)
+
+We have highlighted the the clades showing our samples and their closest samples. 
+We can see that: 
+
+- Our samples do cluster together, suggesting they are more similar to each other than to any other samples in the dataset. 
+- The closest public sequences are "GCF_013085145.1_ASM1308514v1_genomic" and "GCF_009799825.1_ASM979982v1_genomic".
+- Looking at these sequences in the NCBI page, we can see: 
+  - [ASM1308514v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_013085145.1/) is annotated as "Vibrio cholerae O1 biovar El Tor", with collection date 2015.
+  - [ASM979982v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009799825.1/) is annotated as "Pathogen: clinical or host-associated sample from Vibrio cholerae". The biotype is not specified in this page, but if we go to the [biosample page](https://www.ncbi.nlm.nih.gov/biosample/SAMN13735001/) we can see it is also annotated as "O1 El Tor". The collection date was 2011. 
+
+These results suggest that our samples are closely related to other "O1 El Tor" strains, confirming their classification as also being that strain type. 
+
+:::
 :::
 
 

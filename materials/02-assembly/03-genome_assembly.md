@@ -428,7 +428,8 @@ We will look at these in the next chapter on [quality control](04-assembly_quali
 
 ## Exercises {#sec-ex-assembly}
 
-For these exercises, you can either use the dataset we provide or your own data, as explained in [**Data & Setup**](../../setup.md). 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
 
 :::{.callout-exercise}
 #### Running assembly script

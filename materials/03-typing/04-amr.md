@@ -38,7 +38,7 @@ By using _nf-core_ pipelines, researchers can save time and effort that would ot
 :::
 
 
-## _Funcscan_ workflow
+## _Funcscan_ workflow {#sec-funcscan}
 
 Here, we introduce an automated workflow called **[`nf-core/funcscan`](https://nf-co.re/funcscan/1.1.2)** (@fig-funcscan), which uses _Nextflow_ to manage all the software and analysis steps (see information box above).
 This pipeline uses five different AMR screening tools: **[ABRicate](https://github.com/tseemann/abricate)**, **[AMRFinderPlus (NCBI Antimicrobial Resistance Gene Finder)](https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/)**, **[fARGene (Fragmented Antibiotic Resistance Gene idENntifiEr)](https://github.com/fannyhb/fargene)**, **[RGI (Resistance Gene Identifier)](https://card.mcmaster.ca/analyze/rgi)**, and **[DeepARG](https://readthedocs.org/projects/deeparg/)**.
@@ -251,22 +251,144 @@ In conclusion, always be critical of the analysis of your results at this stage,
 
 ## Exercises
 
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> 
+For these exercises, you can either use the dataset we provide in [**Data & Setup**](../../setup.md), or your own data. 
+You also need to have completed the genome assembly exercise in @sec-ex-assembly.
+
 :::{.callout-exercise}
-#### Funcscan
+#### Funcscan workflow
 
-Run funcscan on your samples. 
+Run the `nf-core/funcscan` workflow on the assembled genomes for your samples. 
 
-TODO
+- Using _Excel_, create a samplesheet CSV file for your samples, required as input for this pipeline. See @sec-funcscan if you need to revise the format of this samplesheet.
+- Activate the software environment: `mamba activate nextflow`.
+- Fix the script provided in `scripts/07-amr.sh`.
+- Run the script using `bash scripts/07-amr.sh`.
 
+Once the workflow is running it will print a progress message on the screen. 
+This will take a while to run, so you can do the next exercise, and then continue with this one. 
+
+Once the analysis finishes, open the output file `results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv` in _Excel_. 
+Answer the following questions: 
+
+- Did this analysis find evidence for antimicrobial resistance to any drugs?
+- Did all your samples show evidence for AMR?
+
+
+:::{.callout-answer collapse=true}
+
+We created a samplesheet for our samples in _Excel_, making sure to "Save As..." CSV format. 
+The raw file looks like this: 
+
+```
+sample,fasta
+CTMA_1402,results/assemblies/CTMA_1402.fasta
+CTMA_1421,results/assemblies/CTMA_1421.fasta
+CTMA_1427,results/assemblies/CTMA_1427.fasta
+CTMA_1432,results/assemblies/CTMA_1432.fasta
+CTMA_1473,results/assemblies/CTMA_1473.fasta
+```
+
+The fixed script is: 
+
+```bash
+#!/bin/bash
+
+# create output directory
+mkdir results/funcscan
+
+# run the pipeline
+nextflow run nf-core/funcscan -profile singularity \
+  --max_memory 16.GB --max_cpus 16 \
+  --input samplesheet_funcscan.csv \
+  --outdir results/funcscan \
+  --run_arg_screening \
+  --arg_skip_deeparg
+```
+
+While the script was running we got a progress of the analysis printed on the screen. 
+Once it finished we got a message like this (yours will look slightly different): 
+
+```
+Completed at: 12-Aug-2023 12:24:03
+Duration    : 44m 54s
+CPU hours   : 3.0
+Succeeded   : 277
+```
+
+We opened the _hAMRonization_ output report file in _Excel_ and filtered it for the column "antimicrobial_agent". 
+We identified the following (only a few columns shown for simplicity):
+
+```
+input_file_name              gene_symbol  antimicrobial_agent
+CTMA_1402.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1402.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1402.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1402.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1402.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1402.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1421.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1421.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1421.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1421.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1421.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1421.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1421.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1427.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1427.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1427.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1427.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1427.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1427.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1427.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1432.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1432.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1432.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1432.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1432.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1432.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1432.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1473.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1473.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1473.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1473.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1473.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1473.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1473.tsv.amrfinderplus  varG         CARBAPENEM
+```
+
+All 5 of our samples show evidence of AMR to different antimicrobial drugs. 
+All of them are quite similar, with resistance to a similar set of drugs. 
+
+:::
 :::
 
 :::{.callout-exercise}
 #### AMR with _Pathogenwatch_
 
+Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "Ambroise 2023" collection that you created and answer the following questions:
+
+- Open the antibiotics summary table.
+- Do all your samples have evidence for antibiotic resistance?
+- If any samples have resistance to much fewer antibiotics compared to the others, do you think this could be related to assembly quality?
+- How do the results from _Pathogenwatch_ compare to those from `nf-core/funcscan`?
+
 How do the results compare with Pathogenwatch?
 
-TODO
+:::{.callout-answer collapse=true}
 
+We can open the "Antibiotics" table from the top-left dropdown menu, as shown in the image below. 
+
+![](images/pathogenwatch-ambroise04.png)
+
+We can see that _Pathogenwatch_ identified resistance to several antibiotics. 
+All samples are similar, except "1432" doesn't have resistance to furazolidone and nitrofurantoin. 
+This sample had high completeness, according to _CheckM2_. 
+However, it was also the sample with the lowest sequencing coverage (from our analysis during the genome assembly in @sec-ex-assembly), so this could be a "false negative" result due to the inability to cover some of the genes that confer AMR.
+
+All of the drugs identified by _funcscan_ were also identified by _Pathogenwatch_ (note that sulfamethoxazole and sulfisoxazole identified by _Pathogenwatch_ are both sulfonamide-derived drugs, reported by funcscan). 
+However, _Pathogenwatch_ identified resistance to several other drugs: ampicilin, ceftazidime, cephalosporins, ceftriazone, cefepime, furazolidone and nitrofurantoin. 
+:::
 :::
 
 ## Summary
@@ -276,3 +398,4 @@ TODO
 
 - TODO
 :::
+7
