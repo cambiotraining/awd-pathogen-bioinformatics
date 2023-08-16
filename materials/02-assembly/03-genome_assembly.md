@@ -13,7 +13,6 @@ At the end of this session you will be able to achieve the following:
 - 
 :::
 
-
 ## Genome Assembly
 
 Now, we'll do the next part of our bioinformatics work. 

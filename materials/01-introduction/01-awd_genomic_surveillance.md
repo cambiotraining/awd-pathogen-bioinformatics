@@ -37,7 +37,7 @@ All of the above analytical steps are discussed in the next sections.
 
 ## What are key genomic surveillance questions?
 
-When an outbreak happens the following are generally important public health questions that need to be adddressed during genomic surveillance. We use cholera as an example of AWD under investigation.
+When an outbreak occurs the following are generally important public health questions that need to be adddressed during genomic surveillance. We use cholera as an example of AWD under investigation.
 
 - Is there any Vibrio cholerae strain in the collected and sequenced samples?
 - If the answer is yes, then is it a known pathogenic strain or unknown?
