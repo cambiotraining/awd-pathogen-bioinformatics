@@ -38,12 +38,12 @@ Nanopore sequencing is a type of long-read sequencing technology. The main advan
 
 One of the bigger challenges in effectively using this technology is to produce sequencing libraries that contain high molecular weight, intact, DNA. Another disadvantage is that, compared to Illumina sequencing, the error rates at higher, at around 5%, though recently there is a significant improvement in the technology where the error rate has be reduced to approximately 1% as detailed [here](https://mycota.com/an-open-letter-regarding-the-efficacy-and-error-rates-of-nanopore-sequencing-for-mass-barcoding-macrofungi/)
 
-:::note
+:::{callout-note}
+
 **Which technology to choose??**
 
-Both of these platforms have been widely popular for bacterial sequencing sequencing. 
-They can both generate data with high-enough quality for the assembly and analysis for most of the pathogen genomic surveillance.  
-Mostly, which one you use will depend on what sequencing facilities you have access to. 
+Both of these platforms have been widely popular for bacterial sequencing. 
+They can both generate data with high-enough quality for the assembly and analysis for most of the pathogen genomic surveillance. Mostly, which one you use will depend on what sequencing facilities you have access to. 
 
 While Illumina provides the cheapest option per sample of the two, it has a higher setup cost, requiring access to the expensive sequencing machines. 
 On the other hand, Nanopore is a very flexible platform, especially its portable MinION devices. 
