@@ -5,6 +5,8 @@ title: Assessing read content
 ::: {.callout-tip}
 #### Learning Objectives
 
+- Perform quick screening of the contaimnations in your sample sequenced reads using Mash software
+- 
 - TODO
 :::
 

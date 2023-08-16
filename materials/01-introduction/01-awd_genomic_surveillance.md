@@ -10,6 +10,7 @@ The underlying objective of the genomic surveillance is to provide information a
 - Understanding what is genomic surveillance
 - Understanding genomic surveillance techniques
 - Understanding genomic sequencing and whole genome sequence
+- Understanding key questions to answer in genomic surveillance.
 :::
 
 ## Genomic sequencing for pathogen surveillance
@@ -34,7 +35,14 @@ Once the WGS has been done the next stage is bioinformatics and further downstre
 
 All of the above analytical steps are discussed in the next sections.
 
-TODO
+## What are key genomic surveillance questions?
+
+When an outbreak happens the following are generally important public health questions that need to be adddressed during genomic surveillance. We use cholera as an example of AWD under investigation.
+
+- Is there any Vibrio cholerae strain in the collected and sequenced samples?
+- If the answer is yes, then is it a known pathogenic strain or unknown?
+- If the answer is known, then does it known to be likely resistant to any antibiotics?
+- If the answer is yes, then what kind of antibiotics resistant genes may contain and which antibiotics is predicted to be affected?
 
 ## Summary
 In this section we have learned about the pathogen genomic surveillance and the technique used in genomic surveillance which whole genomic sequence. In the next section you are going to learn basics of bioinformatics analysis including detail the state-of-art sequencing technique known as **Next Generation Sequencing (NGS)**.
