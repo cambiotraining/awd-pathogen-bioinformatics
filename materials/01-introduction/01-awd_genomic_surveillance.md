@@ -5,6 +5,8 @@ Genomics has been applied to tracking infectious diseases by sequencing the geno
 
 The underlying objective of the genomic surveillance is to provide information about pathogen evolution and insight into its genetic changes which might have impact on transmission or resistance to interventions.
 
+![Overview of genomic surveillance. Source:[WHO](https://www.who.int/initiatives/genomic-surveillance-strategy)](images/genomic-surveillance.jpg){#fig-genomic-surveillance}
+
 ::: {.callout-tip}
 #### Learning Objectives
 - Understanding what is genomic surveillance
@@ -51,4 +53,5 @@ In this section we have learned about the pathogen genomic surveillance and the 
 #### Key Points
 - Pathogen genomic surveillance enable quick detection of the source of the outbreaks and provide insights on the transmission and antimicrobial resistance.
 - Whole genome sequence (WGS) is one of the useful techniques to perform genomic surveillance.
+- 
 :::
