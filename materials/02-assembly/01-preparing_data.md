@@ -4,10 +4,12 @@ title: Preparing data
 
 ::: {.callout-tip}
 #### Learning Objectives
-- Recognise the importance of organising your files and folders when starting a bioinformatic analysis.
+At the end of this session the following objective are aimed to be met:
+
+- Recognising the importance of organising your files and folders when starting a bioinformatic analysis.
 - Using command line to prepare sample data files, create environments, and manipulate files (directories/folders,etc) for analysis.
-- Investigate the content of the raw sequencing FASTQ files.
-- Download available public reference genomes from public databases.
+- Investigating the content of the raw sequencing FASTQ files.
+- Ability to download available public reference genomes from public databases.
 :::
 
 
@@ -247,9 +249,12 @@ GCF_009646135.1_ASM964613v1_genomic.fna   GCF_013357645.1_ASM1335764v1_genomic.f
 ```
 
 ## Summary
+In this section we have learned how to organise files and folders when starting a bioinformatic analysis. This is very important as it will likely make things easier especially when you want to access scripts, or your results for instance for further downstream analsis. We have also learned how to download NCBI public genomes, and performing quick stats for our sample reads for each barcode.
 
 ::: {.callout-tip}
 #### Key Points
-
-- TODO
+- Setting up forlders at the early stages of your bioinformatics analysis is important which helps to nicely organise your files and data.
+- Performing quick stats on your samples reads is vital as well.
+- In many cases of performing genomic surveillance you may want to access public database to track and deeply understand the strain suspected to cause the outbreak.
+  
 :::
