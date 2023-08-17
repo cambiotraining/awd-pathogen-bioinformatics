@@ -4,7 +4,7 @@
 # Download public data
 ###################################
 #
-# run this script from course_files/participants/ambroise2023
+# run this script from course_files/participants/
 # software environment used:
 #  mamba create --name ncbi_datasets
 #  mamba install --name ncbi_datasets ncbi-datasets-cli
@@ -34,7 +34,7 @@ datasets download genome taxon 666 \
 unzip ncbi_dataset.zip
 
 # convert files to panaroo
-conda activate awd
+conda activate typing
 wget https://raw.githubusercontent.com/gtonkinhill/panaroo/master/scripts/convert_refseq_to_prokka_gff.py
 
 for genome in ncbi_dataset/data/*/*_genomic.fna
@@ -66,21 +66,23 @@ cp resources/vibrio_genomes/GCF_937000105.1_CNRVC190243_genomic.fna resources/re
 ### checkM database ###
 
 # activate environment
-conda activate awd
+conda activate checkm
 
-mkdir -p resources/checkm_db
-wget -O checkm_db.tar.gz https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
-tar -xzvf checkm_db.tar.gz -C resources/checkm_db/
-rm checkm_db.tar.gz
+checkm2 database --download --path resources/
 
-# this command needs to be run by participants
-checkm data setRoot $(pwd)/resources/checkm_db/
+# mkdir -p resources/checkm_db
+# wget -O checkm_db.tar.gz https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz
+# tar -xzvf checkm_db.tar.gz -C resources/checkm_db/
+# rm checkm_db.tar.gz
+
+# # this command needs to be run by participants
+# checkm data setRoot $(pwd)/resources/checkm_db/
 
 
 ### MASH database ###
 
 # activate environment
-conda activate awd
+conda activate mash
 
 mkdir -p resources/mash_db
 wget -O resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh --no-check-certificate https://gembox.cbcb.umd.edu/mash/refseq.genomes%2Bplasmid.k21s1000.msh

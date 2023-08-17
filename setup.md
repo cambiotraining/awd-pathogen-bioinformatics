@@ -10,110 +10,14 @@ Uncomment the sections relevant for your materials, and add additional instructi
 Note that we use tabsets to provide instructions for all three major operating systems.
 -->
 
-::: {.callout-tip level=2}
+::: {.callout-warning level=2}
 ## Workshop Attendees
 
-If you are attending one of our workshops, we will provide a training environment with all of the required software and data.  
-If you want to setup your own computer to run the analysis demonstrated on this course, you can follow the instructions below.
+If you are attending one of our workshops, we will provide a training environment with all of the required software and data. 
+There is no need for you to set anything up in advance. 
+ 
+These instructions are for those who would like setup their own computer to run the analysis demonstrated on the materials.
 :::
-
-## Data
-
-The data provided to run these materials is provided as a set of Zip files. 
-We provide instructions to download and uncompress the data via the command line, which is the recommended way to make sure you can follow the analysis as shown in the materials. 
-However, we also provide the direct links to the Zip files, in case you prefer to download them manually. 
-
-First create a directory to store the files. 
-Here, we create a directory for the workshop in the home folder (you can change this if you want to):
-
-```bash
-# create variable for working directory - change this if you want
-workdir="~/awd_bioinfo"
-mkdir $workdir
-```
-
-### Resources
-
-We provide files for databases and public genomes used in different parts of the analysis. 
-These files are **required in addition to all other datasets**.
-In summary, this contains four directories: 
-
-- `mash_db` - database for the software _Mash_, covered in the [Read content](materials/02-assembly/02-read_content.md) chapter.
-- `bakta_db` - database for the software _Bakta_, covered in the [Genome assembly](materials/02-assembly/03-genome_assembly.md) chapter.
-- `CheckM2_database` - database for the _CheckM2_ program covered in the [Assembly quality](materials/02-assembly/04-assembly_quality.md) chapter.
-- `vibrio_genomes` - public genomes downloaded from NCBI and used in the [Phylogenetics](materials/03-typing/03-phylogeny.md) chapter.
-
-We recommend downloading this file once and then creating a _symbolic link_ (aka shortcut) to this folder from each of the analysis directories. 
-This will reduce the storage space required for analysis. 
-
-Download this file using the command line:
-
-```bash
-# make sure you are in the workshop folder
-cd $workdir
-
-# download and unzip
-wget -O resources.zip "TODO_DROPBOX_LINK"
-unzip resources.zip
-rm resources.zip  # remove original zip file to save space
-```
-
-If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download resources](TODO_DROPBOX_LINK).
-
-
-### Ambroise 2023
-
-This dataset includes 5 samples sequenced on an ONT platform, and published in [Ambroise et al. 2023](https://doi.org/10.1101/2023.02.17.23286076). 
-Here are the details about these data: 
-
-- Number of samples: 5
-- Origin: samples from cholera patients from the Democratic Republic of the Congo.
-- Sample preparation: stool samples were collected and used for plate culture in media appropriate to grow _Vibrio_ species; ONT library preparation and barcoding were done using standard kits.
-- Sequencing platform: MinION
-- Basecalling: Guppy version 6 in high accuracy ("hac") mode (this information is not actually specified in the manuscript, but we are making this assumption, just as an example).
-
-To download the data, you can run the following commands: 
-
-```bash
-# make sure you are in the workshop folder
-cd $workdir
-
-# download and unzip
-wget -O ambroise.zip "TODO_DROPBOX_LINK"
-unzip ambroise.zip
-rm ambroise.zip  # remove original zip file to save space
-
-# create link to resources directory
-ln -s $PWD/resources/ $PWD/ambroise2023/resources
-```
-
-If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download Ambroise 2023](TODO_DROPBOX_LINK).
-
-
-### Scripts only
-
-We also provide a folder containing only the scripts used in the exercises. 
-This is useful if you are **working with your own data**. 
-
-Here are the commands to download these data: 
-
-```bash
-# make sure you are in the workshop folder
-cd $workdir
-
-# download and unzip
-wget -O minimal.zip "TODO_DROPBOX_LINK"
-unzip minimal.zip
-rm minimal.zip  # remove original zip file to save space
-
-# create link to resources directory
-ln -s $PWD/resources/ $PWD/awd_workshop/resources
-```
-
-If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download scripts only](TODO_DROPBOX_LINK).
 
 
 ## Software
@@ -267,7 +171,7 @@ docker {
 ### Singularity
 
 We recommend that you install _Singularity_ and use the `-profile singularity` option when running _Nextflow_ pipelines. 
-On Ubuntu, you can install _Singularity_ using the following commands: 
+On Ubuntu/WSL2, you can install _Singularity_ using the following commands: 
 
 ```bash
 sudo apt install -y runc cryptsetup-bin
@@ -345,3 +249,101 @@ You can follow the same instructions as for "Ubuntu".
 From now on, you can open VS code directly from a WSL terminal by typing `code .`.
 :::
 
+
+## Data
+
+The data used in these materials is provided as a set of zip files. 
+We provide instructions to download and uncompress the data via the command line, which is the recommended way to make sure you have the correct directory structure. 
+However, we also provide the direct links to the zip files, in case you prefer to download them manually. 
+
+First create a directory to store the files. 
+Here, we create a directory for the workshop in the "Documents" folder (you can change this if you want to):
+
+```bash
+# create variable for working directory - change this if you want
+workdir="~/Documents/awd_bioinfo"
+mkdir $workdir
+```
+
+### Resources
+
+We provide files for databases and public genomes used in different parts of the analysis. 
+These files are **required in addition to any other datasets**.
+In summary, this contains four directories: 
+
+- `mash_db` - database for the software _Mash_, covered in the [Read content](materials/02-assembly/02-read_content.md) chapter.
+- `bakta_db` - database for the software _Bakta_, covered in the [Genome assembly](materials/02-assembly/03-genome_assembly.md) chapter.
+- `CheckM2_database` - database for the _CheckM2_ program covered in the [Assembly quality](materials/02-assembly/04-assembly_quality.md) chapter.
+- `vibrio_genomes` - public genomes downloaded from NCBI and used in the [Phylogenetics](materials/03-typing/03-phylogeny.md) chapter.
+
+We recommend downloading this file once and then creating a _symbolic link_ (shortcut) to this folder from each of the analysis directories. 
+This will reduce the storage space required for analysis. 
+
+Download this file using the command line:
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O resources.zip "TODO_DROPBOX_LINK"
+unzip resources.zip
+rm resources.zip  # remove original zip file to save space
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download resources](TODO_DROPBOX_LINK).
+
+
+### Ambroise 2023
+
+This dataset includes 5 samples sequenced on an ONT platform, and published in [Ambroise et al. 2023](https://doi.org/10.1101/2023.02.17.23286076). 
+Here are the details about these data: 
+
+- **Number of samples: **5
+- **Origin: **samples from cholera patients from the Democratic Republic of the Congo.
+- **Sample preparation: **stool samples were collected and used for plate culture in media appropriate to grow _Vibrio_ species; ONT library preparation and barcoding were done using standard kits.
+- **Sequencing platform: **MinION
+- **Basecalling: **Guppy version 6 in high accuracy ("hac") mode (this information is not actually specified in the manuscript, but we are making this assumption, just as an example).
+
+To download the data, you can run the following commands: 
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O ambroise.zip "TODO_DROPBOX_LINK"
+unzip ambroise.zip
+rm ambroise.zip  # remove original zip file to save space
+
+# create link to resources directory
+ln -s $PWD/resources/ $PWD/ambroise2023/resources
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download Ambroise 2023](TODO_DROPBOX_LINK).
+
+
+### Scripts only
+
+We also provide a folder containing only the scripts used in the exercises. 
+This is useful if you want to **use your own data**. 
+
+Here are the commands to download these data: 
+
+```bash
+# make sure you are in the workshop folder
+cd $workdir
+
+# download and unzip
+wget -O minimal.zip "TODO_DROPBOX_LINK"
+unzip minimal.zip
+rm minimal.zip  # remove original zip file to save space
+
+# create link to resources directory
+ln -s $PWD/resources/ $PWD/custom_data/resources
+```
+
+If you want to download this file manually: 
+[<i class="fa-solid fa-download"></i> download scripts only](TODO_DROPBOX_LINK).

@@ -2,7 +2,7 @@
 
 #### Settings #####
 
-# CSV file with two columns: sample,barcode
+# CSV file with at least two columns: sample,barcode
 samplesheet="samplesheet.csv"
 
 # directory with barcode folders from Guppy

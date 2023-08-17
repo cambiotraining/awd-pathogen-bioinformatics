@@ -16,18 +16,29 @@
 conda activate sra
 
 # samplesheet - left some samples out to save compute time
-echo "barcode,alias,platform,sra
-barcode01,CTMA_1402,MinION,ERR10146532
-barcode02,CTMA_1421,MinION,ERR10146551
-barcode05,CTMA_1427,MinION,ERR10146520
-barcode06,CTMA_1432,MinION,ERR10146521
-barcode09,CTMA_1473,MinION,ERR10146531" > samplesheet_epi2me.csv
+echo "sample,barcode,platform,sra
+CTMA_1402,barcode01,MinION,ERR10146532
+CTMA_1421,barcode02,MinION,ERR10146551
+CTMA_1427,barcode05,MinION,ERR10146520
+CTMA_1432,barcode06,MinION,ERR10146521
+CTMA_1473,barcode09,MinION,ERR10146531
+" > samplesheet.csv
 
 # these were the samples left out:
-#  barcode03,CTMA_1424,MinION,ERR10146552
-#  barcode04,CTMA_1426,MinION,ERR10149432
-#  barcode07,CTMA_1435,MinION,ERR10146522
-#  barcode08,CTMA_1461,MinION,ERR10146553
+#  CTMA_1424,barcode03,MinION,ERR10146552
+#  CTMA_1426,barcode04,MinION,ERR10149432
+#  CTMA_1435,barcode07,MinION,ERR10146522
+#  CTMA_1461,barcode08,MinION,ERR10146553
+
+# samplesheet for funcscan
+echo "sample,fasta
+CTMA_1402,results/assemblies/CTMA_1402.fasta
+CTMA_1421,results/assemblies/CTMA_1421.fasta
+CTMA_1427,results/assemblies/CTMA_1427.fasta
+CTMA_1432,results/assemblies/CTMA_1432.fasta
+CTMA_1473,results/assemblies/CTMA_1473.fasta
+" > samplesheet_funcscan.csv
+
 
 # output directory
 mkdir -p data/fastq_pass
