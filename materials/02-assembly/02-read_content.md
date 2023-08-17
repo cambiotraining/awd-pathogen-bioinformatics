@@ -4,10 +4,10 @@ title: Assessing read content
 
 ::: {.callout-tip}
 #### Learning Objectives
+At the end of this session you will be able to the following:
 
-- Perform quick screening of the contaimnations in your sample sequenced reads using Mash software
-- 
-- TODO
+- Performing quick screening of the contaimnations in your sample sequenced reads using Mash software
+  
 :::
 
 ## Read content
@@ -347,7 +347,7 @@ By the 4th or 5th entries in the results tables, although the sequence identity 
 
 
 ## Summary
-
+In summary, we have 
 ::: {.callout-tip}
 #### Key Points
 
