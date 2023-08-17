@@ -1,19 +1,21 @@
 ---
 title: Pathogen genomic surveillance
 ---
+::: {.callout-tip}
+#### Learning Objectives
+At the end of this session you should be to:
+
+- understand what is genomic surveillance
+- understand genomic surveillance techniques
+- understand genomic sequencing and whole genome sequence
+- understand key questions to answer in genomic surveillance.
+:::
+
 Genomics has been applied to tracking infectious diseases by sequencing the genomes of bacteria, parasites and viruses. According to WHO, genomic surveillance is the process of constantly monitoring pathogens and analyzing their genetic similarities and differences. From this perspective, WHO has prepared a 10-years global strategy for genomic surveillance of pathogens with pandemic and epidemic potential which you can read from [here](https://www.who.int/publications/i/item/9789240046979).
 
 The underlying objective of the genomic surveillance is to provide information about pathogen evolution and insight into its genetic changes which might have impact on transmission or resistance to interventions.
 
 ![Overview of genomic surveillance. Source:[WHO](https://www.who.int/initiatives/genomic-surveillance-strategy)](images/genomic-surveillance.jpg){#fig-genomic-surveillance}
-
-::: {.callout-tip}
-#### Learning Objectives
-- Understanding what is genomic surveillance
-- Understanding genomic surveillance techniques
-- Understanding genomic sequencing and whole genome sequence
-- Understanding key questions to answer in genomic surveillance.
-:::
 
 ## Genomic sequencing for pathogen surveillance
 One of the techniques used in genomic surveillance is **genomic sequencing**. In genomic sequencing we look into the DNA of pathogens to examine how they spread through communities, cause illnesses, and become resistant to medications and vaccines designed to stop them.
