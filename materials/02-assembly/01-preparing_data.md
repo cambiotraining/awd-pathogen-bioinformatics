@@ -4,8 +4,8 @@ title: Preparing data
 
 ::: {.callout-tip}
 #### Learning Objectives
-
 - Recognise the importance of organising your files and folders when starting a bioinformatic analysis.
+- Using command line to prepare sample data files, create environments, and manipulate files (directories/folders,etc) for analysis.
 - Investigate the content of the raw sequencing FASTQ files.
 - Download available public reference genomes from public databases.
 :::
