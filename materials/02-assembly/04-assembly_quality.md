@@ -314,6 +314,6 @@ In this section you have learned how to perform quality of your assembled genome
 
 ::: {.callout-tip}
 #### Key Points
-- It is good and highly recommended bioinformatics practice to check the quality of your assemblies before you proceed further downstream analyses.
+- It is a good and highly recommended bioinformatics practice to check the quality of your assemblies before you proceed to further downstream analyses.
   
 :::

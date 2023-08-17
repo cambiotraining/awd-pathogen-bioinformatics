@@ -249,7 +249,7 @@ GCF_009646135.1_ASM964613v1_genomic.fna   GCF_013357645.1_ASM1335764v1_genomic.f
 ```
 
 ## Summary
-In this section we have learned how to organise files and folders when starting a bioinformatic analysis. This is very important as it will likely make things easier especially when you want to access scripts, or your results for instance for further downstream analsis. We have also learned how to download NCBI public genomes, and performing quick stats for our sample reads for each barcode.
+In this section we have learned how to organise files and folders when starting a bioinformatic analysis. This is very important as it will likely make things easier especially when you want to access scripts, or your results for further downstream analysis. We have also learned how to download NCBI public genomes, and performing quick stats on our sample reads barcodes.
 
 ::: {.callout-tip}
 #### Key Points

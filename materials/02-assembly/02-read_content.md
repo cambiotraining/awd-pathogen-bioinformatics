@@ -347,9 +347,11 @@ By the 4th or 5th entries in the results tables, although the sequence identity 
 
 
 ## Summary
-In summary, we have 
+In summary, we have learned to perform a quick contamination screening on our sample barcoded reads using **mash** software. This may lead to answer an important genomic surveillance question with regard to the Cholerae cultured samples, which is: **Is this V. cholerae or not?** and in some cases it can initially answer another important question which is: **Is this pathogenic or not?**. This quick contamination screening with mash usually will at glance tell us if there is any and at what percentage degree other non V.cholerae related exist in the particular sample. However, this is not the only useful way to check for contamination. There is another efficient way to achieve this using **Kraken2** software which perform thourough taxonomic identification of your reads. This tool can be used in cunjuction with another tool called **Bracken** which performs relative abundance of the taxonomic results from Kraken2. Nevertheless, it requires a significant amount of time to download the database particularly with the low internet speed situation. Of course, for metagenomic samples (which is not the case for the data we are using for the training) Kraken2 approach has become the standard for identification of species in the sample reads.
+
 ::: {.callout-tip}
 #### Key Points
-
-- TODO
+- For cultured samples you can use mash for quickly screening for contamination in your samples.
+- Checking the quality and contamination of the sample sequence reads is the bioinformatics standard approach before proceeding further in the next step which is genome assembly.
+- You can have initial answer of the critical gennomic surveillance regarding which strain and whether it is pathogenic or not during this stage.
 :::
