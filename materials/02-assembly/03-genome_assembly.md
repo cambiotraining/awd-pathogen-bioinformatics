@@ -4,12 +4,12 @@ title: Genome assembly
 
 ::: {.callout-tip}
 #### Learning Objectives
-At the end of this session you will be able to achieve the following:
+At the end of this session you will be able to perform the following:
 
-- Performing subsampling of your sample isolates reads using rasusa.
-- Performing genome assembly for your isolates using flye.
-- Performing error correction of the assembled genome isoaltes using medaka.
-- Performing annotation of your genome isolates using bakta
+- subsampling of your sample isolates reads using 'rasusa'.
+- genome assembly for your isolates using 'flye'.
+- error correction of the assembled genome isolates using 'medaka'.
+- annotation of your genome isolates using 'bakta'
   
 :::
 
