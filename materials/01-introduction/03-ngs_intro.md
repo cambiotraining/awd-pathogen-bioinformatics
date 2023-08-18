@@ -153,9 +153,29 @@ We will see FASTA files several times throughout this course, so it's important 
 
 A GFF (general feature format; file extension .gff2 or .gff3) describes the various sequence elements that make up a gene and is a standard way of annotating genomes. It defines the features present within a gene in the body of the GFF file, including transcripts, regulatory regions, untranslated regions, exons, introns, and coding sequences. It uses a header region with a “##” string to include metadata.
 
-TODO
+## Exercises
 
-## Summary
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i>  
+
+:::{.callout-exercise}
+#### Bioinformatics file formats
+
+In this section we have discussed only four formats. However, there are other important file formats that are quite common in bioinformatics. With your colleague discuss the following file formats in terms of the: 1) information content stored 2) underlying structure. Finally, how any of these can be sueful in the genomic surveillance? 
+
+- Sequence Alignment Map (SAM)
+- Variant Calling Format (VCF)
+
+:::{.callout-hint collapse=true}
+- You can use the following links
+  - + For SAM (https://samtools.github.io/hts-specs/SAMv1.pdf)
+  - + For VCF (https://samtools.github.io/hts-specs/VCFv4.2.pdf)
+:::
+
+:::{.callout-answer collapse=true}
+
+ 
+:::
+:::
 
 ::: {.callout-tip}
 #### Key Points
