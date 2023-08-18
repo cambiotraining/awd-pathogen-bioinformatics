@@ -1,8 +1,6 @@
 ---
-title: Appendix - Common file formats
+title: Common file formats
 ---
-
-## Common File Formats
 
 This page lists some common file formats used in Bioinformatics (listed alphabetically).
 The heading of each file links to a page with more details about each format. 
