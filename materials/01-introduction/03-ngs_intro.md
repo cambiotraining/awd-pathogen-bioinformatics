@@ -156,7 +156,7 @@ A GFF (general feature format; file extension .gff2 or .gff3) describes the vari
 ## Summary
 **FASTQ** (`.fastq` or `.fq`) format stores sequencing data and quality scores for Illumina and basecalled ONT reads. In the context of genomic surveillance FASTA (`.fasta`) format stores DNA sequences, for example reference genomes or genome assemblies. It has several extension variants such as `.fna`, `.fa`, `.contig`, `.dna` or `.genome`. **GFF** is a tab-delimited file format that stores the coordinates of genomic features, such as gene annotations for a genome. Sometimes you will find some of these file formats are compressed ending with `.gz` to reduce the size that they take in the hard drive. Some program can comfortably work with compressed versions other require to decompress to the original file formats. Example, pathogenwatch does not accept compressed fasta file (i.e ending with `.gz`). In this case you need to use any tool that can decompress the file first before you run the tool. **CSV / TSV** is comma-separated or tab-separated files storing tabular data. Common output for many analysis software.
 
-There are many other file formats which can be read from [appendix](../01-appendix.md)
+There are many other file formats which can be read from [appendix](../01-appendix.html)
 
 ## Exercises
 
