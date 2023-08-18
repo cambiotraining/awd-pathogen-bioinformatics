@@ -545,6 +545,7 @@ According to this [gene's description on CARD](https://card.mcmaster.ca/ontology
 
 
 ## Summary
+In this session we have used the bespoke shell script to perform the following bioinformatics analysis; subsampling and assembly of the reads isolates to reconstruct the genome of each of the cultured sample barcodes. We then used medaka software to correct assembly errors. Afterwards we used bakta software to perform genome annotation.
 
 ::: {.callout-tip}
 #### Key Points
