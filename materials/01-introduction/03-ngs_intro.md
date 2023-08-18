@@ -4,8 +4,10 @@ title: Introduction to NGS
 
 ::: {.callout-tip}
 #### Learning Objectives
-- Describe differences between sequencing data produced by Illumina and Nanopore platforms.
-- Recognise the structure of common file formats in bioinformatics, in particular FAST5, FASTA, FASTQ and  GFF3 files.
+At the end of this session you will be able to do the following:
+
+- Describing differences between sequencing data produced by Illumina and Nanopore platforms.
+- Recognising the structure of common file formats in bioinformatics, in particular FAST5, FASTA, FASTQ and  GFF3 files.
 
 - TODO
 :::

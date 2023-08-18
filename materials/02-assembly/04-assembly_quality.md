@@ -4,7 +4,7 @@ title: Assembly quality
 
 ::: {.callout-tip}
 #### Learning Objectives
-At the end of this session you will be able to do the following:]
+At the end of this session you will be able to do the following:
 
 - Performing quality checks of the assembled genomes of your isolates. In this case you will be able to assess diffrerent levels of completeness of your assembled genomes isolates
 - Providing a detailed screening of likely contamination.

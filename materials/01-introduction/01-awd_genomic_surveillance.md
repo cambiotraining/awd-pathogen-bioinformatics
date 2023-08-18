@@ -49,7 +49,7 @@ When an outbreak occurs the following are generally important public health ques
 - If the answer is yes, then what kind of antibiotics resistant genes may contain and which antibiotics is predicted to be affected?
 
 ## Summary
-In this section we have learned about the pathogen genomic surveillance and key approach used in genomic surveillance, which is whole genomic sequence (WGS). In the next section you will be guided to learn basics of bioinformatics analysis including detail of state-of-art sequencing technique known as **Next Generation Sequencing (NGS)**.
+In this section we have learned about the pathogen genomic surveillance and key approach used in genomic surveillance, which is whole genomic sequence (WGS). In the next section you will introuduced to the basics if the Unix command line.
 
 ::: {.callout-tip}
 #### Key Points
