@@ -3,7 +3,7 @@ title: Pathogen genomic surveillance
 ---
 ::: {.callout-tip}
 #### Learning Objectives
-At the end of this session you should be to understand:
+At the end of this session you will be introduced to:
 
 - what is genomic surveillance
 - genomic surveillance techniques
@@ -49,11 +49,11 @@ When an outbreak occurs the following are generally important public health ques
 - If the answer is yes, then what kind of antibiotics resistant genes may contain and which antibiotics is predicted to be affected?
 
 ## Summary
-In this section we have learned about the pathogen genomic surveillance and the technique used in genomic surveillance which whole genomic sequence. In the next section you are going to learn basics of bioinformatics analysis including detail the state-of-art sequencing technique known as **Next Generation Sequencing (NGS)**.
+In this section we have learned about the pathogen genomic surveillance and key approach used in genomic surveillance, which is whole genomic sequence (WGS). In the next section you will be guided to learn basics of bioinformatics analysis including detail of state-of-art sequencing technique known as **Next Generation Sequencing (NGS)**.
 
 ::: {.callout-tip}
 #### Key Points
-- Pathogen genomic surveillance enable quick detection of the source of the outbreaks and provide insights on the transmission and antimicrobial resistance.
+- Pathogen genomic surveillance enables quick detection of the source of the outbreaks and provide insights on the transmission and antimicrobial resistance.
 - Whole genome sequence (WGS) is one of the useful techniques to perform genomic surveillance.
 - 
 :::
