@@ -158,7 +158,7 @@ A GFF (general feature format; file extension .gff2 or .gff3) describes the vari
 :::{.callout-exercise}
 #### Bioinformatics file formats
 
-In this section we have discussed only four formats. However, there are other important file formats that are quite common in bioinformatics. With your colleague discuss the following file formats in terms of the: 1) information content stored 2) underlying structure. Finally, how any of these can be sueful in the genomic surveillance? 
+In this section we have discussed only four formats. However, there are other important file formats that are quite common in bioinformatics. With your colleague discuss the following file formats in terms of the: 1) information content stored 2) underlying structure. Finally, how any of these can be useful in the genomic surveillance? 
 
 - Sequence Alignment Map (SAM)
 - Variant Calling Format (VCF)
