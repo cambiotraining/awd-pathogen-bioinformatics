@@ -153,9 +153,7 @@ We will see FASTA files several times throughout this course, so it's important 
 
 A GFF (general feature format; file extension .gff2 or .gff3) describes the various sequence elements that make up a gene and is a standard way of annotating genomes. It defines the features present within a gene in the body of the GFF file, including transcripts, regulatory regions, untranslated regions, exons, introns, and coding sequences. It uses a header region with a “##” string to include metadata.
 
-## Exercises
-
-<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i>  
+### Exercises
 
 :::{.callout-exercise}
 #### Bioinformatics file formats
@@ -175,10 +173,4 @@ In this section we have discussed only four formats. However, there are other im
 
  
 :::
-:::
-
-::: {.callout-tip}
-#### Key Points
-
-- TODO
 :::
