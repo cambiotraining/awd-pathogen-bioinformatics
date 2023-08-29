@@ -286,13 +286,13 @@ Download this file using the command line:
 cd $workdir
 
 # download and unzip
-wget -O resources.zip "TODO_DROPBOX_LINK"
+wget -O resources.zip "https://www.dropbox.com/sh/t8ivljixrg0z1qz/AAD9fGRSyQHrCizxrBU1VMB-a?dl=1"
 unzip resources.zip
 rm resources.zip  # remove original zip file to save space
 ```
 
 If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download resources](TODO_DROPBOX_LINK).
+[<i class="fa-solid fa-download"></i> download resources](https://www.dropbox.com/sh/t8ivljixrg0z1qz/AAD9fGRSyQHrCizxrBU1VMB-a?dl=0).
 
 
 ### Ambroise 2023
@@ -313,7 +313,7 @@ To download the data, you can run the following commands:
 cd $workdir
 
 # download and unzip
-wget -O ambroise.zip "TODO_DROPBOX_LINK"
+wget -O ambroise.zip "https://www.dropbox.com/sh/xytht4upehuo4c3/AABeYpICT2uAQzGBy4IzsKKwa?dl=1"
 unzip ambroise.zip
 rm ambroise.zip  # remove original zip file to save space
 
@@ -322,7 +322,7 @@ ln -s $PWD/resources/ $PWD/ambroise2023/resources
 ```
 
 If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download Ambroise 2023](TODO_DROPBOX_LINK).
+[<i class="fa-solid fa-download"></i> download Ambroise 2023](https://www.dropbox.com/sh/xytht4upehuo4c3/AABeYpICT2uAQzGBy4IzsKKwa?dl=0).
 
 
 ### Scripts only
