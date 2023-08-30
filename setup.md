@@ -122,7 +122,7 @@ mamba create -y -n mash mash
 Run all these commands in order:
 
 ```bash
-mamba create -y -n assembly flye rasusa bakta
+mamba create -y -n assembly flye rasusa bakta checkm2
 mamba activate assembly
 pip install medaka
 mamba deactivate
@@ -131,7 +131,7 @@ mamba deactivate
 #### Typing/phylogeny
 
 ```bash
-mamba create -y -n typing mlst panaroo iqtree figtree
+mamba create -y -n typing mlst panaroo iqtree figtree snp-sites
 ```
 
 #### Nextflow
@@ -167,6 +167,45 @@ docker {
 }
 " >> $HOME/.nextflow/config
 ```
+
+### Bandage
+
+Generally, this software does not require installation, it can be simply [downloaded from the website](https://rrwick.github.io/Bandage/), unzipped and run. 
+However, we provide command-line instructions which will place the executable on the Desktop for easy access.
+
+::: {.panel-tabset group="os"}
+#### Ubuntu
+
+From the command line: 
+
+```bash
+# install dependencies
+sudo apt-get install -y qt5-default
+
+# download the executable
+wget -O bandage.zip "https://github.com/rrwick/Bandage/releases/download/v0.8.1/Bandage_Ubuntu_dynamic_v0_8_1.zip"
+unzip bandage.zip -d bandage
+mv bandage/Bandage ~/Desktop/
+rm -r bandage.zip bandage
+```
+
+#### Windows WSL
+
+From the WSL command line: 
+
+```bash
+wget -O bandage.zip "https://github.com/rrwick/Bandage/releases/download/v0.8.1/Bandage_Windows_v0_8_1.zip"
+unzip bandage.zip -d bandage
+mv bandage/Bandage ~/Desktop/
+rm -r bandage.zip bandage
+```
+
+#### Virtual machine
+
+You can follow the same instructions as for "Ubuntu".
+
+:::
+
 
 ### Singularity
 
@@ -247,6 +286,10 @@ You can follow the same instructions as for "Ubuntu".
 - Search for "WSL" and click "Install". 
 
 From now on, you can open VS code directly from a WSL terminal by typing `code .`.
+
+#### Virtual machine
+
+You can follow the same instructions as for "Ubuntu".
 :::
 
 
