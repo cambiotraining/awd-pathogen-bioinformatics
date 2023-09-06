@@ -20,7 +20,7 @@ Pathogen surveillance mostly focuses on intra-species phylogenies.
 Here, phylogenies are constructed from sequences within the same pathogenic species. 
 The objective is to understand how specific strains and lineages relate and evolve. 
 By analyzing genetic differences, we can track pathogen spread and identify outbreak sources. 
-This section aims to answer: how do our Vibrio cholerae isolates relate to each other and to previously sequenced strains? 
+This section aims to answer: **how do our Vibrio cholerae isolates relate to each other and to previously sequenced strains?**
 This sheds light on relationships among isolates and their evolutionary context.
 
 To construct a phylogeny, two primary steps are necessary:
@@ -38,7 +38,7 @@ Given the diversity of _Vibrio cholerae_, which often acquires resistance genes 
 We will explore phylogenetic analysis of _Vibrio cholerae_ using _Pathogenwatch_, followed by a guide to constructing your own phylogenies using command line tools.
 
 
-## Phylogenies with Pathogenwatch
+## Phylogenies with Pathogenwatch {#sec-phylo-pathogenwatch}
 
 In the "collection view" screen for your samples, _Pathogenwatch_ shows you a phylogenetic tree on the top-left panel, showing the relationship between the sequences in your collection. 
 This shows how tightly our samples cluster with each other, and outliers may indicate assembly issues. 
@@ -57,29 +57,37 @@ This reference clade corresponds to strains from the most recent transmission wa
 This agrees with other pieces of evidence we aquired so far, that our strains are closely related to the most recent pathogenic strains circulating worldwide. 
 
 You can further "zoom in" on the tree to see how your samples relate to the reference samples present in this clade (@fig-phylo-pathogenwatch3). 
-This shows that although our samples are related to W3 T3 reference samples, they have accumulated enough mutations that makes them cluster apart from the reference panel. 
+This shows that although our samples are related to "W3 T3" reference samples, they have accumulated enough mutations that makes them cluster apart from the reference panel. 
 Note that some of the lineage classification used by _Pathogenwatch_ may be slightly outdated, as new strains emerge that were not part of the 2017 study mentioned above. 
 
 ![Clicking on the "W3_T13" clade shows our samples in the context of the other reference genomes in this clade.](images/phylo_pathogenwatch03.png){#fig-phylo-pathogenwatch3}
 
+:::{.callout-important}
+#### Sequence divergence or sequencing error?
 
-### Using public genomes
+Phylogenetic analysis is also useful to assess our assembly quality with regards to **validity/correctness** of our sequences. 
+If our sequences are very diverged from other sequences (i.e. several mutations separate them from other sequences), this may indicate a high error rate in our assemblies. 
+However, this is not always easy to assess, as the public collection such as the one from _Pathogenwatch_ (@fig-phylo-pathogenwatch3) may have older sequences, so this may represent true divergence since the time those samples were collected. 
 
-We don't have to restrict our analysis to only the genomes provided by _Pathogenwatch_. 
-We can create our own collections using publicly available genomes, for example [downloaded from NCBI](../02-assembly/01-preparing_data.md).
+To fully address if our samples likely have sequencing errors, we can do any of the following: 
 
-TODO - phylogeny with NCBI genomes
+* Compare your samples with similar (or even the same) samples assembled with higher accuracy data. 
+  For example, following the advice given on the "[perfect bacterial genome](https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki)" pipeline (using a "hybrid assembly" approach with both Illumina and ONT data). 
+* Using more recent ONT chemistry, flowcells and basecalling software, which [provide higher accuracy sequences](https://nanoporetech.com/accuracy).
+* Compare our assemblies with recent samples from the same region/outbreak.
+:::
 
 
 ## Phylogenies with local software
 
-In the previous section we used _Pathogenwatch_ to perform a phylogenetic analysis, using both our sequences and other _Vibrio_ genomes downloaded from NCBI. 
-While Pathogenwatch is user-friendly, it relies on a web-based service that might not always be accessible. 
+In the previous section we used _Pathogenwatch_ to perform a phylogenetic analysis, using its inbuilt collection. 
+While _Pathogenwatch_ is user-friendly, it relies on a web-based service that might not always be accessible. 
 Therefore, we introduce an alternative using command line tools suitable for local execution on your computer.
 The methodology we use here is similar to _Pathogenwatch_'s, but it employs distinct tools for generating the core genome and performing tree inference. 
 Our toolkit consists of three software components:
 
 - **[Panaroo](https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart)** - used to identify a set of "core genes" (genes occurring in most samples) and generate a multiple sequence alignment from them.
+- **[SNP-sites](http://sanger-pathogens.github.io/snp-sites/)** - used to extract variable sites from the alignment (to save computational time). 
 - **[IQ-TREE](http://www.iqtree.org/doc/)** - used to infer a tree from the aligned core genes.
 - **[Figtree](http://tree.bio.ed.ac.uk/software/figtree/)** - used to visualise and/or annotate our tree.
 
@@ -93,8 +101,7 @@ The output alignment it produces can then be used to build our phylogenetic tree
 As input to _Panaroo_ we will use: 
 
 - The gene annotations for our newly assembled genomes, which were produced during the [assembly pipeline](../02-assembly/03-genome_assembly.md) using _Bakta_. 
-- Annotations from [public genomes downloaded from NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true&assembly_level=3%3A3&release_year=2019%3A2023). 
-  We chose complete genomes, annotated by NCBI RefSeq and submitted between 2019-2023 (a total of 63 genomes at the time these materials were written). 
+- Annotations from 31 public genomes downloaded from NCBI (see @sec-public-genomes). 
   These annotations had to be processed to be compatible with _Panaroo_, which we detail in the information box below. 
 
 To run _Panaroo_ on our samples we can use the following commands:
@@ -186,6 +193,95 @@ grep ">" results/panaroo/core_gene_alignment.aln
 
 We can see each input genome appears once, including the "isolateXX" genomes assembled and annotated by us.
 
+:::{.callout-note collapse=true}
+#### Preparing GFF files for _Panaroo_ (click to see details)
+
+_Panaroo_ requires GFF files in a non-standard format. 
+They are similar to standard GFF files, but they also include the genome sequence itself at the end of the file. 
+By default, _Bakta_ (which we used [earlier](../02-assembly/03-genome_assembly.md) to annotate our assembled genomes) already produces files in this non-standard GFF format. 
+
+However, GFF files downloaded from NCBI will not be in this non-standard format. 
+To convert the files to the required format, the _Panaroo_ developers provide us with a [Python script](https://raw.githubusercontent.com/gtonkinhill/panaroo/master/scripts/convert_refseq_to_prokka_gff.py) that can do this conversion: 
+
+```bash
+python3 convert_refseq_to_prokka_gff.py -g annotation.gff -f genome.fna -o new.gff
+```
+
+- `-g` is the original GFF (for example downloaded from NCBI).
+- `-f` is the corresponding FASTA file with the genome (also downloaded from NCBI).
+- `-o` is the name for the output file.
+
+This is a bit more advanced, and is included here for interested users. 
+We already prepared all the files for performing a phylogeny, so you don't need to worry about this for the workshop. 
+:::
+
+
+### Extracting variable sites: `snp-sites`
+
+Although you could use the alignment generated by _Panaroo_ directly as input to _IQ-TREE_, this would be quite computationally heavy, because the core genome alignments tend to be quite big. 
+Instead, what we can do is **extract the variable sites** from the alignment, such that we reduce our FASTA file to only include those positions that are variable across samples. 
+
+Here is a small example illustrating what we are doing. 
+For example, take the following three sequences, where we see 3 variable sites (indicated with an arrow):
+
+```
+seq1  C G T A G C T G G T
+seq2  C T T A G C A G G T
+seq3  C T T A G C A G A T
+        ↑         ↑   ↑
+```
+
+For the purposes of phylogenetic tree construction, we only use the variable sites to look at the relationship between our sequences, so we can simplify our alignment by extract only the variable sites:
+
+```
+seq1  G T G
+seq2  T A G
+seq3  T A A
+```
+
+This example is very small, but when you have a 4Mb genome, this can make a big difference. 
+To extract variable sites from an alignment we can use the _SNP-sites_ software: 
+
+```bash
+# create output directory
+mkdir results/snp-sites
+
+# run SNP-sites
+snp-sites results/panaroo/core_gene_alignment.aln > results/snp-sites/core_gene_alignment_snps.aln
+```
+
+This command simply takes as input the alignment FASTA file and produces a new file with only the variable sites - which we redirect (`>`) to an output file. 
+This is the file we will use as input to constructing our tree.
+
+However, before we move on to that step, we need another piece of information: the **number of constant sites** in the initial alignment (sites that didn't change). 
+Phylogenetically, it makes a difference if we have 3 mutations in 10 sites (30% variable sites, as in our small example above) or 3 mutations in 1000 sites (0.3% mutations). 
+The _IQ-TREE_ software we will use for tree inference can accept as input 4 numbers, counting the number of A, C, G and T that were constant in the alignment. 
+For our small example these would be, respectively: 1, 2, 2, 2.
+
+Fortunately, the `snp-sites` command can also produce these numbers for us (you can check this in the help page by running `snp-sites -h`). 
+This is how you would do this: 
+
+```bash
+# count invariant sites
+snp-sites -C results/panaroo/core_gene_alignment.aln > results/snp-sites/constant_sites.txt
+```
+
+The key difference is that we use the `-C` option, which produces these numbers. 
+Again, we redirect (`>`) the output to a file. 
+
+We can see what these numbers are by printing the content of the file: 
+
+```bash
+cat results/snp-sites/constant_sites.txt
+```
+
+```
+635254,561931,623994,624125
+```
+
+As we said earlier, these numbers represent the number of A, C, G, T that were constant in our original alignment. 
+We will use these numbers in the tree inference step detailed next. 
+
 
 ### Tree inference: `iqtree` {#sec-iqtree}
 
@@ -207,21 +303,23 @@ The process involves making educated guesses about the tree's parameters, calcul
 _IQ-TREE_ offers various sequence evolution models, allowing researchers to match their analyses to different types of data and research questions.
 Conveniently, this software can identify the most fitting substituion model for a dataset (using a tool called [_ModelFinder_](https://www.nature.com/articles/nmeth.4285)), while considering the complexity of each model.
 
-We run _IQ-TREE_ on the output from _Panaroo_, i.e. using the core genome alignment to construct the phylogeny:
+We run _IQ-TREE_ on the output from _SNP-sites_, i.e. using the variable sites extracted from the core genome alignment:
 
 ```bash
 # create output directory
 mkdir results/iqtree
 
 # run iqtree2
-iqtree -s results/panaroo/core_gene_alignment.aln --prefix results/iqtree/awd -m GTR+F+I
+iqtree -s results/snp-sites/core_gene_alignment_snps.aln -fconst 635254,561931,623994,624125 --prefix results/iqtree/awd -nt AUTO -m GTR+F+I
 ```
 
 The options used are: 
 
-- `-s` - the input alignment file.
+- `-s` - the input alignment file, in our case using only the variable sites extracted with `snp-sites`.
 - `--prefix` - the name of the output files. This will be used to name all the files with a "prefix". In this case we are using the "awd" prefix, which is very generic. In your own analysis you may want to use a more specific prefix (for example, the name of the collection batch). 
-- `-m` - specifies the DNA substitution model we'd like to use. We give more details of this option below. 
+- `-fconst` - these are the counts of invariant sites we estimated in the previous step with `snp-sites` (see previous section).
+- `-nt AUTO` - automatically detect how many CPUs are available on the computer for parallel processing (quicker to run).
+- `-m` - specifies the DNA substitution model we'd like to use. We give more details about this option below. 
 
 When not specifying the `-m` option, `iqtree` employs _ModelFinder_ to pinpoint the substitution model that best maximizes the data's likelihood, as previously mentioned. 
 Nevertheless, this can be time-consuming (as `iqtree` needs to fit trees numerous times). 
@@ -236,7 +334,7 @@ ls results/iqtree
 ```
 
 ```
-
+awd.bionj  awd.ckp.gz  awd.iqtree  awd.log  awd.mldist  awd.model.gz  awd.treefile
 ```
 
 There are several files with the following extension: 
@@ -246,7 +344,7 @@ There are several files with the following extension:
 - `.log` - the log file containing the messages that were also printed on the screen. 
 - `.bionj` - the initial tree estimated by neighbour joining (NEWICK format).
 - `.mldist` - the maximum likelihood distances between every pair of sequences.
-- `ckp.gz` - this is a "checkpoint" file, which IQ-Tree uses to resume a run in case it was interrupted (e.g. if you are estimating very large trees and your job fails half-way through).
+- `.ckp.gz` - this is a "checkpoint" file, which IQ-Tree uses to resume a run in case it was interrupted (e.g. if you are estimating very large trees and your job fails half-way through).
 - `.model.gz` - this is also a "checkpoint" file for the model testing step. 
 
 The main files of interest are the report file (`.iqtree`) and the tree file (`.treefile`) in standard [Newick format](https://en.wikipedia.org/wiki/Newick_format).
@@ -258,9 +356,11 @@ There are many programs that can be used to visualise phylogenetic trees.
 In this course we will use _FigTree_, which has a simple graphical user interface.
 You can open _FigTree_ from the terminal by running the command `figtree`. 
 
-To open the tree, go to <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd> and browse to the folder with the _IQ-TREE_ output files. 
-Select the file with `.treefile` extension and click <kbd>Open</kbd>.
-You will be presented with a visual representation of the tree. 
+To open the tree: 
+
+- Go to <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd> and browse to the folder with the _IQ-TREE_ output files. 
+- Select the file with `.treefile` extension and click <kbd>Open</kbd>.
+- You will be presented with a visual representation of the tree. 
 
 We can also import a "tab-separated values" (TSV) file with annotations to add to the tree, if you have any available (e.g. country of origin, date of collection, etc.). 
 To add annotations:
@@ -271,9 +371,7 @@ To add annotations:
 There are many ways to further configure the tree, including highlighting clades in the tree, and change the labels. 
 See the @fig-phylo-figtree for an example. 
 
-![Annotated phylogenetic tree obtained with _FigTree_. We identified a clade in the tree that corresponded to our samples, and used the "Highlight" function to give them different colours. To do this, change the "Selection Mode" at the top to "Clade", then select the branch at the base of the clade you want to highlight, and press the "Highlight" button on the top to pick a colour.](images/phylo_figtree.png){#fig-phylo-figtree}
-
-<!-- we need to add some metadata to this, otherwise very difficult to interpret -->
+![Annotated phylogenetic tree obtained with _FigTree_. We identified a clade in the tree that corresponded to our samples, and used the "Highlight" function to give them a distinct colour (pink). We also highlighted the broader clade they are in (purple), which is composed of O1 biotype strains. To do this, change the "Selection Mode" at the top to "Clade", then select the branch at the base of the clade you want to highlight, and press the "Highlight" button on the top to pick a colour.](images/phylo_figtree.png){#fig-phylo-figtree}
 
 
 ## Exercises
@@ -306,7 +404,6 @@ This might be because our samples are from 2023, whereas the collection from _Pa
 ![](images/phylo_pathogenwatch_ambroise02.png)
 
 Note that in the image above we changed our tree layout to a "circle". Sometimes this view is helpful when we have too many sequences. 
-
 :::
 :::
 
@@ -320,7 +417,9 @@ Using _Panaroo_, perform a core genome alignment for your assembled sequences to
 - Run the script using `bash scripts/05-panaroo.sh`.
 
 When the analysis starts you will get several messages and progress bars print on the screen.
-This analysis takes a long time to run (several hours), so you will have to leave it running before continuing to the next exercise. 
+
+<i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i>
+This analysis takes a long time to run (several hours), so you can leave it running, open a new terminal and continue to the next exercise. 
 
 :::{.callout-answer collapse=true}
 
@@ -379,15 +478,41 @@ The main file of interest is `core_gene_alignment_filtered.aln`, which we will u
 :::{.callout-exercise}
 #### Tree inference
 
+<i class="fa-solid fa-triangle-exclamation"></i> 
+Because _Panaroo_ takes a long time to run, we provide pre-processed results in the folder `preprocessed/`, which you can use as input to IQ-TREE in this exercise.
+
 Produce a tree from the core genome alignment from the previous step. 
 
 - Activate the software environment: `mamba activate typing`.
 - Fix the script provided in `scripts/06-iqtree.sh`. See @sec-iqtree if you need a hint of how to fix the code in the script.
 - Run the script using `bash scripts/06-iqtree.sh`. Several messages will be printed on the screen while `iqtree` runs. 
-- Once the run completes, load the generated tree into _FigTree_ and answer the following questions:
-  - Do all your samples cluster together?
-  - What is the closest public sequence to your samples? 
-  - Look up that sample on [NCBI's genomes page](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true&assembly_level=3%3A3&release_year=2019%3A2023). Is it annotated as being O1 serotype?
+
+Once the _IQ-TREE_ finishes running:
+
+- Load the generated tree into _FigTree_.
+- Import the annotations we provide in `resources/vibrio_genomes/public_genomes_metadata.tsv`.
+- You can change the annotations shown on the tip labels from the menu panel on the left.
+
+Answer the following questions:
+
+- Do all your samples cluster together?
+- Are they quite distinct (long branch lengths) compared to their closest public sequences?
+- Do your samples cluster with the pathogenic O1 biotype?
+- Which transmission wave are your samples most closely related to?
+- Do these results agree with the result you obtained on _Pathogenwatch_?
+
+
+:::{.callout-hint collapse=true}
+For IQ-TREE: 
+
+- The constant sites can be obtained by looking at the output of the `snp-sites` in `results/snp-sites/constant_sites.txt` (or in the `preprocessed` folder if you are still waiting for you _Panaroo_ analysis to finish).
+- The input alignment should be the output from the `snp-sites` program in `results/snp-sites/core_genome_alignment_snps.aln` (or in the `preprocessed` folder if you are still waiting for you _Panaroo_ analysis to finish).
+
+For _FigTree_: 
+
+- To open a tree go to <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd> and load the `.treefile` generated by _IQ-TREE_.
+- To import sample metadata go to <kbd><kbd>File</kbd> > <kbd>Import annotations...</kbd></kbd>.
+:::
 
 :::{.callout-answer collapse=true}
 
@@ -400,12 +525,13 @@ The fixed script is:
 mkdir -p results/iqtree/
 
 # Run iqtree
-iqtree -s results/panaroo/core_gene_alignment_filtered.aln --prefix results/iqtree/ambroise -m GTR+F
+iqtree -s results/snp-sites/core_gene_alignment_snps.aln -fconst 712485,634106,704469,704109 --prefix results/iqtree/ambroise -nt AUTO
 ```
 
-- We specify as input the `core_gene_alignment.aln` produced in the previous step by _Panaroo_.
+- We specify as input the `core_gene_alignment_snps.aln` produced in the previous exercise by running _Panaroo_ followed by _SNP-sites_.
+- We specify the number of constant sites, also generated from the previous exercise. We ran `cat results/snp-sites/constant_sites.txt` to obtain these numbers.
 - We use as prefix for our output files "ambroise" (since we are using the "Ambroise 2023" data), so all the output file names will be named as such.
-- We are using the DNA substitution model "GTR+F", which is a [generalized time reversible (GTR) substitution model](https://en.wikipedia.org/wiki/Substitution_model#Generalised_time_reversible), commonly used in maximum likelihood tree inference due to its flexibility.
+- We automatically detect the number of threads/CPUs for parallel computation.
 
 After the analysis runs we get several output files in our directory: 
 
@@ -414,28 +540,36 @@ ls results/iqtree/
 ```
 
 ```
-ambroise.bionj  ambroise.ckp.gz  ambroise.iqtree  #
+ambroise.bionj  ambroise.ckp.gz  ambroise.iqtree  
 ambroise.log    ambroise.mldist  ambroise.treefile
 ```
 
-The main file of interest is `ambroise.treefile`, which contains our tree in the standard Newick format. 
+The main file of interest is `ambroise.treefile`, which contains our tree in the standard [Newick format](https://en.wikipedia.org/wiki/Newick_format). 
 We can load this tree into _FigTree_ from <kbd><kbd>File</kbd> > <kbd>Open...</kbd></kbd>. 
+We also import the annotations provided for the public genomes from <kbd><kbd>File</kbd> > <kbd>Import Annotations...</kbd></kbd>. 
 
 The resulting tree file is shown in the image below:
 
 ![](images/phylo_figtree_ambroise.png)
 
-We have highlighted the the clades showing our samples and their closest samples. 
+We have highlighted the the clades showing our samples (pint) and the main clade they fall into (purple). 
 We can see that: 
 
+- Do all your samples cluster together?
+- Are they quite distinct (long branch lengths) compared to their closest public sequences?
+- Do your samples cluster with the pathogenic O1 biotype?
+- Which transmission wave are your samples most closely related to?
+- Do these results agree with the result you obtained on _Pathogenwatch_?
+
 - Our samples do cluster together, suggesting they are more similar to each other than to any other samples in the dataset. 
-- The closest public sequences are "GCF_013085145.1_ASM1308514v1_genomic" and "GCF_009799825.1_ASM979982v1_genomic".
-- Looking at these sequences in the NCBI page, we can see: 
-  - [ASM1308514v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_013085145.1/) is annotated as "Vibrio cholerae O1 biovar El Tor", with collection date 2015.
-  - [ASM979982v1](https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_009799825.1/) is annotated as "Pathogen: clinical or host-associated sample from Vibrio cholerae". The biotype is not specified in this page, but if we go to the [biosample page](https://www.ncbi.nlm.nih.gov/biosample/SAMN13735001/) we can see it is also annotated as "O1 El Tor". The collection date was 2011. 
+- They are quite distant from other public sequences in their clade. 
+  This could be true divergence if, for example, the public sequences were collected a long time ago and/or from distant locations or outbreaks (we have no information about this). 
+  Alternatively, this could be due to sequencing errors, in particular as we are working with an older chemistry of ONT data (R9.4.1 flowcells) with high sequencing error rates.
+- Using _FigTree_, we changed the tip labels to show the "biotype" of the public samples, which confirmed that the closest sequences to ours belong to O1 biotype. 
+- By changing the tip labels to "clade" we can see the closest sequences are from "W3 T10" transmission event. 
 
-These results suggest that our samples are closely related to other "O1 El Tor" strains, confirming their classification as also being that strain type. 
-
+These results suggest that our samples are closely related to other "O1" strains, confirming their classification as also being that strain type. 
+The results are also compatible with the analysis from _Pathogenwatch_. 
 :::
 :::
 

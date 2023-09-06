@@ -53,7 +53,7 @@ They require less up-front cost allowing getting started with sequencing very qu
 
 :::
 
-## Bioinformatics file formats
+## Bioinformatics file formats {#sec-file-formats}
 
  Bioinformatics uses many standard file formats to store different types of data. There are different commonly used file formats. In this material we will discuss the few formats, but there are many other formats. Check out our page on [Extras → File Formats](https://cambiotraining.github.io/sars-cov-2-genomics/106-file_formats.html) to learn more about them.
 

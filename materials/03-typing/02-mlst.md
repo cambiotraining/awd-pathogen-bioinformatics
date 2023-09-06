@@ -164,7 +164,7 @@ We would need to investigate this more thoroughly by considering any metadata as
 :::{.callout-exercise}
 #### MLST (Pathogenwatch)
 
-Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "Ambroise 2023" collection that you created and answer the following questions:
+Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the collection that you created for your samples and answer the following questions:
 
 - Which sequence type were your sequences assigned to?
 - How do the results compare with output from the command line version of the software? (You need to complete the previous exercise to answer this question)

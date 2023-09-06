@@ -20,20 +20,34 @@ conda activate ncbi_datasets
 # make directory
 mkdir -p resources/vibrio_genomes/
 
-# download complete genomes from 2019 onwards, see:
-# https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666
-datasets download genome taxon 666 \
-  --annotated \
-  --assembly-level complete \
-  --assembly-source 'RefSeq' \
-  --include genome,gff3 \
-  --exclude-atypical \
-  --released-after 01/01/2019
+# # download complete genomes from 2019 onwards, see:
+# # https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666
+# datasets download genome taxon 666 \
+#   --annotated \
+#   --assembly-level complete \
+#   --assembly-source 'RefSeq' \
+#   --include genome,gff3 \
+#   --exclude-atypical \
+#   --released-after 01/01/2019
+
+# download only a subset of the ones above (for simplicity)
+# we've also annotated them using Pathogenwatch
+meta="resources/vibrio_genomes/public_genomes_metadata.tsv"
+
+# get all accession numbers
+accessions=""
+for i in $(seq 2 $(grep -c "" $meta))
+do
+  accessions="$accessions $(head -n $i $meta | tail -n 1 | cut -f 2)"
+done
+
+# download
+datasets download genome accession $accessions --include gff3,genome
 
 # unzip
 unzip ncbi_dataset.zip
 
-# convert files to panaroo
+# convert GFF files to panaroo
 conda activate typing
 wget https://raw.githubusercontent.com/gtonkinhill/panaroo/master/scripts/convert_refseq_to_prokka_gff.py
 

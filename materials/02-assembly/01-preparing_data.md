@@ -200,7 +200,7 @@ Some of this information can be stored in a CSV file, created with a spreadsheet
 <!-- TODO: add example metadata -->
 
 
-## Public genomes
+## Public genomes {#sec-public-genomes}
 
 In our example, we are working with cultured samples of the _Vibrio cholerae_ bacteria, the causative pathogen of the cholera disease, of which AWD is a major symptom. 
 Therefore, we will download a public genomes for this pathogen, which will later be used to understand how our strains relate to others previously sequenced. 
@@ -230,7 +230,7 @@ The reference genome sequence can be selected by ticking 'Genome sequences (FAST
 You can change the name of the file that will be downloaded and finally, click the 'Download' button to download the reference genome assembly.
 
 The downloaded file is compressed as a Zip file, which you can uncompress and copy the files to your project folder. 
-We have already downloaded this sample and stored it in the directory `resources/vibrio_genomes`, along with 62 other complete genomes collected since 2019, also downloaded from the [NCBI website](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true&assembly_level=3%3A3&release_year=2019%3A2023). 
+For this workshop, we have downloaded 31 samples and saved them in the directory `resources/vibrio_genomes`. 
 We will later use these genomes for our phylogenetic analysis. 
 
 We can check all our genomes with the `ls` command: 
@@ -240,15 +240,41 @@ ls resources/vibrio_genomes
 ```
 
 ```
-GCF_004117115.1_ASM411711v1_genomic.fna   GCF_013085165.1_ASM1308516v1_genomic.fna  GCF_019458445.1_ASM1945844v1_genomic.fna
-GCF_004328575.1_ASM432857v1_genomic.fna   GCF_013357605.1_ASM1335760v1_genomic.fna  GCF_019458465.1_ASM1945846v1_genomic.fna
-GCF_008369605.1_ASM836960v1_genomic.fna   GCF_013357625.1_ASM1335762v1_genomic.fna  GCF_019504425.1_ASM1950442v1_genomic.fna
-GCF_009646135.1_ASM964613v1_genomic.fna   GCF_013357645.1_ASM1335764v1_genomic.fna  GCF_019704175.1_ASM1970417v1_genomic.fna
+GCF_004328575.1_ASM432857v1_genomic.fna   GCF_013462495.1_ASM1346249v1_genomic.gff  GCF_021431865.1_ASM2143186v1_genomic.fna
+GCF_004328575.1_ASM432857v1_genomic.gff   GCF_015482825.1_ASM1548282v1_genomic.fna  GCF_021431865.1_ASM2143186v1_genomic.gff
+GCF_009763665.1_ASM976366v1_genomic.fna   GCF_015482825.1_ASM1548282v1_genomic.gff  GCF_021431945.1_ASM2143194v1_genomic.fna
+GCF_009763665.1_ASM976366v1_genomic.gff   GCF_017948285.1_ASM1794828v1_genomic.fna  GCF_021431945.1_ASM2143194v1_genomic.gff
 
 ... more output ommitted ...
 ```
 
+You can see that for each sample we have an `.fna` file (FASTA format) and a `.gff` file (GFF format). 
+See @sec-file-formats for a recap of these file formats.
+
+For each of these samples we also obtained some metadata, which is stored in a tab-delimited (TSV) file:
+
+```bash
+head resources/vibrio_genomes/public_genomes_metadata.tsv
+```
+
+```
+name                                  display_name     clade       mlst  biotype    serogroup
+GCF_009763665.1_ASM976366v1_genomic   GCF_009763665.1  Env_Sewage  1258  NA         NA
+GCF_023169825.1_ASM2316982v1_genomic  GCF_023169825.1  Env_Sewage  555   NA         NA
+GCF_937000115.1_CNRVC190247_genomic   GCF_937000115.1  Env_Sewage  555   NA         NA
+GCF_004328575.1_ASM432857v1_genomic   GCF_004328575.1  M66         178   NA         NA
+GCF_019458465.1_ASM1945846v1_genomic  GCF_019458465.1  M66         1257  NA         NA
+GCF_021431945.1_ASM2143194v1_genomic  GCF_021431945.1  M66         1092  NA         NA
+GCF_026013235.1_ASM2601323v1_genomic  GCF_026013235.1  M66         167   NA         NA
+GCF_009763945.1_ASM976394v1_genomic   GCF_009763945.1  W1_T2       69    O1 El Tor  O1
+GCF_013085075.1_ASM1308507v1_genomic  GCF_013085075.1  W1_T2       69    O1 El Tor  O1
+```
+
+This provides information for each sample, which we will discuss in later sections. 
+
+
 ## Summary
+
 In this section we have learned how to organise files and folders when starting a bioinformatic analysis. This is very important as it will likely make things easier especially when you want to access scripts, or your results for further downstream analysis. We have also learned how to download NCBI public genomes, and performing quick stats on our sample reads barcodes.
 
 ::: {.callout-tip}
@@ -256,5 +282,5 @@ In this section we have learned how to organise files and folders when starting 
 - Setting up forlders at the early stages of your bioinformatics analysis is important which helps to nicely organise your files and data.
 - Performing quick stats on your samples reads is vital as well.
 - In many cases of performing genomic surveillance you may want to access public database to track and deeply understand the strain suspected to cause the outbreak.
-  
+
 :::

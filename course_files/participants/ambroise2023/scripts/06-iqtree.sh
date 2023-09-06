@@ -5,4 +5,4 @@ mkdir -p results/iqtree/
 
 # FIX!!
 # Run iqtree
-iqtree -s FIX_PATH_TO_CORE_GENE_ALIGNMENT --prefix results/iqtree/ambroise -m "GTR+F+I"
+iqtree -fconst FIX_CONSTANT_SITES -s FIX_INPUT_SNP_ALIGNMENT --prefix results/iqtree/ambroise -nt AUTO

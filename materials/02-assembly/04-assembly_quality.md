@@ -309,6 +309,19 @@ We can see from this that:
 :::
 :::
 
+
+:::{.callout-exercise}
+#### Assembly graph
+
+TODO
+
+:::{.callout-answer collapse=true}
+
+TODO
+
+:::
+:::
+
 ## Summary
 In this section you have learned how to perform quality of your assembled genome isolates by checking the completeness, contamination and using addional other indicators
 
