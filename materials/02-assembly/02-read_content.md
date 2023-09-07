@@ -175,7 +175,7 @@ For these exercises, you can either use the dataset we provide in [**Data & Setu
 
 Screen the sequencing reads for known organisms, by running _Mash_ on one of the barcodes of your choice.
 
-- Make sure you start from your analysis directory: `cd ~/Documents/awd_workshop/YOUR_FOLDER`.
+- Make sure you start from your analysis directory: `cd ~/Documents/YOUR_FOLDER`.
 - Create an output directory for the results called `results/mash`.
 - Activate the software environment: `conda activate mash`.
 - Run the `mash screen` command on a barcode of your choice:
@@ -197,7 +197,7 @@ These solutions are for the "Ambroise 2023" dataset.
 We first made sure that were were on that folder: 
 
 ```bash
-cd ~/Documents/awd_workshop/ambroise2023
+cd ~/Documents/ambroise2023
 ```
 
 We then created an output directory and activated our software environment:

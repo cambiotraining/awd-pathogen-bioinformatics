@@ -79,7 +79,7 @@ mkdir results/funcscan
 
 # run the pipeline
 nextflow run nf-core/funcscan -profile singularity \
-  --max_memory 16.GB --max_cpus 16 \
+  --max_memory 16.GB --max_cpus 8 \
   --input samplesheet_funcscan.csv \
   --outdir results/funcscan \
   --run_arg_screening \
@@ -299,7 +299,7 @@ mkdir results/funcscan
 
 # run the pipeline
 nextflow run nf-core/funcscan -profile singularity \
-  --max_memory 16.GB --max_cpus 16 \
+  --max_memory 16.GB --max_cpus 8 \
   --input samplesheet_funcscan.csv \
   --outdir results/funcscan \
   --run_arg_screening \

@@ -115,19 +115,20 @@ You also need to have completed the genome assembly exercise in @sec-ex-assembly
 
 Perform MLST analysis from the command line:
 
-- Activate the software environment: `mamba activate typing`
-- Use the command line version of `mlst` to analyse your sequences, as explained in @sec-mlst-cli.
-  You can either run the commands shown in that section directly on the terminal, or you can save them in a script called `scripts/04-mlst.sh`.
-  Writing the commands in a script will make sure you have a record to run again in the future. 
+- Open the script provided in `scripts/04-mlst.sh`. 
+- Fix the code where indicated (see @sec-mlst-cli if you need some help).
+- Activate the software environment: `mamba activate typing`.
+- Run the script using `bash scripts/04-mlst.sh`
 
-- After the analysis runs, answer the following questions: 
-  - Did any of your assemblies get assigned to known types?
-  - Go to the [_PubMLST_ allelic profile search](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=profiles) and search for the closest profile to your samples. 
-  - Do you think all your samples are likely from the same outbreak event or transmission chain?
+After the analysis runs, answer the following questions: 
+
+- Did any of your assemblies get assigned to known types?
+- Go to the [_PubMLST_ allelic profile search](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=profiles) and search for the closest profile to your samples. 
+- Do you think all your samples are likely from the same outbreak event or transmission chain?
 
 :::{.callout-answer collapse=true}
 
-To run this analysis, we created a shell script with the following code: 
+Here is the fixed shell script: 
 
 ```bash
 #!/bin/bash
@@ -138,6 +139,8 @@ mkdir results/mlst
 # run mlst
 mlst --scheme vcholerae results/assemblies/*.fasta > results/mlst/mlst_typing.tsv
 ```
+
+- As input we specified all our FASTA files, using the `*` wildcard to match them all automatically.
 
 We then opened the output file in _Excel_, which contained the following:
 

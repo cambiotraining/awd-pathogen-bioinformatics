@@ -265,6 +265,7 @@ To assess the completeness of your assembly, run the _CheckM2_ software on your 
 
 - Open the script provided in `scripts/03-checkm.sh`. 
 - Fix the code where indicated (see @sec-check-predict if you need some help).
+- Activate the software environment: `mamba activate checkm2`.
 - Run the script using `bash scripts/03-checkm.sh`
 - Once the analysis completes, go to the output folder and open the `quality_report.tsv` file in _Excel_. 
   Answer the following questions: 

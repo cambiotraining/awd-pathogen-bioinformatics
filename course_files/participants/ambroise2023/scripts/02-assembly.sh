@@ -12,7 +12,7 @@ fastq_dir="data/fastq_pass"
 outdir="results/assemblies"
 
 # number of CPUs for parallel processing
-threads="16"
+threads="8"
 
 # estimated genome size for flye '--genome-size' option
 genome_size="4m"
@@ -47,7 +47,7 @@ mkdir -p "$outdir/04-bakta/"
 nsamples=$(grep -c "" $samplesheet)
 
 # create a CSV for compiling assembly metrics
-echo "sample,total_reads,downsampled_reads,assembly_length,fragments,n50,largest,coverage" >> $outdir/summary_metrics.csv
+echo "sample,total_reads,downsampled_reads,assembly_length,fragments,n50,largest,coverage" > $outdir/summary_metrics.csv
 
 # iterate through samplesheet - first row assumed to be column headers
 for i in $(seq 2 $nsamples)
