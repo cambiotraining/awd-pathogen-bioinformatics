@@ -70,6 +70,8 @@ However, this is mostly suitable for practicing and **not suitable for real data
 
 Detailed instructions to install an Ubuntu VM using Oracle's Virtual Box is available from the [Ubuntu documentation page](https://ubuntu.com/tutorials/how-to-run-ubuntu-desktop-on-a-virtual-machine-using-virtualbox#1-overview).
 
+**Note:** In the step configuring "Virtual Hard Disk" make sure to assign a large storage partition (at least 100GB).
+
 :::
 
 
@@ -119,19 +121,34 @@ mamba create -y -n mash mash
 
 #### Assembly
 
-Run all these commands in order:
-
 ```bash
-mamba create -y -n assembly flye rasusa bakta checkm2
-mamba activate assembly
-pip install medaka
-mamba deactivate
+mamba create -y -n assembly flye rasusa bakta medaka
 ```
 
-#### Typing/phylogeny
+<!-- 
+```bash
+# used for workshop:
+mamba create -y -n assembly2 flye=2.9.2 rasusa=0.7.1 bakta=1.8.1 medaka=1.8.0
+``` 
+-->
+
+#### CheckM2
 
 ```bash
-mamba create -y -n typing mlst panaroo iqtree figtree snp-sites
+mamba create -y -n checkm2 checkm2
+```
+
+
+#### Typing
+
+```bash
+mamba create -y -n typing mlst perl blast
+```
+
+#### Phylogeny
+
+```bash
+mamba create -y -n phylogeny panaroo iqtree figtree snp-sites
 ```
 
 #### Nextflow
@@ -213,7 +230,7 @@ We recommend that you install _Singularity_ and use the `-profile singularity` o
 On Ubuntu/WSL2, you can install _Singularity_ using the following commands: 
 
 ```bash
-sudo apt install -y runc cryptsetup-bin
+sudo apt install -y runc cryptsetup-bin uidmap
 CODENAME=$(lsb_release -cs)
 wget -O singularity.deb https://github.com/sylabs/singularity/releases/download/v3.11.4/singularity-ce_3.11.4-${CODENAME}_amd64.deb
 sudo dpkg -i singularity.deb
@@ -304,7 +321,7 @@ Here, we create a directory for the workshop in the "Documents" folder (you can 
 
 ```bash
 # create variable for working directory - change this if you want
-workdir="~/Documents/awd_bioinfo"
+workdir="$HOME/Documents/awd_bioinfo"
 mkdir $workdir
 ```
 
@@ -330,7 +347,7 @@ cd $workdir
 
 # download and unzip
 wget -O resources.zip "https://www.dropbox.com/sh/t8ivljixrg0z1qz/AAD9fGRSyQHrCizxrBU1VMB-a?dl=1"
-unzip resources.zip
+unzip resources.zip -d resources
 rm resources.zip  # remove original zip file to save space
 ```
 
@@ -357,7 +374,7 @@ cd $workdir
 
 # download and unzip
 wget -O ambroise.zip "https://www.dropbox.com/sh/xytht4upehuo4c3/AABeYpICT2uAQzGBy4IzsKKwa?dl=1"
-unzip ambroise.zip
+unzip ambroise.zip -d ambroise2023
 rm ambroise.zip  # remove original zip file to save space
 
 # create link to resources directory
@@ -381,11 +398,11 @@ cd $workdir
 
 # download and unzip
 wget -O minimal.zip "TODO_DROPBOX_LINK"
-unzip minimal.zip
+unzip minimal.zip -d minimal
 rm minimal.zip  # remove original zip file to save space
 
 # create link to resources directory
-ln -s $PWD/resources/ $PWD/custom_data/resources
+ln -s $PWD/resources/ $PWD/minimal/resources
 ```
 
 If you want to download this file manually: 
