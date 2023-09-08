@@ -4,10 +4,13 @@ title: Assessing read content
 
 ::: {.callout-tip}
 #### Learning Objectives
-At the end of this session you will be able to the following:
 
-- Performing quick screening of the contaimnations in your sample sequenced reads using Mash software
-  
+After this section you should be able to:
+
+- Describe why assessing the species content of your reads is a useful first step in the analysis.
+- Explain how the read content is assessed, in particular by the software _Mash_.
+- Apply the _Mash_ software to identify the species content of your sequencing reads.
+- Discuss the results of the content screening and when they might indicate a contamination or unexpected organism is present in the samples.
 :::
 
 ## Read content
@@ -16,14 +19,41 @@ As detailed in the [previous section](01-preparing_data.md), our example data wa
 Therefore, we expect our sequencing reads to contain only _V. cholerae_ sequences and nothing else. 
 If we had used a metagenomic approach, we would have expected other organisms to also be contained in our reads. 
 
-Therefore, before attempting to assemble genomes from our samples, it is a good idea to **screen which organisms can be detected in our sequencing reads**. 
+Therefore, before attempting to assemble genomes from our samples, it is a good idea to **screen which species can be detected in our sequencing reads**. 
 For plate-based samples like ours, this is a good quality check for our samples, as we can confirm that they contain _V. cholerae_ only and are not contaminated with other organisms.
 For metagenomic samples, where we expect a mixture of organisms (including Human), we can get an idea of whether _V. cholerae_ is present in the sample and at what fraction.
 
+Generally speaking, assessing read content can be done by comparing our sequencing reads against a database of sequences from known organisms.
+Two popular software options for this task are:
+
+- [_Kraken2_](https://ccb.jhu.edu/software/kraken2/), which categorises each sequencing read to the highest possible taxonomic level. 
+  _Kraken2_ is commonly used in metagenomic analysis, especially when combined with [_Braken_](https://ccb.jhu.edu/software/bracken/), which allows estimating species abundance in a mixed sample.
+  However, it can be computationally intensive.
+- [_Mash_](https://mash.readthedocs.io/en/latest/) is a faster alternative for assessing species content in reads. 
+  It doesn't assign a taxonomy to individual reads but reports the sample's content based on matches with its database sequences. 
+  The drawback is that it doesn't provide precise species abundance estimation.
+
+For our case study, which uses cultured samples, we choose to use _Mash_ for its speed. 
+
+
+## Mash
+
 To screen our reads for known bacterial species we will use the software [_Mash_](https://doi.org/10.1186/s13059-016-0997-x), which implements an algorithm for fast screening raw sequencing reads against a database.
+The _Mash_ software, primarily designed for metagenomic samples with multiple species, can also be applied to culture-based samples to confirm the presence of the expected organism and detect potential contaminants.
+_Mash_ is known for its speed in assessing the species content of sequencing reads without requiring genome assembly. 
+
+![Schematic view of the _Mash_ algorithm approach. In this example, the 4th species is likely to be what’s contained in our sample, as there were matches to all its sub-sequences (shown as coloured bars). Source: adapted from Fig. 2 in [Ondov et al. 2019](https://doi.org/10.1186/s13059-019-1841-x).](images/mash.png){#fig-mash}
+
+To run _Mash_, a pre-built database file is needed, readily available online from the developers. 
+This database is constructed from bacterial organisms found in public databases like NCBI's RefSeq. 
+For efficiency, the developers break down each reference sequence into smaller sub-sequences, as shown in @fig-mash. 
+Occasionally, different organisms may share similar sub-sequences, but _Mash_ can differentiate them by examining other sub-sequences. 
+When your reads are matched against these sub-sequences, _Mash_ counts the hits for each species. 
+The species with the most matches in the database is likely the main species in your sample. 
+If you have multiple organisms, as in a metagenomic sample, different species may show a high fraction of matched sub-sequences.
 
 
-## Mash database
+### Mash database
 
 Before screening our reads, we must first download the most up-to-date database used by Mash.
 There are several pre-compiled databases available from the [Mash website](https://mash.readthedocs.io/en/latest/data.html).
@@ -42,7 +72,7 @@ wget -O resources/mash_db/refseq.genomes_and_plasmids.k21s1000.msh --no-check-ce
 As you can see, because this is a public resource, we saved it in our `resources` folder. 
 
 
-## Mash screen
+### Mash screen
 
 The main step of our analysis can be run using the `mash screen` command. 
 This command takes the Mash database and checks how well its sequences are contained in our reads, for each organism.
@@ -71,7 +101,7 @@ There are several things to note about this command:
 We can either open this file in a spreadsheet program (such as _Excel_), or use the program `less` to open it directly in the terminal:
 
 ```bash
-less results/mash/barcode25_screen.tsv
+less -S results/mash/barcode25_screen.tsv
 ```
 
 ```
@@ -347,11 +377,17 @@ By the 4th or 5th entries in the results tables, although the sequence identity 
 
 
 ## Summary
-In summary, we have learned to perform a quick contamination screening on our sample barcoded reads using **mash** software. This may lead to answer an important genomic surveillance question with regard to the Cholerae cultured samples, which is: **Is this V. cholerae or not?** and in some cases it can initially answer another important question which is: **Is this pathogenic or not?**. This quick contamination screening with mash usually will at glance tell us if there is any and at what percentage degree other non V.cholerae related exist in the particular sample. However, this is not the only useful way to check for contamination. There is another efficient way to achieve this using **Kraken2** software which perform thourough taxonomic identification of your reads. This tool can be used in cunjuction with another tool called **Bracken** which performs relative abundance of the taxonomic results from Kraken2. Nevertheless, it requires a significant amount of time to download the database particularly with the low internet speed situation. Of course, for metagenomic samples (which is not the case for the data we are using for the training) Kraken2 approach has become the standard for identification of species in the sample reads.
 
 ::: {.callout-tip}
 #### Key Points
-- For cultured samples you can use mash for quickly screening for contamination in your samples.
-- Checking the quality and contamination of the sample sequence reads is the bioinformatics standard approach before proceeding further in the next step which is genome assembly.
-- You can have initial answer of the critical gennomic surveillance regarding which strain and whether it is pathogenic or not during this stage.
+
+- Assessing species content helps confirm the identity of the organisms present in your sequencing data.
+- For cultured samples it ensures that your data matches your expected species and helps detect contamination early in the analysis.
+- _Mash_ is a tool that matches your reads against known genome sequences (stored in a database), allowing you to identify the closest known species to your sequencing reads.
+- The _Mash_ analysis requires two steps:
+  - Downloading a suitable database for the organisms of interest (e.g. prokaryotes, eukaryotes, fungi). This only needs to be done once, or if the database is updated.
+  - Performing the screening step, using the command `mash screen`.
+- Results may indicate contamination if there are species present that shouldn't be in your dataset, such as lab contaminants or environmental microbes.
+- Proper interpretation of results involves considering both the sequence identity and number of hits against the database.
+- Early screening is sometimes enough to assess that you are dealing with pathogenic strains of the microbe. For example, the presence of the CTX phage, common in O1 El Tor strains of _Vibrio cholerae_. 
 :::
