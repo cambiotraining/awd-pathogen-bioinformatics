@@ -7,27 +7,23 @@ title: Genome assembly
 
 After this section you should be able to:
 
-- Subsample of your sample isolates reads using 'rasusa'.
-- Genome assembly for your isolates using 'flye'.
-- Error correction of the assembled genome isolates using 'medaka'.
-- Annotation of your genome isolates using 'bakta'
-  
+- Describe the main steps involved in de novo genome assembly.
+- Discuss the impact of genome coverage in the final assembly.
+- List the individual software tools used in the assembly steps.
+- Apply a script to automate the process of assembly across several samples.
 :::
 
 ## Genome Assembly
 
-Now, we'll do the next part of our bioinformatics work. 
-We want to put together a genome from the Nanopore sequencing data we have, a process known as **genome assembly**. 
-This means figuring out how our sequencing reads fit together to make the whole genome of the organism.
-In our case, we have _Vibrio cholerae_ samples that we want to produce genome assemblies for.
-This will allow us to identify which strains we have (and whether they are pathogenic) and to identify the presence of toxigenic and/or antimicrobial resistance genes. 
+The next step in our analysis is **genome assembly**, which involves piecing together a complete genome from the sequencing data we've obtained. 
+This is a critical process in our study of _Vibrio cholerae_ samples, as it allows us to identify the specific strains, determine their pathogenicity, and detect toxigenic and antimicrobial resistance genes.
 
-There are different methods to assemble genomes, broadly falling in two categories: 
+There are two main approaches to genome assembly: 
 
 - **De-novo assembly:** this uses no prior information, attempting to reconstruct the genome from the sequencing reads only. 
   It's suitable when we're unsure about the organism or when it's genetically diverse (so there is no single reference genome that is representative of the full diversity observed in the species). 
   However, it's computationally intensive and challenging to achieve highly accurate results due to difficulties in handling gaps and repetitive regions.  
-- **Reference-based consensus assembly:** this method uses a known genome as a guide. 
+- **Reference-based assembly:** this method uses a known genome as a guide. 
   It aligns the reads to the reference genome and identifies new variations from those reads. 
   It's less computationally demanding and works well when we have a good idea of the organism's identity. 
   Yet, it might not perform well if the organism is significantly different from the reference genome.
@@ -38,12 +34,21 @@ Therefore, a reference-based assembly may not be the most suited for this specie
 
 Here's a breakdown of the steps we'll take:
 
-* **Downsample** the FASTQ files for a target depth of coverage of ~100x.
+* **Downsample** the FASTQ files for a target depth of coverage of approximately 100x.
 * **Assemble** the reads into contiguous fragments.
 * **Polish** those fragments to correct systematic sequencing errors common in Nanopore data.
 * **Annotate** the assembled fragments, by identifying the position of known bacterial genes.
 
-We'll provide a detailed procedure for a single sample, and later on, we'll offer a script that automates these steps for multiple samples simultaneously.
+We'll provide a detailed procedure for a single sample, and later, we'll offer a script that automates these steps for multiple samples simultaneously.
+
+:::{.callout-note}
+#### Terminology: genome coverage
+
+Genome coverage refers to the average number of times a specific base pair in a genome is read or sequenced during the process of DNA sequencing. 
+It indicates how thoroughly the genome has been sampled by the sequencing technique. 
+Higher coverage means that a base pair has been read multiple times, increasing the confidence in the accuracy of the sequencing data for that particular region of the genome. 
+Genome coverage is an important factor in determining the quality of genome assemblies and the ability to detect variations (such as new mutations or sequence rearragements).
+:::
 
 
 ## Step-by-step bacterial assembly
@@ -63,16 +68,7 @@ While this is generally the case, it turns out that for genome assembly there is
 For example, assembling a _Vibrio_ genome with an average depth of coverage of 500x might take 5h, while one with 100x might take 1h, with very similar results in the final assembly. 
 The computational burden is especially relevant when we are running analysis on a local computer, rather than on a HPC cluster (where we can run analysis in parallel), as each sample will have to be processed sequentially. 
 
-:::{.callout-note}
-#### Terminology: genome coverage
-
-Genome coverage refers to the average number of times a specific base pair in a genome is read or sequenced during the process of DNA sequencing. 
-It indicates how thoroughly the genome has been sampled by the sequencing technique. 
-Higher coverage means that a base pair has been read multiple times, increasing the confidence in the accuracy of the sequencing data for that particular region of the genome. 
-Genome coverage is an important factor in determining the quality of genome assemblies and the ability to detect variations (such as new mutations or sequence rearragements).
-:::
-
-Because we're using our local computer for analysis, we'll adjust the number of FASTQ reads we're working with to reach a coverage depth of about 100 times, using a tool called [_Rasusa_](https://github.com/mbhall88/rasusa). 
+To be able to run all analyses on a local computer, we'll adjust the number of FASTQ reads we're working with to reach a coverage depth of about 100 times, using a tool called [_Rasusa_](https://github.com/mbhall88/rasusa). 
 This tool is designed to handle reads of various lengths, which is common with ONT data. 
 It randomly picks reads to make sure the average coverage across a genome of a certain size (chosen by us) is achieved.  
 This process considers the lengths of the reads. 
@@ -128,6 +124,16 @@ In that case, `rasusa` instead keeps all the reads, with an appropriate message,
 Requested coverage (100.00x) is not possible as the actual coverage is 37.27x - output will be the same as the input
 ```
 
+:::{.callout-important}
+#### Low genome coverage
+
+For genome assembly, we do not recommend that you go much lower than 100x coverage. 
+A low depth of coverage leads to difficulty in:
+
+- Distinguishing errors from the true base; low coverage generally results in higher error rates.
+- Generating a contiguous genome assembly; low coverage generally results in a more fragmented genome.
+:::
+
 
 ### Assembly: `flye`
 
@@ -138,6 +144,10 @@ However, [many other assembly tools](https://en.wikipedia.org/wiki/De_novo_seque
 Continuing from our example `barcode26` sample, here is the `flye` command that we could use: 
 
 ```bash
+# create output directory
+mkdir results/flye
+
+# run the assembly - this step takes some time to run!
 flye --nano-raw results/rasusa/barcode26_downsampled.fastq.gz --threads 8 --out-dir results/flye/isolate2/ --asm-coverage 100 --genome-size 4m
 ```
 
@@ -182,12 +192,12 @@ Scaffolds:      0
 Mean coverage:  98
 ```
 
-We can see for our example run that we have a total assembly length of ~4.2 Mb, which matches our expected genome size very well. 
+We can see for our example run that we have a total assembly length of ~4.2 Mb, which matches our expected genome size. 
 The number of final fragments was 3, and given that _Vibrio cholerae_ has 2 chromosomes, this is not bad at all - we must have been able to assembly the two chromosomes nearly completely. 
 The largest fragment is ~3 Mb, which again from our knowledge of other _Vibrio_ genomes, probably corresponds to chromosome 1. 
-And we can see the final depth of coverage of the genome is 98x, which makes sense, since we sampled our reads to achieve ~100x. 
+And we can see the final depth of coverage of the genome is 98x, which makes sense, since we sampled our reads to achieve approximately 100x. 
 
-Sometimes you may end up with more fragmented genome assemblies, in particular if your coverage is not as good. 
+Sometimes you may end up with more fragmented genome assemblies, in particular if your coverage is not good. 
 For the example we showed earlier, where `rasusa` reported our reads were only enough for ~37x coverage, our flye assembly resulted in more than 30 fragments. 
 While this is worse than a near-complete assembly, it doesn't mean that the genome assembly is useless. 
 We should still have recovered a lot of the genes, and even a fragmented assembly can be used to identify sequence types and pathogenic and AMR genes. 
@@ -200,7 +210,7 @@ Even with the most recent ONT chemistry updates, the error rates are still aroun
 While the `flye` software does address some of these errors, its error-correcting algorithm wasn't tailored specifically to address the systematic errors observed in ONT data.
 Consequently, as an added step following assembly, we can review the FASTA file of our assembly and rectify any potential errors that may have been retained from the original reads. This process is commonly known as **polishing** the assembly.
 
-To perform polishing, we can employ the _Medaka_ software developed by ONT. 
+To perform polishing, we can employ the [_Medaka_](https://github.com/nanoporetech/medaka) software developed by ONT. 
 More specifically, we can utilize the `medaka_consensus` tool, which is expressly designed to complement genome assemblies created using _Flye_. 
 The approach involves aligning the original reads to the newly assembled genome. 
 Then, it involves identifying the correct base for each position in the genome, determined by analyzing the "pileup" of reads that align to that specific position. 
@@ -255,7 +265,7 @@ The "light" database is smaller and results in a faster annotation runtime, at t
 The "full" database is the recommended for the best possible annotation, but it is much larger and requires longer runtimes. 
 
 For the purposes of our tutorial, we will use the "light" database, but if you were running this through your own samples, it may be desirable to use the "full" database. 
-To download the database you can run (if you are attending our workshop, please don't run this step, as we already did this for you):
+To download the database you can run the following command (if you are attending our workshop, please don't run this step, as we already did this for you):
 
 ```bash
 # make a directory for the database
@@ -290,6 +300,10 @@ This should save you substantial time and storage space.
 To run the annotation step we use the `bakta` command, which would be the following for our `barcode26` / `isolate2` sample:
 
 ```bash
+# create output directory
+mkdir results/bakta
+
+# run the annotation step
 bakta --db resources/bakta_db/db-light/ --output results/bakta/isolate2 --threads 8 results/medaka/isolate2/consensus.fasta
 ```
 
@@ -337,12 +351,12 @@ But what if we had 20 samples?
 It would be quite tedious and error-prone to have to copy/paste and modify these commands so many times. 
 
 Instead, we can automate our analysis using some programming techniques, such as a _for loop_, to repeat the analysis across a range of samples. 
-This is what we've done for you, having already prepared a shell script that runs through these steps sequentially for any number of samples (the full script is available [here](TODO)). 
+This is what we've done for you, having already prepared a shell script that runs through these steps sequentially for any number of samples (if you are interested, the full script is available [here](../../course_files/participants/minimal/scripts/02-assembly.sh)).
 Our script is composed of two parts: 
 
-- At the top of the script you will find a section `#### Settings ####`, where you can define several options to run the analysis (we will detail these below).
-- Further down you find a section `#### Assembly pipeline ####`, which contains the commands to run the full analysis from raw sequences to an annotated assembly. 
-  The code we use looks more complex, as we make use of several (more advanced) programming techniques, but the basic steps are the same as those we detailed step-by-step in the previous section.
+- **Settings:** at the top of the script you will find a section `#### Settings ####`, where you can define several options to run the analysis (we will detail these below).
+- **Pipeline:** further down you find a section `#### Assembly pipeline ####`, which contains the commands to run the full analysis from raw sequences to an annotated assembly. 
+  The code we use looks more complex, as we make use of several (advanced) programming techniques, but the basic steps are the same as those we detailed step-by-step in the previous section.
 
 As a user of our script, the most important part is the `#### Settings ####`. 
 The following settings are available: 
@@ -388,7 +402,7 @@ Our script in this case was called `02-assembly.sh` and we had saved it in a fol
 Note that all the file paths specified in the "Settings" of the script are relative to the folder where we run the script from. 
 In our case, we had a folder named `awd_workshop`, where we are running the analysis from, and that is where we ran the script from. 
 
-The script will take quite a while to run (up to 1h per sample, using 16 CPUs on our computers), so you may have to leave your computer doing the hard work overnight. 
+The script will take quite a while to run (up to 1h per sample, using 8 CPUs on our computers), so you may have to leave your computer doing the hard work overnight. 
 As it runs, the script prints some progress messages on the screen: 
 
 ```
@@ -545,11 +559,18 @@ According to this [gene's description on CARD](https://card.mcmaster.ca/ontology
 :::
 
 ## Summary
-In this session we have used the bespoke shell script to perform the following bioinformatics analysis; subsampling and assembly of the reads isolates to reconstruct the genome of each of the cultured sample barcodes. We then used medaka software to correct assembly errors. Afterwards we used bakta software to perform genome annotation.
 
 ::: {.callout-tip}
 #### Key Points
-- Subsampling for the long reads was crucial step to minimise the time for assembling
-- Using `grep` tool we 
-- TODO
+
+- De novo genome assembly involves reconstructing a complete genome sequence without relying on a reference genome.
+- Genome coverage refers to the average number of times each base in the genome is sequenced.
+- Higher coverage provides more confident assembly, especially in repetitive regions, but it can be computationally intensive and expensive. Low coverage leads to more fragmented and less accurate assemblies.
+- Key steps in Nanopore data assembly, along with relevant software, include:: 
+  - Downsample reads using `rasusa` to optimize coverage, typically aiming for around 100-150x.
+  - Assembly with `flye`, a tool specialised for long-read technologies.
+  - Enhance accuracy through polishing with `medaka`, which corrects systematic ONT errors.
+  - Annotate genomes using `bakta` to identify genes and other genome features.
+- Automation scripts simplify assembly across multiple samples by executing the same commands for each, ensuring consistency and saving time.
+- The provided script requires a samplesheet (CSV file) containing sample IDs and barcodes. Additionally, selecting the appropriate medaka error-correction model is crucial for accurate results.
 :::

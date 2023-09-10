@@ -5,7 +5,9 @@ title: MLST
 ::: {.callout-tip}
 #### Learning Objectives
 
-- TODO
+- Describe what multilocus sequence typing (MLST) is and its use for genomic surveillance.
+- Perform MLST using both a web-based application and dedicated command line software.
+- Analyse and assess MLST findings analysis and their reliability considering assembly accuracy.
 :::
 
 
@@ -16,6 +18,8 @@ It uses a specific set of "housekeeping genes" linked to the bacteria of interes
 These genes help categorize isolates into groups based on the changes they carry within these genes. 
 MLST aids in identifying changes in the genetic sequences of isolates during new outbreaks, which adds to other methods like serotyping for classifying strains. 
 This is why public health labs often rely on MLST to assist officials in comprehending and controlling disease outbreaks.
+
+![Haplotype tree constructed from _Vibrio cholerae_ gene sequences used for typing, with haplotype groups color-coded by their respective countries of origin, illustrating distinct sequence types prevalent in various countries. Image source: Fig. 5 in [Liang et al. 2020](https://doi.org/10.1128/jb.00086-20)](images/mlst_haplotree.png)
 
 Groups of isolates that share similar mutation patterns in these housekeeping genes are called **sequence types**. 
 The [PubMLST](https://pubmlst.org/) project curates and maintains these sequence types. 
@@ -28,7 +32,7 @@ Using this approach, we aim to determine which pandemic strain types dominate ou
 This analysis can be accomplished through _Pathogenwatch_ or by using a separate command line tool called `mlst`.
 
 
-## MLST with Pathogenwatch
+## MLST with _Pathogenwatch_
 
 _Pathogenwatch_ uses [PubMLST](https://pubmlst.org/) to run its typing analysis ([details here](https://cgps.gitbook.io/pathogenwatch/technical-descriptions/typing-methods/mlst)) and the results can be seen on the collection view page (@fig-pathogenwatch).
 
@@ -39,21 +43,15 @@ This seems very surprising, as there must be other strains similar to ours ident
 There are several reasons why we may have obtained this result: 
 
 - The PubMLST database may not contain up-to-date sequence types for most recent _Vibrio_ lineages circulating worldwide. 
-- Even if only one of the 7 genes used for typing contains a mutation, MLST already considers it to be a different type from the one in the database. 
+- Even if only one of the 7 genes used for typing contains a mutation, MLST considers it to be a different type from the one in the database. 
 - Because we are using Nanopore data, which has relatively high error rates, we may have some errors in our assemblies, which now affects this analysis. 
-
-<!-- 
-The first step is to download selected public available complete whole genomes of V.cholerae from NCBI which are pandemic strains but also for control we download non-pandemic strains (with known sequence typing in both cases). We download two files for each genome; one with contigs FASTA sequences and other one is annotated genome sequences GFF as described above.
--->
 
 
 ## MLST with command line {#sec-mlst-cli}
 
-Running MLST from the command line can be done with a single command, as exemplified on this script:
+Running MLST from the command line can be done with a single command:
 
 ```bash
-#!/bin/bash
-
 # create output directory
 mkdir results/mlst
 
@@ -198,5 +196,10 @@ From this table we can see that:
 ::: {.callout-tip}
 #### Key Points
 
-- TODO
+- MLST (Multilocus Sequence Typing) is a genotyping method used to identify and categorize bacterial strains based on the sequences of specific housekeeping genes.
+- It aids in tracking and monitoring the spread of bacterial pathogens, understanding their genetic diversity, and detecting outbreaks.
+- MLST can be performed using web-based tools like _Pathogenwatch_ and _PubMLST_, which offer user-friendly interfaces for sequence type assignment.
+- Dedicated command-line software such as `mlst` allows for automation and give a more detailed output.
+- MLST results reveal the sequence types (STs) of bacterial strains, which can help in identifying clonal groups and their relatedness.
+- The validity of MLST results depends on the quality of input data, as errors in the assembly may result in wrongly classifying our assemblies as a new ST.
 :::
