@@ -5,19 +5,29 @@ title: AMR analysis
 ::: {.callout-tip}
 #### Learning Objectives
 
-- TODO
+- Recognise the threats posed by antimicrobial resistance (AMR) to public health globally.
+- Apply both command line and web applications to find potential AMR genes in a set of genomes.
+- Recognise the limitations of computational AMR prediction and the importance of comparing results across multiple tools.
 :::
 
 
 ## Antimicrobial Resistance (AMR) analysis
 
+Antimicrobial resistance (AMR) is a phenomenon where microorganisms, such as bacteria, evolve in a way that reduces the effectiveness of antimicrobial drugs, including antibiotics.
+This occurs due to the overuse and misuse of these drugs, which exerts selective pressure on the microorganisms. 
+As a result, bacteria may develop or acquire genetic changes that enable them to **survive exposure to antimicrobial agents**, making the drugs less effective or entirely ineffective. 
+AMR poses a significant **global health threat**, as it can lead to infections that are challenging to treat, potentially causing increased morbidity and mortality. 
+Efforts to combat AMR include responsible antibiotic use, developing new drugs, and enhancing infection prevention and control measures.
+
+![History of antibiotic resistance in _Vibrio cholerae_ and associated resistance genes. These are often acquired through horizontal gene transfer of mobile genetic elements. Image: Fig. 1 in [Das et al. (2020)](https://doi.org/10.1016/j.vaccine.2019.06.031)](https://ars.els-cdn.com/content/image/1-s2.0-S0264410X19307935-gr1_lrg.jpg){#fig-amr_genes}
+
 According to the [WHO](https://www.who.int/publications/i/item/9789241564748), antimicrobial resistance (AMR) has evolved into a global concern for public health. 
 This stems from various harmful bacterial strains developing resistance to antimicrobial medications, including antibiotics. 
-As part of our ongoing efforts to enhance cholera disease monitoring, we can delve into identifying AMR patterns connected to our _V. cholerae_ isolates.
+As part of our analysis, we will now focus on identifying AMR patterns connected to our _V. cholerae_ isolates.
 
 Numerous software tools have been created to predict the presence of genes linked to AMR in genome sequences. 
 Estimating the function of a gene or protein solely from its sequence is complex, leading to varying outcomes across different software tools. 
-It's advisable to employ multiple tools and compare their findings, thus increasing our confidence in identifying which antimicrobial drugs might be more effective for treating patients infected with the strains we're studying.
+It is advisable to employ multiple tools and compare their findings, thus increasing our confidence in identifying which antimicrobial drugs might be more effective for treating patients infected with the strains we're studying.
 
 In this section we will introduce a workflow aimed at combining the results from various AMR tools into a unified analysis.
 We will compare its results with AMR analysis performed by _Pathogenwatch_. 
@@ -128,7 +138,7 @@ The main output of interest from this pipeline is a CSV file, which contains a s
 This summary is produced by a software called [_hAMRonization_](https://github.com/pha4ge/hAMRonization) and the corresponding CSV file is saved in `results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv`. 
 You can open this file using any standard spreadsheet software such as _Excel_ (@fig-hamronization). 
 
-This file is quite large, containing many columns and rows (we detail all the columns in the information box below). 
+This file is quite large, containing many columns and rows (we detail these columns in the information box below). 
 The easiest way to query this table is to filter the table based on the column "antimicrobial_agent" to remove rows where no AMR gene was detected (@fig-hamronization). 
 This way you are left with only the results which were positive for the AMR analysis. 
 
@@ -247,6 +257,8 @@ However, this was the sample with the lowest genome coverage (only 21x) and with
 Therefore, it is very possible that we missed parts of its genome during assembly, and that some of those contained AMR genes or plasmids. 
 
 In conclusion, always be critical of the analysis of your results at this stage, comparing the output from different tools as well as considering the quality of your assemblies. 
+Ultimately, the safest way to assess AMR is with **experimental validation**, by testing those strains against the relevant antimicrobial agents in the lab. 
+However, computational analysis such as what we did can help inform these experiments and treatment decisions.
 
 
 ## Exercises
@@ -396,5 +408,9 @@ However, _Pathogenwatch_ identified resistance to several other drugs: ampicilin
 ::: {.callout-tip}
 #### Key Points
 
-- TODO
+- AMR poses significant global public health threats by diminishing the effectiveness of antibiotics, making it challenging to treat infectious diseases effectively.
+- AMR software aims to identify specific genes or mutations known to confer resistance to antimicrobial agents. These tools compare input genetic sequences to known resistance genes or patterns in their associated databases.
+- The `nf-core/funcscan` workflow performs AMR analysis using several software tools and producing a summary of their results as a CSV file.
+- _Pathogenwatch_ is a more user-friendly application, which performs AMR using its own curated database. 
+- AMR prediction can result in false results (either false positives or false negatives). One way to overcome this limitation is to compare the results from multiple tools and, whenever possible, complement it with validation assays in the lab.
 :::

@@ -5,7 +5,13 @@ title: Building phylogenetic trees
 ::: {.callout-tip}
 #### Learning Objectives
 
-- TODO
+- Recognise the use of phylogenetic inference in pathogen surveillance.
+- Identify the closest lineage(s) to your samples based on phylogenetic tree analysis.
+- Explain why a core genome alignment is necessary when working with _Vibrio cholerae_.
+- Generate a core genome alignment from a set of genomes. 
+- Infer a phylogenetic tree from an alignment.
+- Visualise and annotate phylogenetic trees.
+- Assess whether errors are likely present in your assemblies based on the phylogenetic trees.
 :::
 
 
@@ -16,11 +22,11 @@ In the context of pathogenic organisms, it is used to study the origin of human-
 This involves analyzing sequences from various bacterial/viral species infecting humans and other species. 
 For instance, during the COVID-19 pandemic, inter-species phylogeny was used to [trace the origin of the SARS-CoV-2 virus](https://doi.org/10.1007/s10311-020-01151-1) that adapted to infect humans.
 
-Pathogen surveillance mostly focuses on intra-species phylogenies. 
+Pathogen surveillance mostly focuses on **intra-species phylogenies**. 
 Here, phylogenies are constructed from sequences within the same pathogenic species. 
 The objective is to understand how specific strains and lineages relate and evolve. 
 By analyzing genetic differences, we can track pathogen spread and identify outbreak sources. 
-This section aims to answer: **how do our Vibrio cholerae isolates relate to each other and to previously sequenced strains?**
+This section aims to answer: **How do our Vibrio cholerae isolates relate to each other and to previously sequenced strains?**
 This sheds light on relationships among isolates and their evolutionary context.
 
 To construct a phylogeny, two primary steps are necessary:
@@ -567,12 +573,6 @@ The resulting tree file is shown in the image below:
 We have highlighted the the clades showing our samples (pint) and the main clade they fall into (purple). 
 We can see that: 
 
-- Do all your samples cluster together?
-- Are they quite distinct (long branch lengths) compared to their closest public sequences?
-- Do your samples cluster with the pathogenic O1 biotype?
-- Which transmission wave are your samples most closely related to?
-- Do these results agree with the result you obtained on _Pathogenwatch_?
-
 - Our samples do cluster together, suggesting they are more similar to each other than to any other samples in the dataset. 
 - They are quite distant from other public sequences in their clade. 
   This could be true divergence if, for example, the public sequences were collected a long time ago and/or from distant locations or outbreaks (we have no information about this). 
@@ -591,5 +591,13 @@ The results are also compatible with the analysis from _Pathogenwatch_.
 ::: {.callout-tip}
 #### Key Points
 
-- TODO
+- Phylogenetic inference is a crucial tool in pathogen surveillance, enabling us to understand the relatedness of pathogen strains, trace transmission routes, and identify the sources of outbreaks.
+- Phylogenetic tree analysis helps identify the closest relatives or lineages of your pathogen samples.
+- For _Vibrio cholerae_, it can crucially identify whether our samples belong to the highly transmissible and virulent 7PET lineage. 
+- A core genome alignment is essential for _Vibrio cholerae_ due to its high genetic diversity, as it captures conserved genomic regions shared across strains and provides a robust basis for phylogenetic analysis.
+- Creating a core genome alignment involves identifying shared genes across genomes and aligning these sequences. This task can be achieved using the `panaroo` software.
+- A phylogenetic tree is constructed from a core genome alignment using algorithms such as maximum likelihood to infer the most likely relationship among strains. This task can be achieved using the `iqtree` software. 
+- To reduce the computational burden of the analysis, we can extract variable sites from our alignment using the `snp-sites` software. Its output can be used with the `iqtree` mentioned above. 
+- Phylogenetic trees can be visualized and annotated using software like FigTree.
+- Phylogenetic trees can serve as a valuable tool to assess assembly quality by revealing inconsistencies, such as unexpected placements of samples within the tree or high divergence relative to other samples from similar outbreaks. These may indicate potential sequencing errors affecting the accuracy of our assembly.
 :::
