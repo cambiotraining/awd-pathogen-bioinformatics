@@ -234,7 +234,7 @@ We then created an output directory and activated our software environment:
 
 ```bash
 mkdir results/mash
-conda activate mash
+mamba activate mash
 ```
 
 We could confirm the software environment was active as our terminal showed `(mash)` at the start.

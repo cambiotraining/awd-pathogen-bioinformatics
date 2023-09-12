@@ -87,6 +87,20 @@ For the bioinformatics component in particular, you can include several sub-sect
 The report concludes with citations from relevant literature sources utilized in its preparation.
 
 
+## Publishing
+
+Although reports may often be used for sharing with public health officials, you should also consider publishing and sharing your genomes. 
+You can make a small publication, even including a single genome. 
+Every piece of information helps when dealing with pathogens that cause pandemic outbreaks. 
+
+As inspiration, here are some examples of small "announcement" publications: 
+
+- [Malki et al. 2021](https://doi.org/10.1128/mra.01489-20) reporting seven genomes from patients in Qatar.
+- [Osama et al. 2012](https://doi.org/10.1128/jb.01832-12 ) reporting a single genome from a patient in Malaysia.
+- [Thompson et al. 2011](https://doi.org/10.1128/jb.01832-12) reporting a single genome from an isolate collected during an older outbreak in Brazil.
+- 
+
+
 ## Exercises
 
 :::{.callout-exercise}
@@ -107,12 +121,6 @@ Discuss and compare the results with your colleagues.
 ::: {.callout-tip}
 #### Key Points
 
-- Are the acute watery diarrhoea cases in the region caused by Vibrio cholerae?
-- Are they pathogenic strains of _Vibrio cholerae_ (7PET lineage)?
-- Are they similar to previously sequenced strains in the region?
-- Do these strains carry AMR genes and, if so, for which antimicrobial agents?
-
-
 - Key questions to address in a genomic surveillance report include:
   - Which pathogen was identified in your isolates? 
   - Was it a pathogenic strain?
@@ -121,4 +129,5 @@ Discuss and compare the results with your colleagues.
 - Typical sections to include in a report are: introduction, methods, results, and conclusions. Using a clear and concise style is recommended. 
 - Include as much contextual information about your samples as possible, such as _when_, _where_ and _how_ the samples were collected. 
 - Include tables and figures from your bioinformatic analysis, including: assembly quality metrics, sequence typing, phylogenetic trees and detected AMR genes.
+- Whenever possible, publish your findings as a small paper, as this helps improve databases and services such as _Pathogenwatch_. 
 :::

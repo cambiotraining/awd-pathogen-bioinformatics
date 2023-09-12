@@ -7,7 +7,7 @@ title: Genome assembly
 
 After this section you should be able to:
 
-- Describe the main steps involved in de novo genome assembly.
+- Describe the main steps involved in _de novo_ genome assembly.
 - Discuss the impact of genome coverage in the final assembly.
 - List the individual software tools used in the assembly steps.
 - Apply a script to automate the process of assembly across several samples.
@@ -28,7 +28,7 @@ There are two main approaches to genome assembly:
   It's less computationally demanding and works well when we have a good idea of the organism's identity. 
   Yet, it might not perform well if the organism is significantly different from the reference genome.
 
-In our study of _Vibrio cholerae_, we have opted for the **de novo** approach. 
+In our study of _Vibrio cholerae_, we have opted for the **_de novo_** approach. 
 Although there are many [high-quality genomes available on NCBI](https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&annotated_only=true&refseq_annotation=true&typical_only=true), this species is notorious for having a plastic genome, with the presence of several mobile genetic elements and gene exchange happening through conjugation and phage-mediated transduction ([Montero et al. 2023](https://doi.org/10.3389/fmed.2023.1155751) and [Ramamurthy et al. 2019](https://doi.org/10.3389%2Ffpubh.2019.00203)). 
 Therefore, a reference-based assembly may not be the most suited for this species, as we might miss important genes from our samples, if they are not present in the reference genome that we choose. 
 
@@ -53,11 +53,17 @@ Genome coverage is an important factor in determining the quality of genome asse
 
 ## Step-by-step bacterial assembly
 
-As we mentioned earlier, de novo assembly of genomes is a challenging process. 
+As we mentioned earlier, _de novo_ assembly of genomes is a challenging process. 
 Ideally, we want to achieve a "perfect genome", i.e. a complete representation of the individual's genome, with no errors and no missing gaps.
 Although challenging, it is possible to achieve near-perfect genomes, in particular when multiple types of data are available: long reads for assembling more difficult regions and short reads for correcting the high error rates of long reads ([Wick et al. 2023](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010905)). 
 
 In this section, we introduce a simplified version of the tutorial "[Assembling the perfect bacterial genome](https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki)", which is suitable for nanopore-only data. 
+
+We start by activating our software environment, to make all the necessary tools available: 
+
+```bash
+mamba activate assembly
+```
 
 
 ### Sampling: `rasusa`
@@ -138,7 +144,7 @@ A low depth of coverage leads to difficulty in:
 ### Assembly: `flye`
 
 Now that we have downsampled our reads, we are ready for the next step of the analysis, which is the genome assembly. 
-We will use the software [_Flye_](https://github.com/fenderglass/Flye), which is designed for de novo assembly of long-read sequencing data, particularly from technologies like Oxford Nanopore or PacBio.
+We will use the software [_Flye_](https://github.com/fenderglass/Flye), which is designed for _de novo_ assembly of long-read sequencing data, particularly from technologies like Oxford Nanopore or PacBio.
 However, [many other assembly tools](https://en.wikipedia.org/wiki/De_novo_sequence_assemblers) are available, and you could explore alternatives.
 
 Continuing from our example `barcode26` sample, here is the `flye` command that we could use: 
@@ -563,7 +569,7 @@ According to this [gene's description on CARD](https://card.mcmaster.ca/ontology
 ::: {.callout-tip}
 #### Key Points
 
-- De novo genome assembly involves reconstructing a complete genome sequence without relying on a reference genome.
+- _De novo_ genome assembly involves reconstructing a complete genome sequence without relying on a reference genome.
 - Genome coverage refers to the average number of times each base in the genome is sequenced.
 - Higher coverage provides more confident assembly, especially in repetitive regions, but it can be computationally intensive and expensive. Low coverage leads to more fragmented and less accurate assemblies.
 - Key steps in Nanopore data assembly, along with relevant software, include:: 

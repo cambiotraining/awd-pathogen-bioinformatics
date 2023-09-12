@@ -90,12 +90,18 @@ In the previous section we used _Pathogenwatch_ to perform a phylogenetic analys
 While _Pathogenwatch_ is user-friendly, it relies on a web-based service that might not always be accessible. 
 Therefore, we introduce an alternative using command line tools suitable for local execution on your computer.
 The methodology we use here is similar to _Pathogenwatch_'s, but it employs distinct tools for generating the core genome and performing tree inference. 
-Our toolkit consists of three software components:
+Our toolkit consists of four software components:
 
 - **[Panaroo](https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart)** - used to identify a set of "core genes" (genes occurring in most samples) and generate a multiple sequence alignment from them.
 - **[SNP-sites](http://sanger-pathogens.github.io/snp-sites/)** - used to extract variable sites from the alignment (to save computational time). 
 - **[IQ-TREE](http://www.iqtree.org/doc/)** - used to infer a tree from the aligned core genes.
 - **[Figtree](http://tree.bio.ed.ac.uk/software/figtree/)** - used to visualise and/or annotate our tree.
+
+We start our analysis by activating our software environment, to make all the necessary tools available: 
+
+```bash
+mamba activate phylogeny
+```
 
 
 ### Core genome alignment: `panaroo` {#sec-panaroo}

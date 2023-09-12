@@ -72,7 +72,7 @@ However, significant advancements have emerged, enhancing the accuracy of nanopo
 
 - Operates on the principle of nanopore technology.
 - Provides long read lengths, ranging from thousands to tens of thousands of base pairs.
-- Ideal for applications requiring long-range information, such as de novo genome assembly and structural variant analysis.
+- Ideal for applications requiring long-range information, such as _de novo_ genome assembly and structural variant analysis.
 - Portable, enabling fieldwork and real-time sequencing.
 - Exhibits higher error rates (around 5%), with improvements in recent versions.
 - Costs can be higher per base, compared to Illumina for certain projects.
@@ -292,7 +292,7 @@ With your colleague discuss the following file formats in terms of the: 1) infor
   - Uses sequencing-by-synthesis chemistry, produces short read lenghts and has high accuracy with low error rates (<1%).
   - While it is scalable and cost-effective for large-scale projects, it is expensive to set up and limited in sequencing long DNA fragments.
 - Nanopore sequencing: 
-  - Uses nanopore technology, provides long read lengths, making it ideal for applications such as de novo genome assembly.
+  - Uses nanopore technology, provides long read lengths, making it ideal for applications such as _de novo_ genome assembly.
   - Although the costs can be higher per base, it is cheaper to set up.
   - Exhibits higher error rates (around 5%), but with significant improvements in recent versions (1%).
 - Common file formats in bioinformatics include FASTQ, FASTA and GFF. These are all text-based formats.

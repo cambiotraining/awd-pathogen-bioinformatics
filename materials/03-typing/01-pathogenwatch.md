@@ -58,7 +58,7 @@ In our case, we will load the assemblies we produced with our [genome assembly s
 ![](images/pathogenwatch_upload6.png){#fig-pathogenwatch6}
 
 _Pathogenwatch_ performs the following major analyses useful for genomic surveillance: sequence typing (ST), antimicrobial resistance (AMR) analysis, phylogenetics, as well as reporting general statistics about your samples (such as genome completeness, which we also assessed with _checkM2_).
-We will detail several of these analysis in the coming chapters, but here is a brief description of each column: 
+We will detail several of these analyses in the coming chapters, but here is a brief description of each column: 
 
 - **Name** - the names of the uploaded samples.
 - **Organism** - the species that was detected for our samples, in this case _Vibrio cholerae_.
@@ -88,16 +88,16 @@ For example you might create a collection with only the genomes you sequenced re
 To create a collection from your sequences, check the box next to the "Name" header to select all of the uploaded genomes. 
 Then, from the top-rigth of the table, click **Selected Genomes** --> **Create Collection**:
 
-![Creating a collection for the uploaded genomes.](images/pathogenwatch_collection1.png){#fig-pathogenwatch7}
+![](images/pathogenwatch_collection1.png){#fig-pathogenwatch7}
 
 In the next window give a name and description to your collection: 
 
-![Further description for creating a collection for downstream analysis of your genomes](images/pathogenwatch_collection2.png){#fig-pathogenwatch8}
+![](images/pathogenwatch_collection2.png){#fig-pathogenwatch8}
 
 It is highly recommended to provide details for your collection:
 
 - **Title** - give your collection a title that is meaningful to you, for example: "Cholera workshop 2023".
-- **Description** - give a brief description of your samples, for example: "Culture-based sequencing of Vibrio samples using a Nanopore platform. Samples were collected from patients in the outbreak in <COUNTRY> on <DATE>. De novo assembly was performed using Flye followed by Medaka polishing."
+- **Description** - give a brief description of your samples, for example: "Culture-based sequencing of Vibrio samples using a Nanopore platform. Samples were collected from patients in the outbreak in <COUNTRY> on <DATE>. _De novo_ assembly was performed using Flye followed by Medaka polishing."
 - If your data come from a published study, provide a DOI of the study.
 
 Finally, click <kbd>Create Now</kbd> button to create your collection. 
@@ -119,6 +119,7 @@ This table contains several columns:
   Their reference genomes are named 'Wi_Tj' where 'W' stands for a _Wave_ and 'T' stands for a _Transmission event_. 
   Our samples are closest to W3_T13, which is a recent lineage. 
   This makes sense, as our samples are from isolates collected in 2023.
+- **INC TYPES** - identification of plasmids relevant for enterobacterial strains ("inc" stands for "incompatibility", refering to [plasmid incompatibility groups](https://blog.addgene.org/plasmids-101-plasmid-incompatibility)). Inc plasmids often carry antibiotic resistance and virulence genes, making them of particular relevance for public health (e.g. [Foley et al 2021](https://doi.org/10.1128/mmbr.00031-20)).
 - **ST** and **PROFILE** - these columns refer to the "sequence type" (ST) assigned to each of our samples. We will detail this analysis in the [next chapter](02-mlst.md). 
 - **BIOTYPE** and **SEROGROUP** - refer to the biotype and serogroup our samples likely belong to, based on the genes present in their genomes (we detailed how _V. cholerae_ strains are classified in an [earlier chapter](../01-introduction/01-awd_genomic_surveillance.md))
 

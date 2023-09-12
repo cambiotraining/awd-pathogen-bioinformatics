@@ -54,7 +54,7 @@ Here, we introduce an automated workflow called **[`nf-core/funcscan`](https://n
 This pipeline uses five different AMR screening tools: **[ABRicate](https://github.com/tseemann/abricate)**, **[AMRFinderPlus (NCBI Antimicrobial Resistance Gene Finder)](https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/)**, **[fARGene (Fragmented Antibiotic Resistance Gene idENntifiEr)](https://github.com/fannyhb/fargene)**, **[RGI (Resistance Gene Identifier)](https://card.mcmaster.ca/analyze/rgi)**, and **[DeepARG](https://readthedocs.org/projects/deeparg/)**.
 This is convenient, as we can obtain the results from multiple approaches in one step. 
 
-![Overview of the `nf-core/funcscan` workflow. In our case we will run the "Antimicrobial Resistance Genes (ARGs)" analysis, shown in yellow. Image source: https://nf-co.re/funcscan/1.1.2]([images/funcscan_metro_workflow.png](https://raw.githubusercontent.com/nf-core/funcscan/1.1.2/docs/images/funcscan_metro_workflow.png)){#fig-funcscan}
+![Overview of the `nf-core/funcscan` workflow. In our case we will run the "Antimicrobial Resistance Genes (ARGs)" analysis, shown in yellow. Image source: https://nf-co.re/funcscan/1.1.2](https://raw.githubusercontent.com/nf-core/funcscan/1.1.2/docs/images/funcscan_metro_workflow.png){#fig-funcscan}
 
 This pipeline requires us to prepare a samplesheet CSV file with information about the samples we want to analyse. 
 Two columns are required: 
@@ -82,7 +82,8 @@ isolate10,results/assemblies/isolate10.fasta
 Once we have the samplesheet ready, we can run the `nf-core/funcscan` workflow using the following commands:
 
 ```bash
-#!/bin/bash
+# activate the environment
+mamba activate nextflow
 
 # create output directory
 mkdir results/funcscan
@@ -98,7 +99,7 @@ nextflow run nf-core/funcscan -profile singularity \
 
 The options we used are: 
 
-- `-profile singularity` - indicates we want to use the _Singularity_ program to manage all the software required by the pipeline (another option is to use `docker`).
+- `-profile singularity` - indicates we want to use the _Singularity_ program to manage all the software required by the pipeline (another option is to use `docker`). See [Data & Setup](../../setup.md) for details about their installation.
 - `--max_memory` and `--max_cpus` - sets the available RAM memory and CPUs. You can check this with the commands `free -h` and `nproc --all`, respectively.
 - `--input` - the samplesheet with the input files, as explained above.
 - `--outdir` - the output directory for the results. 

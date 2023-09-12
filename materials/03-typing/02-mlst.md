@@ -13,7 +13,7 @@ title: MLST
 
 ## Multilocus Sequence Typing (MLST)
 
-MLST has become a common method for identifying and charactering pathogenic bacterial strains. 
+MLST has become a common method for identifying and characterising pathogenic bacterial strains. 
 It uses a specific set of "housekeeping genes" linked to the bacteria of interest. 
 These genes help categorize isolates into groups based on the changes they carry within these genes. 
 MLST aids in identifying changes in the genetic sequences of isolates during new outbreaks, which adds to other methods like serotyping for classifying strains. 
@@ -45,6 +45,12 @@ There are several reasons why we may have obtained this result:
 - The PubMLST database may not contain up-to-date sequence types for most recent _Vibrio_ lineages circulating worldwide. 
 - Even if only one of the 7 genes used for typing contains a mutation, MLST considers it to be a different type from the one in the database. 
 - Because we are using Nanopore data, which has relatively high error rates, we may have some errors in our assemblies, which now affects this analysis. 
+
+We start our analysis by activating our software environment, to make all the necessary tools available: 
+
+```bash
+mamba activate typing
+```
 
 
 ## MLST with command line {#sec-mlst-cli}

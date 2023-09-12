@@ -27,7 +27,7 @@ To assess the quality of an assembly, several key indicators can be examined:
 Evaluating these factors collectively provides insights into the reliability and utility of the genome assembly for further analysis and interpretation.
 
 For example, before we even did our assembly, we had already checked for signs of sample contamination from our sequencing reads using [_Mash_](02-read_content.md). 
-Since our samples were generated from cultured colonies, we only expected to find _V. cholerae_ DNA. 
+Since our samples were generated from cultured colonies with vibrio-selective medium ([TCBS](https://doi.org/10.3412/jsb.18.387)), we are mostly expecting _V. cholerae_ DNA, but other certain other _Vibrio_ or enterobacterial species could end up in our cultured samples too.
 Our analysis indicated no concerning signs of contamination, which would have affected the accuracy of our assemblies. 
 
 Let's now turn to some of the other metrics to help us assess our assemblies' quality.
@@ -146,6 +146,12 @@ This software employs machine learning models that were trained using many exten
 These models help _CheckM2_ estimate how complete and uncontaminated the provided genome assemblies are. 
 In our case, we anticipate a minimal level of contamination, as confirmed by _Mash_. 
 However, we're still uncertain about the completeness of our genomes.
+
+We start our analysis by activating our software environment, to make all the necessary tools available: 
+
+```bash
+mamba activate checkm
+```
 
 
 ### `checkm database`
