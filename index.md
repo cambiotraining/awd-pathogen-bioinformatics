@@ -1,6 +1,6 @@
 ---
 title: "Bioinformatics for AWD-related Pathogens"
-author: "Bajuna Salehe, Hugo Tavares"
+author: "Bajuna Salehe, Hugo Tavares, Angelika Kritz, Sam Sims, Antoine Fayad, Luke Meredith, Matt Castle, Babak Afrough"
 date: today
 number-sections: false
 ---
@@ -34,7 +34,7 @@ We assume little or no prior experience in bioinformatics.
 - Basic understanding of microbiology.
 - A working knowledge of the UNIX command line will be advantageous, but not required as we will give a brief introduction as part of the course.
 
-<!-- Training Developer note: comment the following section out if you did not assign levels to your exercises -->
+<!-- Training Developer note: comment the following section out if you did not assign levels to your exercises 
 ### Exercises
 
 Exercises in these materials are labelled according to their level of difficulty:
@@ -44,7 +44,7 @@ Exercises in these materials are labelled according to their level of difficulty
 | {{< fa solid star >}} {{< fa regular star >}} {{< fa regular star >}} | Exercises in level 1 are simpler and designed to get you familiar with the concepts and syntax covered in the course. |
 | {{< fa solid star >}} {{< fa solid star >}} {{< fa regular star >}} | Exercises in level 2 combine different concepts together and apply it to a given task. |
 | {{< fa solid star >}} {{< fa solid star >}} {{< fa solid star >}} | Exercises in level 3 require going beyond the concepts and syntax introduced to solve new problems. |
-
+-->
 
 ## Authors
 <!-- 
@@ -57,12 +57,30 @@ About the authors:
 - **Bajuna Salehe**
   <a href="https://github.com/bsalehe" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a>  
   _Affiliation_: Bioinformatics Training Facility, University of Cambridge  
-  _Roles_: writing - original content; conceptualisation; coding
+  _Roles_: writing - original content; conceptualisation; coding; data curation
 - **Hugo Tavares**
   <a href="https://orcid.org/0000-0001-9373-2726" target="_blank"><i class="fa-brands fa-orcid" style="color:#a6ce39"></i></a> 
   <a href="https://github.com/tavareshugo" target="_blank"><i class="fa-brands fa-github" style="color:#4078c0"></i></a>  
   _Affiliation_: Bioinformatics Training Facility, University of Cambridge  
-  _Roles_: writing - review & editing; conceptualisation; coding
+  _Roles_: writing - original content; conceptualisation; coding; data curation
+- **Angelika Kritz**  
+  _Affiliation_: New Variant Assessment Platform, UK Health Security Agency  
+  _Roles_: writing - review; conceptualisation; code review
+- **Sam Sims**  
+  _Affiliation_: New Variant Assessment Platform, UK Health Security Agency  
+  _Roles_: coding; code review
+- **Antoine Abou Fayad**  
+  _Affiliation_: American University of Beirut  
+  _Roles_: resources
+- **Luke William Meredith**  
+  _Affiliation_: World Health Organisation (EMRO)  
+  _Roles_: project administration; funding acquisition; resources
+- **Matt Castle**  
+  _Affiliation_: Bioinformatics Training Facility, University of Cambridge  
+  _Roles_: project administration; funding acquisition; resources
+- **Babak Afrough**  
+  _Affiliation_: New Variant Assessment Platform, UK Health Security Agency  
+  _Roles_: project administration; funding acquisition; resources
 
 
 ## Citation
@@ -72,13 +90,13 @@ About the authors:
 Please cite these materials if:
 
 - You adapted or used any of them in your own teaching.
-- These materials were useful for your research work. For example, you can cite us in the methods section of your paper: "We carried our analyses based on the recommendations in _TODO_.".
+- These materials were useful for your research work. For example, you can cite us in the methods section of your paper: "We carried our analyses based on the recommendations in _Salehe & Tavares et al. (2023)_.".
 
 You can cite these materials as:
 
-> TODO
+> Salehe B, Tavares H, Kritz A, Sims S, Fayad AA, Meredith LW, Castle M & Afrough B (2023) “cambiotraining/awd-pathogen-bioinformatics: Bioinformatics for AWD-related Pathogens”, https://cambiotraining.github.io/awd-pathogen-bioinformatics
 
-Or in BibTeX format:
+<!-- Or in BibTeX format:
 
 ```
 @Misc{,
@@ -89,11 +107,11 @@ Or in BibTeX format:
   url = {},
   doi = {}
 }
-```
+``` -->
 
 
 ## Acknowledgements
 
 <!-- if there are no acknowledgements we can delete this section -->
 
-- TODO
+We thank Andries van Tonder (Department of Veterinary Medicine, University of Cambridge), Katy Brown (Department of Pathology, University of Cambridge) and Sebastian Bruchmann (Department of Medicine, University of Cambridge) for critical discussions and advice on these materials, as well as their work as lead trainers in live workshops.

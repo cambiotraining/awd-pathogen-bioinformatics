@@ -5,7 +5,9 @@ title: Reporting
 ::: {.callout-tip}
 #### Learning Objectives
 
-- TODO
+- List the key questions a genomic surveillance report should answer.
+- Describe the typical structure and content for a genomic surveillance report.
+- Summarise and communicate your bioinformatic analysis in a structured report.
 :::
 
 
@@ -42,7 +44,7 @@ This segment offers a contextual backdrop for the report:
 End this section by summarising the **main questions** that your report will address, such as: 
 
 - Are the acute watery diarrhoea cases in the region caused by Vibrio cholerae?
-- Are they pathogenic strains of Vibrio cholerae?
+- Are they pathogenic strains of _Vibrio cholerae_ (7PET lineage)?
 - Are they similar to previously sequenced strains in the region?
 - Do these strains carry AMR genes and, if so, for which antimicrobial agents?
 
@@ -90,8 +92,14 @@ The report concludes with citations from relevant literature sources utilized in
 :::{.callout-exercise}
 #### Writing a report
 
-TODO
+Download a copy of the [report template](https://docs.google.com/document/d/16RaclMEqDlJtFmB4mA8VVnP_dK4iKC-IcG6rDlBNADs/edit?usp=sharing) to your computer (**File** > **Download** > **Microsoft Word**). 
 
+We already drafted some key points in the "Background" and "Methods" section. 
+Read these carefully to understand what you should include in your own reports. 
+
+Complete the **results section** with your own results (tasks highlighted in yellow).
+
+Discuss and compare the results with your colleagues.
 :::
 
 ## Summary
@@ -99,5 +107,18 @@ TODO
 ::: {.callout-tip}
 #### Key Points
 
-- TODO
+- Are the acute watery diarrhoea cases in the region caused by Vibrio cholerae?
+- Are they pathogenic strains of _Vibrio cholerae_ (7PET lineage)?
+- Are they similar to previously sequenced strains in the region?
+- Do these strains carry AMR genes and, if so, for which antimicrobial agents?
+
+
+- Key questions to address in a genomic surveillance report include:
+  - Which pathogen was identified in your isolates? 
+  - Was it a pathogenic strain?
+  - What is the relatedness among your samples and with other samples from the region?
+  - Do they carry potential antimicrobial resistance?
+- Typical sections to include in a report are: introduction, methods, results, and conclusions. Using a clear and concise style is recommended. 
+- Include as much contextual information about your samples as possible, such as _when_, _where_ and _how_ the samples were collected. 
+- Include tables and figures from your bioinformatic analysis, including: assembly quality metrics, sequence typing, phylogenetic trees and detected AMR genes.
 :::
