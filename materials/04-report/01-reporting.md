@@ -97,8 +97,7 @@ As inspiration, here are some examples of small "announcement" publications:
 
 - [Malki et al. 2021](https://doi.org/10.1128/mra.01489-20) reporting seven genomes from patients in Qatar.
 - [Osama et al. 2012](https://doi.org/10.1128/jb.01832-12 ) reporting a single genome from a patient in Malaysia.
-- [Thompson et al. 2011](https://doi.org/10.1128/jb.01832-12) reporting a single genome from an isolate collected during an older outbreak in Brazil.
-- 
+- [Thompson et al. 2011](https://doi.org/10.1128/jb.01832-12) reporting a single genome from an isolate collected during an outbreak in Brazil in 1991.
 
 
 ## Exercises
