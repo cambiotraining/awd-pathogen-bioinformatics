@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>10&nbsp; Pathogenwatch</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/03-typing/02-mlst.html" rel="next">
+<link href="../../materials/02-assembly/04-assembly_quality.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/03-typing/01-pathogenwatch.html">Typing, Phylogeny and AMR</a></li><li class="breadcrumb-item"><a href="../../materials/03-typing/01-pathogenwatch.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#pathogenwatch" id="toc-pathogenwatch" class="nav-link active" data-scroll-target="#pathogenwatch"><span class="header-section-number">10.1</span> Pathogenwatch</a></li>
+  <li><a href="#uploading-fasta-files" id="toc-uploading-fasta-files" class="nav-link" data-scroll-target="#uploading-fasta-files"><span class="header-section-number">10.2</span> Uploading FASTA files</a></li>
+  <li><a href="#collections" id="toc-collections" class="nav-link" data-scroll-target="#collections"><span class="header-section-number">10.3</span> Collections</a></li>
+  <li><a href="#sec-ex-pathogenwatch" id="toc-sec-ex-pathogenwatch" class="nav-link" data-scroll-target="#sec-ex-pathogenwatch"><span class="header-section-number">10.4</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">10.5</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After this section you should be able to:</p>
+<ul>
+<li>Describe what <em>Pathogenwatch</em> is and how it can be used to aid in genomic surveillance.</li>
+<li>Upload files and create collections from our assemblies.</li>
+<li>Become familiar with the interface to <em>Pathogenwatch</em>.</li>
+</ul>
+</div>
+</div>
+<section id="pathogenwatch" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="pathogenwatch"><span class="header-section-number">10.1</span> Pathogenwatch</h2>
+<p>Pathogenwatch is a web-based platform for common genomic surveillance analysis tasks, including:</p>
+<ul>
+<li>Identifying strains for pathogens of concern.</li>
+<li>Cluster sequences using phylogenetic analysis.</li>
+<li>Identifying the presence of antibiotic resistance genes.</li>
+</ul>
+<p>Pathogenwatch is designed to be user-friendly, supporting the analysis of over 100 species, including <em>Vibrio cholerae</em>, which is our organism of focus. In this chapter, we will cover the basics of loading genomes and creating collections for analysis on this platform. The details of the <em>Pathogenwatch</em> analysis will then be covered in following chapters.</p>
+<p>In order to use this platform you will first need to <a href="https://pathogen.watch/sign-in"><strong>create an account</strong></a> (or sign-in through your existing Google, Facebook or Twitter).</p>
+</section>
+<section id="uploading-fasta-files" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="uploading-fasta-files"><span class="header-section-number">10.2</span> Uploading FASTA files</h2>
+<p>Once you have logged in to Pathogenwatch, you can load the FASTA files with the sequences you want to analyse. In our case, we will load the assemblies we produced with our <a href="../../materials/02-assembly/03-genome_assembly.html">genome assembly script</a>.</p>
+<ol type="1">
+<li>Click the <strong>Upload</strong> link in the top-right corner of the page:</li>
+</ol>
+<p><img src="images/pathogenwatch_upload1.png" id="fig-pathogenwatch1" class="img-fluid"></p>
+<ol start="2" type="1">
+<li>Click in the <strong>Upload FASTA(s)</strong> button, on the “Single Genome FASTAs” section:</li>
+</ol>
+<p><img src="images/pathogenwatch_upload2.png" id="fig-pathogenwatch2" class="img-fluid"></p>
+<ol start="3" type="1">
+<li>If your internet connection is slow and/or unstable, you can tick “Compress files” and “Upload files individually”.Click the <strong>+</strong> button on the bottom-right corner to upload the sequences:</li>
+</ol>
+<p><img src="images/pathogenwatch_upload3.png" id="fig-pathogenwatch3" class="img-fluid"></p>
+<ol start="4" type="1">
+<li>This will open a file browser, where you can select the FASTA files from your local machine. Go to the <code>results/assemblies</code> folder where you have the results from your earlier genome assembly analysis. You can upload several files at once by clicking and selecting several FASTA files while holding the <kbd>Ctrl</kbd> key. Click open on the dialogue window after you have selected all of your FASTA files.</li>
+</ol>
+<p><img src="images/pathogenwatch_upload4.png" id="fig-pathogenwatch4" class="img-fluid"></p>
+<ol start="5" type="1">
+<li>A new page will open showing the progress of the samples being uploaded and processed.</li>
+</ol>
+<p><img src="images/pathogenwatch_upload5.png" id="fig-pathogenwatch5" class="img-fluid"></p>
+<ol start="6" type="1">
+<li>Click in the <strong>VIEW GENOMES</strong> button, which will take you to a tabular view of your samples:</li>
+</ol>
+<p><img src="images/pathogenwatch_upload6.png" id="fig-pathogenwatch6" class="img-fluid"></p>
+<p><em>Pathogenwatch</em> performs the following major analyses useful for genomic surveillance: sequence typing (ST), antimicrobial resistance (AMR) analysis, phylogenetics, as well as reporting general statistics about your samples (such as genome completeness, which we also assessed with <em>checkM2</em>). We will detail several of these analyses in the coming chapters, but here is a brief description of each column:</p>
+<ul>
+<li><strong>Name</strong> - the names of the uploaded samples.</li>
+<li><strong>Organism</strong> - the species that was detected for our samples, in this case <em>Vibrio cholerae</em>.</li>
+<li><strong>Type</strong> and <strong>Typing schema</strong> - the sequence type assigned to each sample, based on MLST analysis (detailed in the <a href="../../materials/03-typing/02-mlst.html">next chapter</a>)</li>
+<li><strong>Country</strong> and <strong>Date</strong> - the country and date of collection, respectively; only shown if we provided that information as metadata.</li>
+<li><strong>Access</strong> - whether these samples are private or public; in this case, because they were uploaded by us, they are private (only we can see them).</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Metadata
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have metadata files associated with your sequenced samples, you can upload those files following <a href="https://cgps.gitbook.io/pathogenwatch/how-to-use-pathogenwatch/uploading-assemblies#metadata">these instructions</a>. Make sure all metadata files are in <strong>CSV</strong> format, with five recommended columns named ‘latitude’, ‘longitude’, ‘year’, ‘month’, and ‘day’. You can also use the template provided by <em>Pathogenwatch</em> on the upload page, to help you prepare your metadata files before the analysis.</p>
+<p>Having this type of information is highly recommended, as it will allow you to visualise your samples on a map, which is useful if you want to match particular strains to the geographic locations where outbreaks occur.</p>
+</div>
+</div>
+</section>
+<section id="collections" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="collections"><span class="header-section-number">10.3</span> Collections</h2>
+<p>A useful feature of <em>Pathogenwatch</em> is to group our samples into <strong>collections</strong>. This allows us to manage and analyse samples in batches of our choice. The same sample can exist in different collections. For example you might create a collection with only the genomes you sequenced recently, another collection with all the genomes you ever sequenced in your facility, or even a collection that includes your samples together with public samples available online (if you want to compare them with each other).</p>
+<p>To create a collection from your sequences, check the box next to the “Name” header to select all of the uploaded genomes. Then, from the top-rigth of the table, click <strong>Selected Genomes</strong> –&gt; <strong>Create Collection</strong>:</p>
+<p><img src="images/pathogenwatch_collection1.png" id="fig-pathogenwatch7" class="img-fluid"></p>
+<p>In the next window give a name and description to your collection:</p>
+<p><img src="images/pathogenwatch_collection2.png" id="fig-pathogenwatch8" class="img-fluid"></p>
+<p>It is highly recommended to provide details for your collection:</p>
+<ul>
+<li><strong>Title</strong> - give your collection a title that is meaningful to you, for example: “Cholera workshop 2023”.</li>
+<li><strong>Description</strong> - give a brief description of your samples, for example: “Culture-based sequencing of Vibrio samples using a Nanopore platform. Samples were collected from patients in the outbreak in <country> on <date>. <em>De novo</em> assembly was performed using Flye followed by Medaka polishing.”</date></country></li>
+<li>If your data come from a published study, provide a DOI of the study.</li>
+</ul>
+<p>Finally, click <kbd>Create Now</kbd> button to create your collection. You will be shown a table and map, with the samples you just added to the collection:</p>
+<p><img src="images/pathogenwatch_collection3.png" id="fig-pathogenwatch9" class="img-fluid"></p>
+<p>This table contains several columns:</p>
+<ul>
+<li><strong>Purple <i class="fa-solid fa-download" style="color:purple"></i> download button</strong> - download the assembled genome in FASTA format. This is the same file that you just uploaded, so it’s not very useful in our case. It can be useful if you want to download the public sequences available from within <em>Pathogenwatch</em>.</li>
+<li><strong>Green <i class="fa-solid fa-download" style="color:green"></i> download button</strong> - download the gene annotation performed by <em>Pathogenwatch</em> in GFF format. Note that our assembly script already performed gene annotation using <em>Bakta</em>, so this feature is also not so useful for us. But again, if you were using public sequences from <em>Pathogenwatch</em>, you could download their GFF files.</li>
+<li><strong>NAME</strong> - your sample name.</li>
+<li><strong>REFERENCE</strong> - the reference lineage that your sequence was closest to. <a href="https://genomic-surveillance-for-vibrio-cholerae-using-vibriowatch.readthedocs.io/en/latest/mlst.html#compare-your-isolate-to-vibriowatch-s-reference-genomes"><em>Vibriowatch</em></a> defines a set of 17 ‘reference genomes’, 14 of which belong to current pandemic lineages (7PET). Their reference genomes are named ‘Wi_Tj’ where ‘W’ stands for a <em>Wave</em> and ‘T’ stands for a <em>Transmission event</em>. Our samples are closest to W3_T13, which is a recent lineage. This makes sense, as our samples are from isolates collected in 2023.</li>
+<li><strong>INC TYPES</strong> - identification of plasmids relevant for enterobacterial strains (“inc” stands for “incompatibility”, refering to <a href="https://blog.addgene.org/plasmids-101-plasmid-incompatibility">plasmid incompatibility groups</a>). Inc plasmids often carry antibiotic resistance and virulence genes, making them of particular relevance for public health (e.g.&nbsp;<a href="https://doi.org/10.1128/mmbr.00031-20">Foley et al 2021</a>).</li>
+<li><strong>ST</strong> and <strong>PROFILE</strong> - these columns refer to the “sequence type” (ST) assigned to each of our samples. We will detail this analysis in the <a href="../../materials/03-typing/02-mlst.html">next chapter</a>.</li>
+<li><strong>BIOTYPE</strong> and <strong>SEROGROUP</strong> - refer to the biotype and serogroup our samples likely belong to, based on the genes present in their genomes (we detailed how <em>V. cholerae</em> strains are classified in an <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html">earlier chapter</a>)</li>
+</ul>
+<p>We will further analyse these results in the following chapters.</p>
+</section>
+<section id="sec-ex-pathogenwatch" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-ex-pathogenwatch"><span class="header-section-number">10.4</span> Exercises</h2>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> For these exercises, you can either use the dataset we provide in <a href="../../setup.html"><strong>Data &amp; Setup</strong></a>, or your own data. You also need to have completed the genome assembly exercise in <a href="../02-assembly/03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>.</p>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Loading data into Pathogenwatch
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<ul>
+<li>Load your newly assembled sequences to <a href="https://pathogen.watch/upload"><em>Pathogenwatch</em></a></li>
+<li>Create a new collection from your sequences with a name of your choice.</li>
+<li>Are they identified as a known biotype? Do you think these are pathogenic strains?</li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>For the “Ambroise 2023” data, we have 5 genomes saved in <code>results/assemblies/</code>, from the assembly pipeline we ran in sec-ex-assembly. We loaded all the FASTA files from that folder into <em>Pathogenwatch</em>:</p>
+<p><img src="images/pathogenwatch-ambroise01.png" class="img-fluid"></p>
+<p>Clicking on “View Genomes” takes us to the table of genomes, where we can select the genomes to create a new collection:</p>
+<p><img src="images/pathogenwatch-ambroise02.png" class="img-fluid"></p>
+<p>We name our collection accordingly, and in this case we even added the associated <a href="https://doi.org/10.1101/2023.02.17.23286076">publication DOI</a>:</p>
+<p><img src="images/pathogenwatch-ambroise03.png" class="img-fluid"></p>
+<p>After clicking on “Create Now” we are shown the default analysis table:</p>
+<p><img src="images/pathogenwatch-ambroise05.png" class="img-fluid"></p>
+<p>We will analyse some of these results in a later section, but we can see from the last two columns that our samples were assigned biotype “O1 pathogenic”, confirming that these are pathogenic strains circulating in the population.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">10.5</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><em>Pathogenwatch</em> is a web-based platform designed for genomic surveillance of bacterial pathogens. It assists in the analysis and interpretation of genomic data to monitor disease outbreaks and track pathogen evolution.</li>
+<li>You can upload genome assemblies in FASTA format and accompanying metadata as CSV files.</li>
+<li>Assemblies can be organized into collections, making it simpler to manage and analyze multiple samples together.</li>
+<li><em>Pathogenwatch</em>’s interface offers an intuitive user experience designed for users with varying levels of expertise, providing results such as biotype/serogroup, strain classification, antimicrobial resistance (AMR) and phylogenetic placement.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/02-assembly/04-assembly_quality.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/03-typing/02-mlst.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

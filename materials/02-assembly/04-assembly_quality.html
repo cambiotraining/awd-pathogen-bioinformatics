@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>9&nbsp; Assembly quality</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/03-typing/01-pathogenwatch.html" rel="next">
+<link href="../../materials/02-assembly/03-genome_assembly.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/02-assembly/01-preparing_data.html">Genome Assembly</a></li><li class="breadcrumb-item"><a href="../../materials/02-assembly/04-assembly_quality.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#assembly-quality" id="toc-assembly-quality" class="nav-link active" data-scroll-target="#assembly-quality"><span class="header-section-number">9.1</span> Assembly quality</a></li>
+  <li><a href="#contiguity" id="toc-contiguity" class="nav-link" data-scroll-target="#contiguity"><span class="header-section-number">9.2</span> Contiguity</a>
+  <ul class="collapse">
+  <li><a href="#sec-bandage" id="toc-sec-bandage" class="nav-link" data-scroll-target="#sec-bandage"><span class="header-section-number">9.2.1</span> Assembly graph</a></li>
+  </ul></li>
+  <li><a href="#completeness" id="toc-completeness" class="nav-link" data-scroll-target="#completeness"><span class="header-section-number">9.3</span> Completeness</a>
+  <ul class="collapse">
+  <li><a href="#checkm-database" id="toc-checkm-database" class="nav-link" data-scroll-target="#checkm-database"><span class="header-section-number">9.3.1</span> <code>checkm database</code></a></li>
+  <li><a href="#sec-check-predict" id="toc-sec-check-predict" class="nav-link" data-scroll-target="#sec-check-predict"><span class="header-section-number">9.3.2</span> <code>checkm predict</code></a></li>
+  </ul></li>
+  <li><a href="#accuracy" id="toc-accuracy" class="nav-link" data-scroll-target="#accuracy"><span class="header-section-number">9.4</span> Accuracy</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">9.5</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">9.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After this section you should be able to:</p>
+<ul>
+<li>List common indicators to assess the quality of a genome assembly.</li>
+<li>Discuss general assembly statistics that can be used to assess genome contiguity and completeness.</li>
+<li>Examine assembly graphs and use them to determine the contiguity of an assembly.</li>
+<li>Apply specialised software to assess the genome completeness as well as potential contamination.</li>
+</ul>
+</div>
+</div>
+<section id="assembly-quality" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="assembly-quality"><span class="header-section-number">9.1</span> Assembly quality</h2>
+<p>The quality of a genome assembly can be influenced by various factors that impact its accuracy and completeness, from sample collection, to sequencing, to the bioinformatic analysis. To assess the quality of an assembly, several key indicators can be examined:</p>
+<ul>
+<li><strong>Completeness:</strong> the extent to which the genome is accurately represented in the assembly, including both core and accessory genes.</li>
+<li><strong>Contiguity:</strong> refers to how long the sequences are without gaps. A highly contiguous assembly means that longer stretches are assembled without interruptions, the best being chromosome-level assemblies. A less contiguous assembly will be represented in more separate fragments.</li>
+<li><strong>Contamination:</strong> the presence of DNA from other species or sources in the assembly.</li>
+<li><strong>Accuracy/correctness:</strong> how closely the assembled sequence matches the true sequence of the genome.</li>
+</ul>
+<p>Evaluating these factors collectively provides insights into the reliability and utility of the genome assembly for further analysis and interpretation.</p>
+<p>For example, before we even did our assembly, we had already checked for signs of sample contamination from our sequencing reads using <a href="../../materials/02-assembly/02-read_content.html"><em>Mash</em></a>. Since our samples were generated from cultured colonies with vibrio-selective medium (<a href="https://doi.org/10.3412/jsb.18.387">TCBS</a>), we are mostly expecting <em>V. cholerae</em> DNA, but other certain other <em>Vibrio</em> or enterobacterial species could end up in our cultured samples too. Our analysis indicated no concerning signs of contamination, which would have affected the accuracy of our assemblies.</p>
+<p>Let’s now turn to some of the other metrics to help us assess our assemblies’ quality.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://training.galaxyproject.org/training-material/topics/assembly/images/genome-qc/3C.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Image source: <a href="https://training.galaxyproject.org/training-material/topics/assembly/tutorials/assembly-quality-control/slides-plain.html">Bretaudeau et al.&nbsp;(2023) Galaxy Training</a></figcaption>
+</figure>
+</div>
+</section>
+<section id="contiguity" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="contiguity"><span class="header-section-number">9.2</span> Contiguity</h2>
+<p>The assembly script we used in the <a href="../../materials/02-assembly/03-genome_assembly.html">previous chapter</a> conveniently output a CSV file with some metrics of interest. This file can be found in <code>results/assemblies/summary_metrics.csv</code>. You can open it with a spreadsheet software such as <em>Excel</em> from our file browser <i class="fa-solid fa-folder"></i>. Alternatively you can print it directly on the terminal in a nice format using the <code>column</code> command, as shown here for the samples we’ve been using as an example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">column</span> <span class="at">-t</span> <span class="at">-s</span> <span class="st">","</span> results/assemblies/summary_metrics.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>sample     total_reads  downsampled_reads  assembly_length  fragments  n50      largest  coverage
+isolate01  121104       121104             4188802          35         369202   841273   31
+isolate02  202685       168327             4240196          5          3031958  3031958  97
+isolate03  247162       226566             4071558          2          3022820  3022820  100
+isolate04  262453       151775             4228717          3          3040641  3040641  98
+isolate05  157356       157356             4045552          229        29056    295945   21
+isolate06  286582       286582             4240860          43         252998   416986   44
+isolate07  187090       187090             4186377          38         214593   669735   40
+isolate08  120555       120555             4083432          19         582736   885447   43
+isolate09  121991       121991             4195953          113        105571   179265   23
+isolate10  102589       102589             4214473          3          3026130  3026130  48</code></pre>
+<p>The columns are:</p>
+<ul>
+<li><strong>sample</strong> - our sample ID.</li>
+<li><strong>total_reads</strong> - the total number of reads in our FASTQ files.</li>
+<li><strong>downsampled_reads</strong> - the number of reads downsampled by <code>rasusa</code> to achive a coverage of 100x.</li>
+<li><strong>assembly_length</strong> - the total length of our assembled fragments.</li>
+<li><strong>fragments</strong> - the number of fragments into which the reads were assembled to by the software <code>flye</code>.</li>
+<li><strong>n50</strong> - a metric indicating the length of the shortest fragment, from the group of fragments that together represent at least 50% of the total genome. A higher N50 value suggests better contig lengths.</li>
+<li><strong>largest</strong> - the largest assembled fragment.</li>
+<li><strong>coverage</strong> - the achieved coverage in the final genome assembly (this might be slightly lower than the coverage we intended when downsampling the reads).</li>
+</ul>
+<p>To interpret these statistics, it helps to compare them with other well-assembled <em>Vibrio cholerae</em> genomes. For example, let’s take the first O1 El Tor genome that was sequenced, <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900205735.1/">N16961</a>, as our reference for comparison. This genome is 4 Mb long and is composed of 2 chromosomes.</p>
+<p>We can see that all of our assemblies reached a total length of around 4 to 4.2 Mb, which matches the expected length from our reference genome. This indicates that we managed to assemble most of the expected genome. However, we can see that there is a variation in the number of fragments in the final assemblies (i.e.&nbsp;their contiguity). Isolates 2, 3, 4 and 10 were assembled to a small number of fragments each, suggesting good assemblies. In fact, for “isolate03” we only have 2 fragments, which indicates that for this sample we achieved a chromosome-level assembly!</p>
+<p>For several other isolates our assemblies were more fragmented, in particular isolate05 and isolate09, which had hundreds of fragments. This indicates less contiguous sequences. We can see why this might be: there is a clear correlation between the number of fragments and the sequencing coverage. The lower the coverage is (i.e.&nbsp;the fewer times we sequenced each position of the genome), the more fragmented the assembly is. Clearly, a depth of coverage of around 100x is sufficient to get highly contiguous assemblies, whereas coverages below 50x result in more fragmented assemblies.</p>
+<p>Note that there is no clear correlation between the number of reads and the final coverage. For example, isolates 4 and 5 had roughly the same number of reads used for the assembly (around 150k), but the latter was much more fragmented. This is likely because the library for that sample was composed of shorter reads (this would have to be verified from the quality report from the ONT sequencing platform).</p>
+<p>Despite some of our assemblies being more fragmented, it doesn’t mean they are of no use to us. In fact, we may have still recovered most of the genes expected for this species, and we can therefore use them to investigate their strain types and the presence of toxigenic and antimicrobial resistance genes.</p>
+<section id="sec-bandage" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="sec-bandage"><span class="header-section-number">9.2.1</span> Assembly graph</h3>
+<p>Another approach to evaluate the continuity of our assembly is to examine the <strong>assembly graph</strong> generated by <em>Flye</em>. During genome assembly, <em>Flye</em> constructs a graph illustrating how it infers the various fragments connect to one another.</p>
+<p><a href="#fig-assembly-graphs">Figure&nbsp;<span>9.1</span></a> presents examples of genome graphs. The initial example displays an assembly composed of two circular fragments, which is the optimal outcome for our species of interest, <em>Vibrio cholerae</em>, as it possesses two circular chromosomes. The next example portrays a more fragmented genome with numerous small, unconnected fragments, along with other fragments linked at different points within the graph. This suggests difficulties in bridging certain gaps during genome assembly. The final example exhibits a highly intricate graph featuring multiple loops, indicating an inability to establish a likely order for the fragments in the final assembly. Such complexity is more common in species with highly repetitive sequences, especially when working solely with short-read data.</p>
+<div id="fig-assembly-graphs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/assembly_graph.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.1: Assembly graph examples visualised using <a href="https://rrwick.github.io/Bandage/"><em>Bandage</em></a>.</figcaption>
+</figure>
+</div>
+<p>The software <a href="https://rrwick.github.io/Bandage/"><em>Bandage</em></a> can be used to visualise the assembly graphs generated by <em>Flye</em>. It is a user-friendly graphical tool with the following steps:</p>
+<ul>
+<li>Click <strong>File</strong> &gt; <strong>Load graph</strong>.</li>
+<li>Locate the Flye output folder (using our script, this is located in <code>results/assemblies/02-flye/SAMPLE-ID/assembly_graph.gfa</code>).</li>
+<li>Click <strong>Draw graph</strong>.</li>
+</ul>
+</section>
+</section>
+<section id="completeness" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="completeness"><span class="header-section-number">9.3</span> Completeness</h2>
+<p>We now turn to assessing <strong>genome completeness</strong>, i.e.&nbsp;whether we managed to recover most of the known <em>Vibrio cholerae</em> genome, or whether we have large fractions missing.</p>
+<p>We can assess this by using <a href="https://github.com/chklovski/CheckM2"><em>CheckM2</em></a>. This tool assesses the completeness of the assembled genomes based on other similar organisms in public databases, in addition to contamination scores. <em>CheckM2</em> is mostly suited for prokaryotic species. For other organisms, the <a href="https://gitlab.com/ezlab/busco"><em>BUSCO</em></a> software is a good alternative, as it supports all species and is also more stringent in determining completeness.</p>
+<!-- 
+NOTE: this explanation was valid for CheckM1
+Broadly, these are the steps of its analysis: 
+
+- Split the sequences in our FASTA file into "bins", where each "bin" should represent the same organism. 
+- Identify what species lineage each "bin" might represent, by comparing it against a database of known organisms. 
+- Count how many of the known "core" genes from the identified species it can find in our own sequences - this is used to estimate the completeness of our assembly.  
+- Count how many genes from other species it finds within each "bin" - this would indicate a contamination in our assembly.
+-->
+<p><em>CheckM2</em> was specifically designed for working with metagenome-assembled genomes (MAGs). These are genomes created from a mixture of DNA from various species. <em>CheckM2</em> has two main roles: it determines whether a given genome is complete and checks for signs of contamination in the genome. Contamination might occur when different organisms accidentally get combined in the assembly due to shared DNA sequences. Even though <em>CheckM2</em> is intended for MAGs, it can also evaluate the completeness of genomes assembled from samples that aren’t mixed (which is our case).</p>
+<p>This software employs machine learning models that were trained using many extensively annotated public sequences from <a href="https://www.ncbi.nlm.nih.gov/refseq/">RefSeq</a>. These models help <em>CheckM2</em> estimate how complete and uncontaminated the provided genome assemblies are. In our case, we anticipate a minimal level of contamination, as confirmed by <em>Mash</em>. However, we’re still uncertain about the completeness of our genomes.</p>
+<p>We start our analysis by activating our software environment, to make all the necessary tools available:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate checkm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="checkm-database" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="checkm-database"><span class="header-section-number">9.3.1</span> <code>checkm database</code></h3>
+<p>As part of its analysis, <em>CheckM2</em> also does a rapid gene annotation. It does this by comparing our sequences to a database, using the super-fast local alignment software <a href="https://github.com/bbuchfink/diamond"><em>DIAMOND</em></a>. This process enables <em>CheckM2</em> to estimate the number of genes identified in our genomes, allowing us to make comparisons with the annotation of our organism’s reference genome.</p>
+<p>For the gene annotation step, <em>CheckM2</em> requires a <em>DIAMOND</em> database. This can be downloaded with the following command (don’t run this if you are attending our workshop, as we already did it for you):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> database <span class="at">--download</span> <span class="at">--path</span> resources/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command will automatically download the database into a folder named <code>CheckM2_database</code> with a the database file inside it called <code>uniref100.KO.1.dmnd</code>. We use this file in the next step.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You only need to download the database once. To save space (and time downloading it), it’s a good idea to save the database in a shared folder that you can use across multiple analysis.</p>
+</div>
+</div>
+</section>
+<section id="sec-check-predict" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="sec-check-predict"><span class="header-section-number">9.3.2</span> <code>checkm predict</code></h3>
+<p>Once the database is available, running <em>CheckM2</em> is done with the <code>checkm2 predict</code> command, exemplified in this shell script:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># make output directory</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/checkm2</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run checkm</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="dt">\</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> results/assemblies/<span class="pp">*</span>.fasta <span class="dt">\</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-directory</span> results/checkm2/ <span class="dt">\</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--database_path</span> resources/CheckM2_database/uniref100.KO.1.dmnd <span class="dt">\</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--lowmem</span> <span class="at">--threads</span> 12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The options we used are:</p>
+<ul>
+<li><code>--input</code> - to specify the input files. Several files can be given as input, so we used the <code>*</code> wildcard to match all the FASTA files output by our <a href="../../materials/02-assembly/03-genome_assembly.html">assembly workflow script</a>.</li>
+<li><code>--output-directory</code> - the name of the output directory to store the results.</li>
+<li><code>--database_path</code> - is the path to the database file we downloaded.</li>
+<li><code>--lowmem</code> - in case you run this on a computer with low RAM memory (such as a laptop), this option will make sure the analysis runs successfully.</li>
+<li><code>--threads</code> - to use multiple CPUs for parallel processing, which you can adjust depending on how many CPUs you have available on your computer (you can check this with the command <code>nproc --all</code>).</li>
+</ul>
+<p>The main output file from <em>CheckM2</em> is a tab-delimited file called <code>quality_report.tsv</code>, which can be opened in a spreadsheet software such as <em>Excel</em>. Here is an example result (for brevity, we only show some columns of most interest):</p>
+<pre><code>Name       Completeness  Contamination  Genome_Size  GC_Content  Total_Coding_Sequences
+isolate01  92.51         5.19           4192535      0.48        5375
+isolate02  89.72         4.0            4243727      0.48        5039
+isolate03  85.39         3.52           4074948      0.47        4741
+isolate04  85.76         3.84           4232274      0.48        5024
+isolate05  85.01         2.15           4050061      0.48        5728
+isolate06  82.81         4.58           4244765      0.48        5306
+isolate07  82.8          5.93           4189945      0.48        5267
+isolate08  82.82         5.07           4087172      0.48        5078
+isolate09  91.59         5.67           4200084      0.48        5724
+isolate10  86.19         3.99           4217448      0.48        5133</code></pre>
+<p>These columns indicate:</p>
+<ul>
+<li><strong>Name</strong> - our sample name.</li>
+<li><strong>Completeness</strong> - how complete our genome was inferred to be as a percentage; this is based on the machine learning models used and the organisms present in the database.</li>
+<li><strong>Contamination</strong> - the percentage of the assembly estimated to be contaminated with other organisms (indicating our assembly isn’t “pure”).</li>
+<li><strong>Genome_Size</strong> - how big the genome is estimated to be, based on other similar genomes present in the database. The <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900205735.1/">O1 El Tor reference N16961</a> is 4 Mb in total, so these values make sense.</li>
+<li><strong>GC_Content</strong> - the percentage of G’s and C’s in the genome, which is relatively constant within a species. The <em>V. cholerae</em> GC content is 47%, so again these values make sense.</li>
+<li><strong>Total_Coding_Sequences</strong> - the total number of coding sequences (genes) that were identified by <em>CheckM2</em>. The <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_900205735.1/">reference genome</a> indicates 3,761 annotated genes, so the values obtained could be overestimated.</li>
+</ul>
+<p>From this analysis, we can assess that our genome assemblies are good quality, with around 90% of the genome assembled. Despite earlier assessing that some of the isolates have more fragmented assemblies (e.g.&nbsp;isolates 5 and 9), they still have &gt;85% completeness according to <em>CheckM2</em>.</p>
+<p>It is worth noting that the assessment from <em>CheckM2</em> is an approximation based on other genomes in the database. In diverse species such as <em>Vibrio cholerae</em> the completeness may be underestimated, because each individual strain will only carry part of the <em>pangenome</em> for that species.</p>
+<p>We are therefore ready to proceed with downstream analysis, where we will further investigate how our samples relate to other <em>V. cholerae</em> strains and whether we find evidence for antibiotic resistance.</p>
+</section>
+</section>
+<section id="accuracy" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="accuracy"><span class="header-section-number">9.4</span> Accuracy</h2>
+<p>Assessing the accuracy of our genome includes addressing issues such as:</p>
+<ul>
+<li><strong>Repeat resolution:</strong> the ability of the assembly to accurately distinguish and represent repetitive regions within the genome.</li>
+<li><strong>Structural variations:</strong> detecting large-scale changes, such as insertions, deletions, or rearrangements in the genome structure.</li>
+<li><strong>Sequencing errors:</strong> identifying whether errors from the sequencing reads have persisted in the final assembly, including single-nucleotide errors or minor insertions/deletions.</li>
+</ul>
+<p>Assessing these aspects of a genome assembly can be challenging, primarily because the true state of the organism’s genome is often unknown, especially in the case of new genome assemblies. However, two considerations can aid in this assessment:</p>
+<ul>
+<li><strong>Consistency:</strong> ensuring that different assemblies from the same data produce similar results. For more details on this approach, refer to the “Assembling the perfect bacterial genome” tutorial by <a href="https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki">Wick et al.&nbsp;(2023)</a>.</li>
+<li><strong>Validation:</strong> confirming the assembly’s accuracy by cross-referencing it with additional data or external resources. Further exploration of this aspect will be covered in the <a href="../../materials/03-typing/03-phylogeny.html">phylogeny section</a>.</li>
+</ul>
+</section>
+<section id="exercises" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">9.5</span> Exercises</h2>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> For these exercises, you can either use the dataset we provide in <a href="../../setup.html"><strong>Data &amp; Setup</strong></a>, or your own data. You also need to have completed the genome assembly exercise in <a href="03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>.</p>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Assembly contiguity
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>After completing the genome assembly exercise (<a href="03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>):</p>
+<ul>
+<li>Open the file <code>summary_metrics.csv</code> in the results directory of your assemblies. This should open the file in <em>Excel</em>.</li>
+<li>Answer the following questions:
+<ul>
+<li>Did you have enough sequences to achieve 100x coverage in each sample?</li>
+<li>Was the assembly length what you expect for <em>Vibrio cholerae</em>?</li>
+<li>Did your samples have good contiguity (number of fragments)?</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>For the “Ambroise 2023” dataset we are using, we had our file in <code>results/assemblies/summary_metrics.csv</code>. We opened this table in <em>Excel</em> and this is what we obtained:</p>
+<pre><code>sample     total_reads  downsampled_reads  assembly_length  fragments  n50      largest  coverage
+CTMA_1402  98596        86402              4116722          2          3057497  3057497  97
+CTMA_1421  113252       112436             4158219          4          3072504  3072504  96
+CTMA_1427  87929        87929              4099953          2          3054801  3054801  64
+CTMA_1432  112216       112216             4101365          2          3056233  3056233  59
+CTMA_1473  163440       131585             4144965          4          2845520  2845520  96</code></pre>
+<p>From these results we can see that samples 1427 and 1432 did not have enough reads to achieve 100x. The total number of reads was the same as the downsampled reads, meaning that <em>Rasusa</em> just kept all reads as it didn’t have enough to achieve that coverage. In the last column we can also confirm that the final coverage for those two samples was only ~60x. For the remainder of the samples the coverage was as desired.</p>
+<p>The assembly lengths obtained were all around 4 Mb, which is expected for this species.</p>
+<p>The contiguity of our assemblies seemed excellent, with only up to 4 fragments. Some samples even had 2 fragments assembled, suggesting we achieved chromosome-level assemblies (recall that <em>V. cholerae</em> has 2 chromosomes).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Assembly graph
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>Based on the contiguity metrics you evaluated in the previous exercise, investigate the assembly graphs for the samples with highest and lowest number of fragments.</p>
+<ul>
+<li>Open the <em>Bandage</em> software.</li>
+<li>Go to <strong>File</strong> &gt; <strong>Load graph</strong>.</li>
+<li>Locate the Flye output folder (using our script, this is located in <code>results/assemblies/02-flye/SAMPLE-ID/assembly_graph.gfa</code>).</li>
+<li>Click <strong>Draw graph</strong>.</li>
+</ul>
+<p>Based on the graphs you get, answer the following questions:</p>
+<ul>
+<li>Can you identify two very large fragments, which possibly include most of your two chromosomes?</li>
+<li>Do you have many “loops” in the assembly graph indicating a highly-unresolved assembly?</li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>Based on our previous analysis of the “Ambroise 2023” data, most of our assemblies were highly contiguous, with only 2 to 4 fragments.</p>
+<p>For one of the best assemblies (CTMA_1402), the assembly graph looked as follows:</p>
+<p><img src="images/assembly_graph_ex1.png" class="img-fluid"></p>
+<p>We can clearly see two circular fragments, which corresponds very well to our expectation of 2 chromosomes for <em>Vibrio cholerae</em>.</p>
+<p>Here is the graph for one of the assemblies with 4 fragments (CTMA_1421):</p>
+<p><img src="images/assembly_graph_ex2.png" class="img-fluid"></p>
+<p>In this case we can see that:</p>
+<ul>
+<li>We had two larger fragments with size ~3Mb and ~1Mb, which likely correspond to Chr1 and Chr2, respectively.</li>
+<li>One small fragment that was not connected to the larger fragments. This could be due to missing reads that bridge the connection between this fragment and the rest of the assembly.</li>
+<li>One small fragment which might have been connected to either of the larger circular fragments. This could be due to a duplicated sequence, which occurs in both chromosomes. Possibly having longer reads would have helped resolve this ambiguity better.</li>
+</ul>
+<p>Overall though, these assemblies look extremely good, with two large fragments likely corresponding to most of the two chromosomes of <em>Vibrio cholerae</em>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Assembly completeness
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>To assess the completeness of your assembly, run the <em>CheckM2</em> software on your assembly files.</p>
+<ul>
+<li>Open the script provided in <code>scripts/03-checkm.sh</code>.</li>
+<li>Fix the code where indicated (see <a href="#sec-check-predict"><span>Section&nbsp;9.3.2</span></a> if you need some help).</li>
+<li>Activate the software environment: <code>mamba activate checkm2</code>.</li>
+<li>Run the script using <code>bash scripts/03-checkm.sh</code></li>
+<li>Once the analysis completes, go to the output folder and open the <code>quality_report.tsv</code> file in <em>Excel</em>. Answer the following questions:
+<ul>
+<li>Did you manage to achieve &gt;90% completeness for your genomes?</li>
+<li>Was there evidence of substantial contamination in your assemblies?</li>
+<li>Was the GC content what you expected for this species?</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>The fixed code for our script is:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make output directory</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/checkm2</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run checkm</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">checkm2</span> predict <span class="dt">\</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> results/assemblies/<span class="pp">*</span>.fasta <span class="dt">\</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-directory</span> results/checkm2 <span class="dt">\</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--database_path</span> resources/CheckM2_database/uniref100.KO.1.dmnd <span class="dt">\</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--lowmem</span> <span class="at">--threads</span> 12</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We then ran the script using <code>bash scripts/03-checkm.sh</code>, which printed several messages to the screen while it was running.</p>
+<p>After it completed, we opened the file <code>results/checkm2/quality_report.tsv</code> in <em>Excel</em> and this is what we obtained:</p>
+<pre><code>Name       Completeness  Contamination  Completeness_Model_Used          Translation_Table_Used  Coding_Density  Contig_N50  Average_Gene_Length  Genome_Size  GC_Content  Total_Coding_Sequences  Additional_Notes
+CTMA_1402  89.38         5.08           Neural Network (Specific Model)  11                      0.855           3059251     266.3945823927765    4119063      0.47        4430                    None
+CTMA_1421  91.73         1.4            Neural Network (Specific Model)  11                      0.851           3074388     265.5238308346386    4160736      0.47        4469                    None
+CTMA_1427  88.43         5.34           Neural Network (Specific Model)  11                      0.855           3056317     260.31857427496124   4101983      0.47        4517                    None
+CTMA_1432  90.67         4.41           Neural Network (Specific Model)  11                      0.854           3057687     255.32609167933956   4103331      0.47        4603                    None
+CTMA_1473  90.89         2.58           Neural Network (Specific Model)  11                      0.854           2847175     269.16424682395643   4147467      0.47        4408                    None</code></pre>
+<p>We can see from this that:</p>
+<ul>
+<li>We achieved ~90% completeness (according to <em>CheckM2</em>’s database) for all our samples.</li>
+<li>There was no evidence of strong contamination affecting our assemblies (all ~5% or below).</li>
+<li>The GC content was 47%, which is what is expected for <em>Vibrio cholerae</em>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">9.6</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Key aspects to evaluate an assembly quality include:
+<ul>
+<li>Contiguity: how continuous the final assembly is (the best assembly would be chromosome-level).</li>
+<li>Completeness: whether the entire genome of the species was captured.</li>
+</ul></li>
+<li>Common indicators for evaluating the contiguity of a genome assembly include metrics like N50, fragment count and total assembly size.</li>
+<li>Examination of assembly graphs reveals the contiguity of an assembly by illustrating how fragments connect, helping identify regions of potential fragmentation or misassembly.</li>
+<li>Specialised software tools, like <em>CheckM2</em>, enable the assessment of genome completeness and contamination by comparing the assembly to known reference genomes and identifying missing or unexpected genes and sequences.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/02-assembly/03-genome_assembly.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/03-typing/01-pathogenwatch.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
