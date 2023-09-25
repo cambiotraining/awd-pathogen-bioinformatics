@@ -1,5 +1,6 @@
 ---
 title: Common file formats
+number-sections: false
 ---
 
 This page lists some common file formats used in Bioinformatics (listed alphabetically).

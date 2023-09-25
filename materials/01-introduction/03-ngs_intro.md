@@ -95,7 +95,7 @@ They require less up-front cost allowing getting started with sequencing very qu
 
 Bioinformatics relies on various standard file formats for storing diverse types of data. 
 In this section, we'll discuss some of the key ones we'll encounter, although there are numerous others. 
-You can refer to the "[Common file formats](../05-appendix/01-appendix.md)" appendix for a more comprehensive list.
+You can refer to the "[Common file formats](../appendices/01-file_formats.md)" appendix for a more comprehensive list.
 
 ### FAST5
 

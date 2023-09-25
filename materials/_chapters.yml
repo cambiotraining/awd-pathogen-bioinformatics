@@ -23,6 +23,5 @@ book:
     #   chapters:
     #     - materials/02-case_study/ambroise2023.md
     #     - materials/05-case_study/01-ambroise2023.md
-    - part: "Appendix"
-      chapters:
-        - materials/05-appendix/01-appendix.md
+  appendices:
+    - materials/appendices/01-file_formats.md
