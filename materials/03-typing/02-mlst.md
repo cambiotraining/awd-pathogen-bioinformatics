@@ -130,7 +130,7 @@ After the analysis runs, answer the following questions:
 - Go to the [_PubMLST_ allelic profile search](https://pubmlst.org/bigsdb?db=pubmlst_vcholerae_seqdef&page=profiles) and search for the closest profile to your samples. 
 - Do you think all your samples are likely from the same outbreak event or transmission chain?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 Here is the fixed shell script: 
 
@@ -176,7 +176,7 @@ Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the c
 - Which sequence type were your sequences assigned to?
 - How do the results compare with output from the command line version of the software? (You need to complete the previous exercise to answer this question)
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 First, we make sure to be on the collection view screen for our "AWD Workshop - Ambroise 2023" collection created earlier (@sec-ex-pathogenwatch). 
 In case you don't have it open, you can get it from the account menu (top-left button, as shown on image below) and click on "My Collections".

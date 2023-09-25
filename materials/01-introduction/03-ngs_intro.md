@@ -266,13 +266,13 @@ With your colleague discuss the following file formats in terms of the: 1) infor
 - Sequence Alignment Map (SAM)
 - Variant Calling Format (VCF)
 
-:::{.callout-hint collapse=true}
+:::{.callout-hint}
 - You can use the following links
   - + For SAM (https://samtools.github.io/hts-specs/SAMv1.pdf)
   - + For VCF (https://samtools.github.io/hts-specs/VCFv4.2.pdf)
 :::
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
  
 :::

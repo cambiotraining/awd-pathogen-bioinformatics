@@ -610,7 +610,7 @@ Choose any of the three barcoded samples AMR reports from the `results/funcscan/
 
 ...
 
-::: {.callout-answer collapse=true}
+::: {.callout-answer}
 Answer goes here
 :::
 :::

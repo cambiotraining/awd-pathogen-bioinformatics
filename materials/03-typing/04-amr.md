@@ -288,7 +288,7 @@ Answer the following questions:
 - Did all your samples show evidence for AMR?
 
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 We created a samplesheet for our samples in _Excel_, making sure to "Save As..." CSV format. 
 The raw file looks like this: 
@@ -388,7 +388,7 @@ Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "
 
 How do the results compare with Pathogenwatch?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 We can open the "Antibiotics" table from the top-left dropdown menu, as shown in the image below. 
 

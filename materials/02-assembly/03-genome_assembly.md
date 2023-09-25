@@ -478,7 +478,7 @@ We provide a script that performs the assemly pipeline for a set of samples spec
 - One the analysis finishes you can confirm that you have several files in the output folder. 
   We will analyse these files in the [next chapter](04-assembly_quality.md)
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 We opened the script `02-assembly.sh` and these are the settings we used: 
 
@@ -537,13 +537,13 @@ The _varG_ gene is part of the antibiotic resistance var regulon in _Vibrio chol
 
 Using the command line tool `grep`, search for this gene in the annotation files produced by _Bakta_. 
 
-:::{.callout-hint collapse=true}
+:::{.callout-hint}
 - See @sec-bakta-annot for an example of how we did this for the _ctxA_ and _ctxB_ genes. 
 - The pipeline script we used outputs the _Bakta_ results to `results/assemblies/04-bakta/SAMPLE/consensus.tsv` (where "SAMPLE" is the sample name).
 - Remember that you can use the `*` wildcard to match multiple file/directory names
 :::
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 To search for this gene across all our samples, we did: 
 

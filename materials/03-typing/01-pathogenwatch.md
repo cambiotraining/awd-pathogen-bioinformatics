@@ -139,7 +139,7 @@ You also need to have completed the genome assembly exercise in @sec-ex-assembly
 - Create a new collection from your sequences with a name of your choice.
 - Are they identified as a known biotype? Do you think these are pathogenic strains?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 For the "Ambroise 2023" data, we have 5 genomes saved in `results/assemblies/`, from the assembly pipeline we ran in sec-ex-assembly.
 We loaded all the FASTA files from that folder into _Pathogenwatch_:

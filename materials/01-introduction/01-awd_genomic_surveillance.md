@@ -87,6 +87,10 @@ Besides encoding various genes responsible for the bacterium's structure and met
 
 ![Schematic representation of the _V. cholerae_ genome. Source: Fig. 1 in [Pant et al. 2020](https://doi.org/10.1073/pnas.2006283117)](https://www.pnas.org/cms/10.1073/pnas.2006283117/asset/6a67690d-8cbb-4760-94a1-975c45466058/assets/images/large/pnas.2006283117fig01.jpg){#fig-vibrio-genome}
 
+For an excellent overview of cholera global epidemiology and the role of genomics in this area, we recommend the following lecture by Prof. Nick Thomson:
+
+<p align="center"><iframe width="560" height="315" src="https://www.youtube.com/embed/4Z_M8J8RfTs?si=d4vDZNjmVqcYMjfC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></p>
+
 
 ## Key genomic surveillance questions
 
@@ -104,12 +108,6 @@ Consequently, one of the primary goals of these materials is to understand how g
 
 ::: {.callout-tip}
 #### Key Points
-
-- Recognise the role of genomic surveillance in pathogen surveillance.
-- Summarise the main methods and steps involved in genomic sequencing analysis.
-- Describe the etiology of acute watery diarrhoea (AWD) and how it relates to the _Vibrio cholerae_ bacterium.
-- Outline the main features of the _Vibrio cholerae_ genome and its strains.
-- List the key questions addressed by pathogen genomic surveilance.
 
 - Genomic surveillance is a crucial tool in tracking and monitoring the spread of pathogens. It helps identify disease outbreaks, track transmission routes, and understand the genetic diversity of pathogens.
 - Genomic sequencing involves determining the complete genetic code of an organism. Steps include DNA extraction, library preparation, sequencing, and bioinformatics analysis.

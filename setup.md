@@ -397,7 +397,7 @@ Here are the commands to download these data:
 cd $workdir
 
 # download and unzip
-wget -O minimal.zip "TODO_DROPBOX_LINK"
+wget -O minimal.zip "https://www.dropbox.com/sh/f421dkyos4us4ty/AABmomHwzL1miVvStaDQA4gma?dl=1"
 unzip minimal.zip -d minimal
 rm minimal.zip  # remove original zip file to save space
 
@@ -406,4 +406,4 @@ ln -s $PWD/resources/ $PWD/minimal/resources
 ```
 
 If you want to download this file manually: 
-[<i class="fa-solid fa-download"></i> download scripts only](TODO_DROPBOX_LINK).
+[<i class="fa-solid fa-download"></i> download scripts only](https://www.dropbox.com/sh/f421dkyos4us4ty/AABmomHwzL1miVvStaDQA4gma?dl=0).

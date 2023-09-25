@@ -273,7 +273,7 @@ After completing the genome assembly exercise (@sec-ex-assembly):
   - Was the assembly length what you expect for _Vibrio cholerae_?
   - Did your samples have good contiguity (number of fragments)?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 For the "Ambroise 2023" dataset we are using, we had our file in `results/assemblies/summary_metrics.csv`. 
 We opened this table in _Excel_ and this is what we obtained: 
 
@@ -315,7 +315,7 @@ Based on the graphs you get, answer the following questions:
 - Can you identify two very large fragments, which possibly include most of your two chromosomes?
 - Do you have many "loops" in the assembly graph indicating a highly-unresolved assembly?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 Based on our previous analysis of the "Ambroise 2023" data, most of our assemblies were highly contiguous, with only 2 to 4 fragments. 
 
@@ -355,7 +355,7 @@ To assess the completeness of your assembly, run the _CheckM2_ software on your 
   - Was there evidence of substantial contamination in your assemblies?
   - Was the GC content what you expected for this species?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 The fixed code for our script is: 
 

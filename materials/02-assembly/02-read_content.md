@@ -215,13 +215,13 @@ Screen the sequencing reads for known organisms, by running _Mash_ on one of the
 The command might take some time to run (maybe 10 minutes). 
 Once it completes, examine the output file to investigate if your reads contained the organism you were expecting.
 
-:::{.callout-hint collapse=true}
+:::{.callout-hint}
 - Remember that to create a directory from the command line you can use the `mkdir` command.
 - The general command to run `mash` is:  
   `mash screen -w -p 8  PATH_TO_DB_FILE  PATH_TO_INPUT_FASTQS  |  sort -n -r >  OUTPUT_FILE`
 :::
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 These solutions are for the "Ambroise 2023" dataset.
 We first made sure that were were on that folder: 
@@ -283,7 +283,7 @@ This script contains the code to use a programatic technique known as a _for loo
   Depending on how many barcodes you have, this will take quite a while to finish. <i class="fa-solid fa-mug-hot"></i>
 - One the analysis is over, examime the output files to see if all barcodes contain the organism you were expecting. 
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 We ran the script as instructed using:
 

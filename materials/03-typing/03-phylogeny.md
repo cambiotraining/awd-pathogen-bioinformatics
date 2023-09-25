@@ -401,7 +401,7 @@ Following from the _Pathogenwatch_ exercise in @sec-ex-pathogenwatch, open the "
 - Change the tree view to "Population". Which transmission wave do your samples cluster with?
 - Looking within the population(s) where your samples cluster in, do your samples cluster together or are they interspersed between other samples from the _Pathogenwatch_ collection?
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 Looking at our samples' tree doesn't reveal any sample as a particular outlier. 
 
@@ -433,7 +433,7 @@ When the analysis starts you will get several messages and progress bars print o
 <i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i>
 This analysis takes a long time to run (several hours), so you can leave it running, open a new terminal and continue to the next exercise. 
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 The fixed code for our script is:
 
@@ -526,7 +526,7 @@ Answer the following questions:
 - Do these results agree with the result you obtained on _Pathogenwatch_?
 
 
-:::{.callout-hint collapse=true}
+:::{.callout-hint}
 For IQ-TREE: 
 
 - The constant sites can be obtained by looking at the output of the `snp-sites` in `results/snp-sites/constant_sites.txt` (or in the `preprocessed` folder if you are still waiting for you _Panaroo_ analysis to finish).
@@ -538,7 +538,7 @@ For _FigTree_:
 - To import sample metadata go to <kbd><kbd>File</kbd> > <kbd>Import annotations...</kbd></kbd>.
 :::
 
-:::{.callout-answer collapse=true}
+:::{.callout-answer}
 
 The fixed script is: 
 
