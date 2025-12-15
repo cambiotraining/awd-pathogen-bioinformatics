@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Genome assembly</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/02-assembly/04-assembly_quality.html" rel="next">
+<link href="../../materials/02-assembly/02-read_content.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/02-assembly/01-preparing_data.html">Genome Assembly</a></li><li class="breadcrumb-item"><a href="../../materials/02-assembly/03-genome_assembly.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#genome-assembly" id="toc-genome-assembly" class="nav-link active" data-scroll-target="#genome-assembly"><span class="header-section-number">8.1</span> Genome Assembly</a></li>
+  <li><a href="#step-by-step-bacterial-assembly" id="toc-step-by-step-bacterial-assembly" class="nav-link" data-scroll-target="#step-by-step-bacterial-assembly"><span class="header-section-number">8.2</span> Step-by-step bacterial assembly</a>
+  <ul class="collapse">
+  <li><a href="#sampling-rasusa" id="toc-sampling-rasusa" class="nav-link" data-scroll-target="#sampling-rasusa"><span class="header-section-number">8.2.1</span> Sampling: <code>rasusa</code></a></li>
+  <li><a href="#assembly-flye" id="toc-assembly-flye" class="nav-link" data-scroll-target="#assembly-flye"><span class="header-section-number">8.2.2</span> Assembly: <code>flye</code></a></li>
+  <li><a href="#polishing-medaka" id="toc-polishing-medaka" class="nav-link" data-scroll-target="#polishing-medaka"><span class="header-section-number">8.2.3</span> Polishing: <code>medaka</code></a></li>
+  <li><a href="#annotation-bakta" id="toc-annotation-bakta" class="nav-link" data-scroll-target="#annotation-bakta"><span class="header-section-number">8.2.4</span> Annotation: <code>bakta</code></a></li>
+  </ul></li>
+  <li><a href="#sec-workflow" id="toc-sec-workflow" class="nav-link" data-scroll-target="#sec-workflow"><span class="header-section-number">8.3</span> Assembly workflow</a></li>
+  <li><a href="#sec-ex-assembly" id="toc-sec-ex-assembly" class="nav-link" data-scroll-target="#sec-ex-assembly"><span class="header-section-number">8.4</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">8.5</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After this section you should be able to:</p>
+<ul>
+<li>Describe the main steps involved in <em>de novo</em> genome assembly.</li>
+<li>Discuss the impact of genome coverage in the final assembly.</li>
+<li>List the individual software tools used in the assembly steps.</li>
+<li>Apply a script to automate the process of assembly across several samples.</li>
+</ul>
+</div>
+</div>
+<section id="genome-assembly" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="genome-assembly"><span class="header-section-number">8.1</span> Genome Assembly</h2>
+<p>The next step in our analysis is <strong>genome assembly</strong>, which involves piecing together a complete genome from the sequencing data we’ve obtained. This is a critical process in our study of <em>Vibrio cholerae</em> samples, as it allows us to identify the specific strains, determine their pathogenicity, and detect toxigenic and antimicrobial resistance genes.</p>
+<p>There are two main approaches to genome assembly:</p>
+<ul>
+<li><strong>De-novo assembly:</strong> this uses no prior information, attempting to reconstruct the genome from the sequencing reads only. It’s suitable when we’re unsure about the organism or when it’s genetically diverse (so there is no single reference genome that is representative of the full diversity observed in the species). However, it’s computationally intensive and challenging to achieve highly accurate results due to difficulties in handling gaps and repetitive regions.<br>
+</li>
+<li><strong>Reference-based assembly:</strong> this method uses a known genome as a guide. It aligns the reads to the reference genome and identifies new variations from those reads. It’s less computationally demanding and works well when we have a good idea of the organism’s identity. Yet, it might not perform well if the organism is significantly different from the reference genome.</li>
+</ul>
+<p>In our study of <em>Vibrio cholerae</em>, we have opted for the <strong><em>de novo</em></strong> approach. Although there are many <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/?taxon=666&amp;annotated_only=true&amp;refseq_annotation=true&amp;typical_only=true">high-quality genomes available on NCBI</a>, this species is notorious for having a plastic genome, with the presence of several mobile genetic elements and gene exchange happening through conjugation and phage-mediated transduction (<a href="https://doi.org/10.3389/fmed.2023.1155751">Montero et al.&nbsp;2023</a> and <a href="https://doi.org/10.3389%2Ffpubh.2019.00203">Ramamurthy et al.&nbsp;2019</a>). Therefore, a reference-based assembly may not be the most suited for this species, as we might miss important genes from our samples, if they are not present in the reference genome that we choose.</p>
+<p>Here’s a breakdown of the steps we’ll take:</p>
+<ul>
+<li><strong>Downsample</strong> the FASTQ files for a target depth of coverage of approximately 100x.</li>
+<li><strong>Assemble</strong> the reads into contiguous fragments.</li>
+<li><strong>Polish</strong> those fragments to correct systematic sequencing errors common in Nanopore data.</li>
+<li><strong>Annotate</strong> the assembled fragments, by identifying the position of known bacterial genes.</li>
+</ul>
+<p>We’ll provide a detailed procedure for a single sample, and later, we’ll offer a script that automates these steps for multiple samples simultaneously.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Terminology: genome coverage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Genome coverage refers to the average number of times a specific base pair in a genome is read or sequenced during the process of DNA sequencing. It indicates how thoroughly the genome has been sampled by the sequencing technique. Higher coverage means that a base pair has been read multiple times, increasing the confidence in the accuracy of the sequencing data for that particular region of the genome. Genome coverage is an important factor in determining the quality of genome assemblies and the ability to detect variations (such as new mutations or sequence rearragements).</p>
+</div>
+</div>
+</section>
+<section id="step-by-step-bacterial-assembly" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="step-by-step-bacterial-assembly"><span class="header-section-number">8.2</span> Step-by-step bacterial assembly</h2>
+<p>As we mentioned earlier, <em>de novo</em> assembly of genomes is a challenging process. Ideally, we want to achieve a “perfect genome”, i.e.&nbsp;a complete representation of the individual’s genome, with no errors and no missing gaps. Although challenging, it is possible to achieve near-perfect genomes, in particular when multiple types of data are available: long reads for assembling more difficult regions and short reads for correcting the high error rates of long reads (<a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010905">Wick et al.&nbsp;2023</a>).</p>
+<p>In this section, we introduce a simplified version of the tutorial “<a href="https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki">Assembling the perfect bacterial genome</a>”, which is suitable for nanopore-only data.</p>
+<p>We start by activating our software environment, to make all the necessary tools available:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate assembly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="sampling-rasusa" class="level3" data-number="8.2.1">
+<h3 data-number="8.2.1" class="anchored" data-anchor-id="sampling-rasusa"><span class="header-section-number">8.2.1</span> Sampling: <code>rasusa</code></h3>
+<p>The first step in our analysis is to sample a fraction of our original reads to match a minimum specified genome coverage. This may seem counterintuitive, as we may expect that more data is always better. While this is generally the case, it turns out that for genome assembly there is a plateau at which the tradeoff between having too much data doesn’t outweight the computational costs that come with it. For example, assembling a <em>Vibrio</em> genome with an average depth of coverage of 500x might take 5h, while one with 100x might take 1h, with very similar results in the final assembly. The computational burden is especially relevant when we are running analysis on a local computer, rather than on a HPC cluster (where we can run analysis in parallel), as each sample will have to be processed sequentially.</p>
+<p>To be able to run all analyses on a local computer, we’ll adjust the number of FASTQ reads we’re working with to reach a coverage depth of about 100 times, using a tool called <a href="https://github.com/mbhall88/rasusa"><em>Rasusa</em></a>. This tool is designed to handle reads of various lengths, which is common with ONT data. It randomly picks reads to make sure the average coverage across a genome of a certain size (chosen by us) is achieved.<br>
+This process considers the lengths of the reads. For instance, if the average ONT read is longer, we’ll need fewer reads to cover the genome compared to when the average read is shorter. Imagine our genome is around 1 million bases long, and we aim for a 20-fold coverage. If our reads average around 1,000 bases, we’d need about 200,000 reads. But if the average read is 10,000 bases, we’d only need 2,000 reads instead. This is a simplified explanation, as our reads have various lengths, but it captures what <em>Rasusa</em> is working towards.</p>
+<p>To run <em>Rasusa</em> on a single sample (in this example we are doing <code>barcode26</code>), the following commands can be used:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/rasusa</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># temporarily combine FASTQ files from Guppy</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> data/fastq_pass/barcode26/<span class="pp">*</span>.fastq.gz <span class="op">&gt;</span> results/rasusa/combined_barcode26.fastq.gz</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># downsample files</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">rasusa</span> <span class="at">--input</span> results/rasusa/combined_barcode26.fastq.gz <span class="at">--coverage</span> 100 <span class="at">--genome-size</span> 4m <span class="at">--output</span> results/rasusa/barcode26_downsampled.fastq.gz</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the combined FASTQ file to save space</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> results/rasusa/combined_barcode26.fastq.gz</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>During the basecalling procedure, Guppy will often generate multiple FASTQ files for each barcode. We first need to combine these into a single file, as <code>rasusa</code> only accepts a single file as input. We achieved this using the <code>cat</code> command.</li>
+<li>For <code>rasusa</code> we used the following options:
+<ul>
+<li><code>--input</code> specifies the input FASTQ file.</li>
+<li><code>--coverage</code> specifies our desired depth of coverage; 100x is a good minimum for genome assembly.</li>
+<li><code>--genome-size</code> specifies the predicted genome size. Of course we don’t know the <em>exact</em> size of our genome (we’re assembling it after all), but we known approximately how big the <em>Vibrio</em> genome is based on other genomes available online, such as <a href="https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_937000105.1/">this genome</a> from a 7PET strain, which is 4.2 Mb long.</li>
+<li><code>--output</code> specifies the output FASTQ file.</li>
+</ul></li>
+<li>At the end we removed the combined FASTQ file, to save space on the computer (these files can be quite large!).</li>
+</ul>
+<p>After <code>rasusa</code> runs, it informs us of how many reads it sampled:</p>
+<pre><code> Target number of bases to subsample to is: 400000000
+ Gathering read lengths...
+ 202685 reads detected
+ Keeping 167985 reads
+ Actual coverage of kept reads is 100.00x
+ Done 🎉</code></pre>
+<p>Note that the sampling procedure is random, so you may get slightly different results every time you run it.</p>
+<p>Sometimes, you may not have enough reads to achieve the desired coverage. In that case, <code>rasusa</code> instead keeps all the reads, with an appropriate message, for example for our <code>barcode25</code> sample we got:</p>
+<pre><code>Requested coverage (100.00x) is not possible as the actual coverage is 37.27x - output will be the same as the input</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Low genome coverage
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For genome assembly, we do not recommend that you go much lower than 100x coverage. A low depth of coverage leads to difficulty in:</p>
+<ul>
+<li>Distinguishing errors from the true base; low coverage generally results in higher error rates.</li>
+<li>Generating a contiguous genome assembly; low coverage generally results in a more fragmented genome.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="assembly-flye" class="level3" data-number="8.2.2">
+<h3 data-number="8.2.2" class="anchored" data-anchor-id="assembly-flye"><span class="header-section-number">8.2.2</span> Assembly: <code>flye</code></h3>
+<p>Now that we have downsampled our reads, we are ready for the next step of the analysis, which is the genome assembly. We will use the software <a href="https://github.com/fenderglass/Flye"><em>Flye</em></a>, which is designed for <em>de novo</em> assembly of long-read sequencing data, particularly from technologies like Oxford Nanopore or PacBio. However, <a href="https://en.wikipedia.org/wiki/De_novo_sequence_assemblers">many other assembly tools</a> are available, and you could explore alternatives.</p>
+<p>Continuing from our example <code>barcode26</code> sample, here is the <code>flye</code> command that we could use:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/flye</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run the assembly - this step takes some time to run!</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ex">flye</span> <span class="at">--nano-raw</span> results/rasusa/barcode26_downsampled.fastq.gz <span class="at">--threads</span> 8 <span class="at">--out-dir</span> results/flye/isolate2/ <span class="at">--asm-coverage</span> 100 <span class="at">--genome-size</span> 4m</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>--nano-raw</code> specifies the input FASTQ file with our reads.</li>
+<li><code>--threads</code> specifies how many CPUs we have available for parallel computations.</li>
+<li><code>--out-dir</code> specifies the output directory for our results; in this case we used a more friendly name that corresponds to our isolate ID.</li>
+<li><code>--asm-coverage</code> and <code>--genome-size</code> specifies the coverage we want to consider for a certain genome size; in our case these options could be left out, as we already downsampled our FASTQ files to this depth; but we can keep the same values here that we used for <code>rasusa</code>.</li>
+</ul>
+<p>One important thing to note about <em>Flye</em> is that it has two ways to specify input files: <code>--nano-raw</code> (which we used) and <code>--nano-hq</code>. As the ONT chemistry and basecalling software improve, the error rates of the reads also improve. If your reads are predicted to have &lt;5% error rate, then you can use <code>--nano-hq</code> option to specify your input. This is the case if you used Guppy version 5 or higher with basecalling in <em>super accurate</em> (SUP) mode. This basecalling mode takes substantially longer to run, but it does give you <a href="https://github.com/Kirk3gaard/2023-basecalling-benchmarks">better assemblies</a>, so it may be worth the extra time, if you want the highest-quality assemblies possible. In our example, the basecalling was done in “fast” mode, so we used the <code>--nano-raw</code> input option instead.</p>
+<p>After <code>flye</code> completes running, it generates several output files:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/flye/isolate2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>00-assembly   40-polishing                assembly_graph.gfa  params.json
+10-consensus  assembly.fasta              assembly_graph.gv
+20-repeat     assembly.fasta.fai          assembly_info.txt
+30-contigger  assembly.fasta.map-ont.mmi  flye.log</code></pre>
+<p>The main file of interest to us is <code>assembly.fasta</code>, which is the genome assembly in the standard FASTA file format. Another file of interest is <code>flye.log</code>, which contains information at the bottom of the file about the resulting assembly:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span> <span class="at">-n</span> 8 results/flye/isolate2/flye.log</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>Total length:   4219745
+Fragments:      3
+Fragments N50:  3031589
+Largest frg:    3031589
+Scaffolds:      0
+Mean coverage:  98</code></pre>
+<p>We can see for our example run that we have a total assembly length of ~4.2 Mb, which matches our expected genome size. The number of final fragments was 3, and given that <em>Vibrio cholerae</em> has 2 chromosomes, this is not bad at all - we must have been able to assembly the two chromosomes nearly completely. The largest fragment is ~3 Mb, which again from our knowledge of other <em>Vibrio</em> genomes, probably corresponds to chromosome 1. And we can see the final depth of coverage of the genome is 98x, which makes sense, since we sampled our reads to achieve approximately 100x.</p>
+<p>Sometimes you may end up with more fragmented genome assemblies, in particular if your coverage is not good. For the example we showed earlier, where <code>rasusa</code> reported our reads were only enough for ~37x coverage, our flye assembly resulted in more than 30 fragments. While this is worse than a near-complete assembly, it doesn’t mean that the genome assembly is useless. We should still have recovered a lot of the genes, and even a fragmented assembly can be used to identify sequence types and pathogenic and AMR genes.</p>
+</section>
+<section id="polishing-medaka" class="level3" data-number="8.2.3">
+<h3 data-number="8.2.3" class="anchored" data-anchor-id="polishing-medaka"><span class="header-section-number">8.2.3</span> Polishing: <code>medaka</code></h3>
+<p>As previously mentioned, ONT reads generally come with higher error rates compared to other technologies like the short-read Illumina sequencing, which often has less than 1% error rate. Even with the most recent ONT chemistry updates, the error rates are still around 5%, a significant figure that can potentially introduce incorrect base calls into our final assembly. While the <code>flye</code> software does address some of these errors, its error-correcting algorithm wasn’t tailored specifically to address the systematic errors observed in ONT data. Consequently, as an added step following assembly, we can review the FASTA file of our assembly and rectify any potential errors that may have been retained from the original reads. This process is commonly known as <strong>polishing</strong> the assembly.</p>
+<p>To perform polishing, we can employ the <a href="https://github.com/nanoporetech/medaka"><em>Medaka</em></a> software developed by ONT. More specifically, we can utilize the <code>medaka_consensus</code> tool, which is expressly designed to complement genome assemblies created using <em>Flye</em>. The approach involves aligning the original reads to the newly assembled genome. Then, it involves identifying the correct base for each position in the genome, determined by analyzing the “pileup” of reads that align to that specific position. This is facilitated by a machine learning model trained on ONT data, which accounts for the distinct error patterns and biases inherent in this type of sequencing information.</p>
+<p>Continuing our example for <code>barcode26</code> / <code>isolate2</code>, we could run the following command:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">medaka_consensus</span> <span class="at">-t</span> 8 <span class="at">-i</span> results/rasusa/barcode26_downsampled.fastq.gz <span class="at">-d</span> results/flye/isolate2/assembly.fasta <span class="at">-o</span> results/medaka/isolate2 <span class="at">-m</span> r941_min_fast_g507</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>-t</code> specifies the number of CPUs (threads) available to use for parallel computation steps.</li>
+<li><code>-i</code> specifies the FASTQ file with the reads used for the assembly.</li>
+<li><code>-d</code> specifies the FASTA file with the assembly we want to polish.</li>
+<li><code>o</code> specifies the output directory for our results.</li>
+<li><code>-m</code> specifies the <em>Medaka</em> model to use for identifying variants from the aligned reads.</li>
+</ul>
+<p>The last option requires some further explanation. The <em>Medaka</em> model name follows the structure <code>{pore}_{device}_{mode}_{version}</code>, as detailed in the <a href="https://github.com/nanoporetech/medaka#models">medaka models documentation</a>. For example, the <em>Medaka</em> model we specified was “r941_min_fast_g507”, which means we used R9.4.1 pores, sequenced on a MinION, basecalling in “fast” mode using Guppy version 5.0.7. A list of supported models can be found on the <a href="https://github.com/nanoporetech/medaka/tree/master/medaka/data"><code>medaka</code> GitHub repository</a>. In reality, we used Guppy version 6, but for recent versions of Guppy (&gt;6) there is no exact matching model. The recommendation in that case is to use the model for the latest version available.</p>
+<p>The output from this step generates several files:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/medaka/isolate2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>calls_to_draft.bam  calls_to_draft.bam.bai  consensus.fasta  consensus.fasta.gaps_in_draft_coords.bed  consensus_probs.hdf</code></pre>
+<p>The most important of which is the file <code>consensus.fasta</code>, which contains our final polished assembly.</p>
+</section>
+<section id="annotation-bakta" class="level3" data-number="8.2.4">
+<h3 data-number="8.2.4" class="anchored" data-anchor-id="annotation-bakta"><span class="header-section-number">8.2.4</span> Annotation: <code>bakta</code></h3>
+<p>Although we now have a genome assembly, we don’t yet know which genes might be present in our assembly or where they are located. This process is called <strong>genome annotation</strong>, and for bacterial genomes we can do this using the software <a href="https://github.com/oschwengers/bakta"><em>Bakta</em></a>. This software takes advantage of the vast number of bacterial gene sequences in public databases, to aid in the identification of genes in our new assembly. <em>Bakta</em> achieves this by looking for regions of our genome that have high similarity with those public sequences.</p>
+<section id="bakta-database" class="level4">
+<h4 class="anchored" data-anchor-id="bakta-database"><code>bakta</code> database</h4>
+<p>In order to run <code>bakta</code> we first need to download the database that it will use to aid the annotation. This can be done with the <code>bakta_db</code> command. There are two versions of its database: “light” and “full”. The “light” database is smaller and results in a faster annotation runtime, at the cost of a less accurate/complete annotation. The “full” database is the recommended for the best possible annotation, but it is much larger and requires longer runtimes.</p>
+<p>For the purposes of our tutorial, we will use the “light” database, but if you were running this through your own samples, it may be desirable to use the “full” database. To download the database you can run the following command (if you are attending our workshop, please don’t run this step, as we already did this for you):</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># make a directory for the database</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> resources/bakta_db</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># download the "light" version of the database</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bakta_db</span> download <span class="at">--output</span> resources/bakta_db/ <span class="at">--type</span> light</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After download you will see several newly created files in the output folder:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> resources/bakta_db/db-light/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>amrfinderplus-db  bakta.db                       ncRNA-genes.i1p    oric.fna  pfam.h3p   rRNA.i1p
+antifam.h3f       expert-protein-sequences.dmnd  ncRNA-regions.i1f  orit.fna  pscc.dmnd  rfam-go.tsv
+antifam.h3i       ncRNA-genes.i1f                ncRNA-regions.i1i  pfam.h3f  rRNA.i1f   sorf.dmnd
+antifam.h3m       ncRNA-genes.i1i                ncRNA-regions.i1m  pfam.h3i  rRNA.i1i   version.json
+antifam.h3p       ncRNA-genes.i1m                ncRNA-regions.i1p  pfam.h3m  rRNA.i1m</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You only need to download the <code>bakta</code> database once, and it may be a good idea to save it in a separate folder that you can use again for a new analysis. This should save you substantial time and storage space.</p>
+</div>
+</div>
+</section>
+<section id="sec-bakta-annot" class="level4">
+<h4 class="anchored" data-anchor-id="sec-bakta-annot"><code>bakta</code> annotation</h4>
+<p>To run the annotation step we use the <code>bakta</code> command, which would be the following for our <code>barcode26</code> / <code>isolate2</code> sample:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/bakta</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run the annotation step</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">bakta</span> <span class="at">--db</span> resources/bakta_db/db-light/ <span class="at">--output</span> results/bakta/isolate2 <span class="at">--threads</span> 8 results/medaka/isolate2/consensus.fasta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>--db</code> is the path to the database folder we downloaded earlier.</li>
+<li><code>--output</code> is the directory we want to output our results to.</li>
+<li><code>--threads</code> is the number of CPUs (threads) we have available for parallel computation.</li>
+<li>At the end of the command we give the path to the FASTA file that we want to annotate.</li>
+</ul>
+<p>Several results files are generated:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/bakta/isolate2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>consensus.embl  consensus.ffn  consensus.gbff  consensus.hypotheticals.faa  consensus.json  consensus.png  consensus.tsv
+consensus.faa   consensus.fna  consensus.gff3  consensus.hypotheticals.tsv  consensus.log   consensus.svg  consensus.txt</code></pre>
+<p>Many of these files contain the same information but in different file formats. The main file of interest is <code>consensus.gff3</code>, which we will use in a later chapter covering <a href="../../materials/03-typing/03-phylogeny.html">phylogenetic analysis</a>. The tab-delimited file <code>consensus.tsv</code> can conveniently be opened in a spreadsheet program such as <em>Excel</em>.</p>
+<p>Also, using the command line tool <code>grep</code>, we can quickly search for genes of interest. For example, we can see if the genes from the CT phage (CTX) are present in your samples (these include the toxin-encoding genes <em>ctxA</em> and <em>ctxB</em>):</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-i</span> <span class="st">"ctx"</span> results/bakta/isolate2/consensus.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>contig_2        cds     2236513 2237289 +       LBGGEL_19385    ctxA    cholera enterotoxin catalytic subunit CtxA      BlastRules:WP_001881225, NCBIProtein:AAF94614.1
+contig_2        cds     2237286 2237660 +       LBGGEL_19390    ctxB    cholera enterotoxin binding subunit CtxB        BlastRules:WP_000593522, NCBIProtein:AAF94613.1, SO:0001217, UniRef:UniRef50_P01556</code></pre>
+<p>Both subunits are found in our assembly, suggesting our isolate is a pathogenic strain of <em>Vibrio cholerae</em>.</p>
+<p>And this concludes our assembly steps: we now have an <strong>annotated genome assembly</strong> produced from our ONT reads.</p>
+</section>
+</section>
+</section>
+<section id="sec-workflow" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="sec-workflow"><span class="header-section-number">8.3</span> Assembly workflow</h2>
+<p>In the previous section we applied our assembly workflow to a single sample. But what if we had 20 samples? It would be quite tedious and error-prone to have to copy/paste and modify these commands so many times.</p>
+<p>Instead, we can automate our analysis using some programming techniques, such as a <em>for loop</em>, to repeat the analysis across a range of samples. This is what we’ve done for you, having already prepared a shell script that runs through these steps sequentially for any number of samples (if you are interested, the full script is available <a href="../../course_files/participants/minimal/scripts/02-assembly.sh">here</a>). Our script is composed of two parts:</p>
+<ul>
+<li><strong>Settings:</strong> at the top of the script you will find a section <code>#### Settings ####</code>, where you can define several options to run the analysis (we will detail these below).</li>
+<li><strong>Pipeline:</strong> further down you find a section <code>#### Assembly pipeline ####</code>, which contains the commands to run the full analysis from raw sequences to an annotated assembly. The code we use looks more complex, as we make use of several (advanced) programming techniques, but the basic steps are the same as those we detailed step-by-step in the previous section.</li>
+</ul>
+<p>As a user of our script, the most important part is the <code>#### Settings ####</code>. The following settings are available:</p>
+<ul>
+<li><code>samplesheet</code> → the path to a CSV file with at least two columns:
+<ul>
+<li><code>sample</code> - sample name of your choice for each barcode; for example “isolate1”, “isolate2”, etc.</li>
+<li><code>barcode</code> - barcode folder names of each samples; this should essentially match the folder names in the <code>fastq_pass</code> folder output by the <em>Guppy</em> basecaller, for example “barcode01”, “barcode02”, “barcode34”, etc.</li>
+<li>you can include other columns in this sheet (such as metadata information), as long as the first two columns are the ones explained above.</li>
+</ul></li>
+<li><code>fastq_dir</code> → the path to the directory where the FASTQ files are in. The pipeline expects to find individual barcode folders within this, so we use the <code>fastq_pass</code> directory generated by the <em>Guppy</em> basecaller.</li>
+<li><code>outdir</code> → the path to the output directory where all the results files will be saved.</li>
+<li><code>threads</code> → how many CPUs are available for parallel processing.</li>
+<li><code>genome_size</code> → the predicted genome size for the bacterial we are assembling (4m is recommended for <em>Vibrio</em>).</li>
+<li><code>coverage</code> → the desired coverage for subsampling our reads to.</li>
+<li><code>medaka_model</code> → the medaka model to use for the polishing step (as explained above).</li>
+<li><code>bakta_db</code> → the path to the <code>bakta</code> database folder.</li>
+</ul>
+<p>Here is an example of the samplesheet for our samples:</p>
+<pre><code>sample,barcode
+isolate01,barcode25
+isolate02,barcode26
+isolate03,barcode27
+isolate04,barcode28
+isolate05,barcode29
+isolate06,barcode30
+isolate07,barcode31
+isolate08,barcode32
+isolate09,barcode33
+isolate10,barcode34</code></pre>
+<p>We have 10 isolates (number 1 to 10), corresponding to different barcodes. The samplesheet therefore makes the correspondence between each sample’s name and its respective barcode folder.</p>
+<p>One we have this samplesheet and we edit all the options in the script, we can run the script using <code>bash</code>:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bash</span> scripts/02-assembly.sh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Our script in this case was called <code>02-assembly.sh</code> and we had saved it in a folder called <code>scripts</code>. Note that all the file paths specified in the “Settings” of the script are relative to the folder where we run the script from. In our case, we had a folder named <code>awd_workshop</code>, where we are running the analysis from, and that is where we ran the script from.</p>
+<p>The script will take quite a while to run (up to 1h per sample, using 8 CPUs on our computers), so you may have to leave your computer doing the hard work overnight. As it runs, the script prints some progress messages on the screen:</p>
+<pre><code>Processing sample 'isolate01' with barcode 'barcode25'
+        2023-08-09 22:41:38      Concatenating reads...
+        2023-08-09 22:41:42      Subsampling reads with rasusa...
+        2023-08-09 22:42:47      Assembling with flye...
+        2023-08-09 22:55:37      Polishing with medaka...
+        2023-08-09 22:59:41      Annotating with bakta...
+        2023-08-09 23:24:47      Finished assembly pipeline for 'isolate01'.
+                                 Assembly file in: results/assemblies/isolate01.fasta
+                                 Annotation file in: results/assemblies/isolate01.gff
+
+Processing sample 'isolate02' with barcode 'barcode26'
+        2023-08-09 23:24:47      Concatenating reads...
+        2023-08-09 23:24:56      Subsampling reads with rasusa...
+        2023-08-09 23:26:32      Assembling with flye...
+        2023-08-09 23:52:36      Polishing with medaka...</code></pre>
+<p>Several output files are generated in the directory you specified as <code>outdir</code>. Here is what we have for our example data:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/assemblies</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>01-rasusa        isolate02.gff    isolate06.fasta  isolate09.gff
+02-flye          isolate03.fasta  isolate06.gff    isolate10.fasta
+03-medaka        isolate03.gff    isolate07.fasta  isolate10.gff
+04-bakta         isolate04.fasta  isolate07.gff    summary_metrics.csv
+isolate01.fasta  isolate04.gff    isolate08.fasta
+isolate01.gff    isolate05.fasta  isolate08.gff
+isolate02.fasta  isolate05.gff    isolate09.fasta</code></pre>
+<p>We get a folder with the results of each step of the analysis (this matches what we went through in detail in the step-by-step section) and two files per sample: a FASTA file with the polished assembly and a GFF file with the gene annotations. We also get a CSV file called <code>summary_metrics.csv</code>, which contains some useful statistics about our assemblies. We will look at these in the next chapter on <a href="../../materials/02-assembly/04-assembly_quality.html">quality control</a>.</p>
+</section>
+<section id="sec-ex-assembly" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="sec-ex-assembly"><span class="header-section-number">8.4</span> Exercises</h2>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> For these exercises, you can either use the dataset we provide in <a href="../../setup.html"><strong>Data &amp; Setup</strong></a>, or your own data.</p>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Running assembly script
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>As covered in the sections above, the genome assembly process involves several steps and software. We provide a script that performs the assemly pipeline for a set of samples specified by the user (using a <em>for loop</em> as detailed in <a href="#sec-workflow"><span>Section&nbsp;8.3</span></a>).</p>
+<ul>
+<li>In the folder <code>scripts</code> (within your analysis directory) you will find a script named <code>02-assembly.sh</code>.</li>
+<li>Open the script, which you will notice is composed of two sections:
+<ul>
+<li><code>#### Settings ####</code> where we define some variables for input and output files names. We already include default settings which are suitable for the “Ambroise 2023” data, but <strong>you may have to change some settings</strong> to suit your data.</li>
+<li><code>#### Analysis ####</code> this is where the assembly workflow is run on each sample as detailed in <a href="#sec-workflow"><span>Section&nbsp;8.3</span></a>. You should not change the code in this section, although examining it is a good way to learn about <a href="https://cambiotraining.github.io/unix-shell/materials/02-programming/01-scripts.html">Bash programming</a> (this one is quite advanced, so don’t worry if you don’t understand some of it).</li>
+</ul></li>
+<li>One of the main inputs to the script is a CSV file with two columns specifying your sample IDs and their respective barcode folder name. Using <em>Excel</em>, create this file for your samples, as explained in <a href="#sec-workflow"><span>Section&nbsp;8.3</span></a>. Save it as <code>samplesheet.csv</code> in your analysis directory.</li>
+<li>Activate the software environment: <code>mamba activate assembly</code></li>
+<li>Run the script using <code>bash scripts/02-assembly.sh</code>. If the script is running successfully it should print a message on the screen as the samples are processed. Depending on how many barcodes you have, this will take quite a while to finish (up to 1h per sample). <i class="fa-solid fa-mug-hot"></i></li>
+<li>One the analysis finishes you can confirm that you have several files in the output folder. We will analyse these files in the <a href="../../materials/02-assembly/04-assembly_quality.html">next chapter</a></li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>We opened the script <code>02-assembly.sh</code> and these are the settings we used:</p>
+<ul>
+<li><code>samplesheet="samplesheet.csv"</code> - the name of our samplesheet CSV file, detailed below.</li>
+<li><code>fastq_dir="data/fastq_pass"</code> - the name of the directory where we have our barcode folders from basecalling with Guppy.</li>
+<li><code>outdir="results/assemblies"</code> - the name of the directory where we want to save our results.</li>
+<li><code>threads="16"</code> - the number of CPUs we have available for parallel computations. You can check how many CPUs you have using the command <code>nproc --all</code>.</li>
+<li><code>genome_size="4m"</code> - the predicted genome size for the organism we are assembling. We use the <em>Vibrio cholerae</em> genome size.</li>
+<li><code>coverage="100"</code> - the coverage we want to downsample our sequencing reads to.</li>
+<li><code>medaka_model="r941_min_hac_g507"</code> - the model for the <em>Medaka</em> software. For the “Ambroise 2023” data basecalling was performed using the high accuracy (“hac”) mode, sequenced on a MinION platform using R9.4.1 pores. So, we chose the model that fits with this.</li>
+<li><code>bakta_db="resources/bakta_db/db-light/"</code> - the path to the <em>Bakta</em> database used for gene annotation. This was already pre-downloaded for us.</li>
+</ul>
+<p>Our <code>samplesheet.csv</code> file looked as follows:</p>
+<pre><code>sample,barcode
+CTMA_1402,barcode01
+CTMA_1421,barcode02
+CTMA_1427,barcode05
+CTMA_1432,barcode06
+CTMA_1473,barcode09</code></pre>
+<p>We used the sample identifiers from the original publication, and their respective barcodes. If these were our own samples, we would have used identifiers that made sense to us.</p>
+<p>We then ran the script using <code>bash scripts/02-assembly.sh</code>. The script prints a message while it’s running:</p>
+<pre><code>Processing sample 'CTMA_1402' with barcode 'barcode01'
+        2023-08-09 22:41:38      Concatenating reads...
+        2023-08-09 22:41:42      Subsampling reads with rasusa...
+        2023-08-09 22:42:47      Assembling with flye...
+        2023-08-09 22:55:37      Polishing with medaka...
+        2023-08-09 22:59:41      Annotating with bakta...
+        2023-08-09 23:24:47      Finished assembly pipeline for 'isolate01'.
+                                 Assembly file in: results/assemblies/isolate01.fasta
+                                 Annotation file in: results/assemblies/isolate01.gff
+
+Processing sample 'CTMA_1421' with barcode 'barcode02'
+        2023-08-09 23:24:47      Concatenating reads...
+        2023-08-09 23:24:56      Subsampling reads with rasusa...
+        2023-08-09 23:26:32      Assembling with flye...
+        2023-08-09 23:52:36      Polishing with medaka...</code></pre>
+<p>This took a long time to run, it was around 5h for us. <i class="fa-solid fa-mug-hot"></i> <i class="fa-solid fa-mug-hot"></i> <i class="fa-solid fa-mug-hot"></i></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Looking for genes of interest
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>The <em>varG</em> gene is part of the antibiotic resistance var regulon in <em>Vibrio cholerae</em> (<a href="https://card.mcmaster.ca/ontology/41453">source</a>).</p>
+<p>Using the command line tool <code>grep</code>, search for this gene in the annotation files produced by <em>Bakta</em>.</p>
+<div class="callout callout-style-default callout-hint no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-hint">
+<ul>
+<li>See <a href="#sec-bakta-annot"><span>Section&nbsp;8.2.4.2</span></a> for an example of how we did this for the <em>ctxA</em> and <em>ctxB</em> genes.</li>
+<li>The pipeline script we used outputs the <em>Bakta</em> results to <code>results/assemblies/04-bakta/SAMPLE/consensus.tsv</code> (where “SAMPLE” is the sample name).</li>
+<li>Remember that you can use the <code>*</code> wildcard to match multiple file/directory names</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>To search for this gene across all our samples, we did:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-i</span> <span class="st">"varG"</span> results/assemblies/04-bakta/<span class="pp">*</span>/consensus.tsv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>results/assemblies/04-bakta/CTMA_1402/consensus.tsv:contig_2    cds     1452034 1453002 +       FHBCKO_14010    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1421/consensus.tsv:contig_4    cds     1469496 1470620 -       GBDILF_14250    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1427/consensus.tsv:contig_1    cds     1682677 1683801 -       CJLKCO_09705    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1432/consensus.tsv:contig_2    cds     1363185 1364309 +       BDJHLF_13895    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11
+results/assemblies/04-bakta/CTMA_1473/consensus.tsv:contig_2    cds     1373351 1374475 +       DGGMCP_08610    varG    VarG family subclass B1-like metallo-beta-lactamase     NCBIProtein:WP_000778180.1, SO:0001217, UniRef:UniRef50_A0A290TY11</code></pre>
+<p>We can see that all 5 samples contain this gene. According to this <a href="https://card.mcmaster.ca/ontology/41453">gene’s description on CARD</a>, this suggests that all of these isolates might be resistant to antimicrobial drugs using penicillins, carbapenems or cephalosporins.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">8.5</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><em>De novo</em> genome assembly involves reconstructing a complete genome sequence without relying on a reference genome.</li>
+<li>Genome coverage refers to the average number of times each base in the genome is sequenced.</li>
+<li>Higher coverage provides more confident assembly, especially in repetitive regions, but it can be computationally intensive and expensive. Low coverage leads to more fragmented and less accurate assemblies.</li>
+<li>Key steps in Nanopore data assembly, along with relevant software, include::
+<ul>
+<li>Downsample reads using <code>rasusa</code> to optimize coverage, typically aiming for around 100-150x.</li>
+<li>Assembly with <code>flye</code>, a tool specialised for long-read technologies.</li>
+<li>Enhance accuracy through polishing with <code>medaka</code>, which corrects systematic ONT errors.</li>
+<li>Annotate genomes using <code>bakta</code> to identify genes and other genome features.</li>
+</ul></li>
+<li>Automation scripts simplify assembly across multiple samples by executing the same commands for each, ensuring consistency and saving time.</li>
+<li>The provided script requires a samplesheet (CSV file) containing sample IDs and barcodes. Additionally, selecting the appropriate medaka error-correction model is crucial for accurate results.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/02-assembly/02-read_content.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/02-assembly/04-assembly_quality.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

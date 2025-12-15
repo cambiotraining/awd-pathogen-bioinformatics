@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; AMR analysis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/04-report/01-reporting.html" rel="next">
+<link href="../../materials/03-typing/03-phylogeny.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/03-typing/01-pathogenwatch.html">Typing, Phylogeny and AMR</a></li><li class="breadcrumb-item"><a href="../../materials/03-typing/04-amr.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#antimicrobial-resistance-amr-analysis" id="toc-antimicrobial-resistance-amr-analysis" class="nav-link active" data-scroll-target="#antimicrobial-resistance-amr-analysis"><span class="header-section-number">13.1</span> Antimicrobial Resistance (AMR) analysis</a></li>
+  <li><a href="#sec-funcscan" id="toc-sec-funcscan" class="nav-link" data-scroll-target="#sec-funcscan"><span class="header-section-number">13.2</span> <em>Funcscan</em> workflow</a>
+  <ul class="collapse">
+  <li><a href="#funcscan-outputs" id="toc-funcscan-outputs" class="nav-link" data-scroll-target="#funcscan-outputs"><span class="header-section-number">13.2.1</span> <code>funcscan</code> outputs</a></li>
+  </ul></li>
+  <li><a href="#amr-with-pathogenwatch" id="toc-amr-with-pathogenwatch" class="nav-link" data-scroll-target="#amr-with-pathogenwatch"><span class="header-section-number">13.3</span> AMR with <em>Pathogenwatch</em></a></li>
+  <li><a href="#which-amr-do-my-isolates-have" id="toc-which-amr-do-my-isolates-have" class="nav-link" data-scroll-target="#which-amr-do-my-isolates-have"><span class="header-section-number">13.4</span> Which AMR do my isolates have?</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.5</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">13.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Recognise the threats posed by antimicrobial resistance (AMR) to public health globally.</li>
+<li>Apply both command line and web applications to find potential AMR genes in a set of genomes.</li>
+<li>Recognise the limitations of computational AMR prediction and the importance of comparing results across multiple tools.</li>
+</ul>
+</div>
+</div>
+<section id="antimicrobial-resistance-amr-analysis" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="antimicrobial-resistance-amr-analysis"><span class="header-section-number">13.1</span> Antimicrobial Resistance (AMR) analysis</h2>
+<p>Antimicrobial resistance (AMR) is a phenomenon where microorganisms, such as bacteria, evolve in a way that reduces the effectiveness of antimicrobial drugs, including antibiotics. This occurs due to the overuse and misuse of these drugs, which exerts selective pressure on the microorganisms. As a result, bacteria may develop or acquire genetic changes that enable them to <strong>survive exposure to antimicrobial agents</strong>, making the drugs less effective or entirely ineffective. AMR poses a significant <strong>global health threat</strong>, as it can lead to infections that are challenging to treat, potentially causing increased morbidity and mortality. Efforts to combat AMR include responsible antibiotic use, developing new drugs, and enhancing infection prevention and control measures.</p>
+<div id="fig-amr_genes" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://ars.els-cdn.com/content/image/1-s2.0-S0264410X19307935-gr1_lrg.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;13.1: History of antibiotic resistance in <em>Vibrio cholerae</em> and associated resistance genes. These are often acquired through horizontal gene transfer of mobile genetic elements. Image: Fig. 1 in <a href="https://doi.org/10.1016/j.vaccine.2019.06.031">Das et al.&nbsp;(2020)</a></figcaption>
+</figure>
+</div>
+<p>According to the <a href="https://www.who.int/publications/i/item/9789241564748">WHO</a>, antimicrobial resistance (AMR) has evolved into a global concern for public health. This stems from various harmful bacterial strains developing resistance to antimicrobial medications, including antibiotics. As part of our analysis, we will now focus on identifying AMR patterns connected to our <em>V. cholerae</em> isolates.</p>
+<p>Numerous software tools have been created to predict the presence of genes linked to AMR in genome sequences. Estimating the function of a gene or protein solely from its sequence is complex, leading to varying outcomes across different software tools. It is advisable to employ multiple tools and compare their findings, thus increasing our confidence in identifying which antimicrobial drugs might be more effective for treating patients infected with the strains we’re studying.</p>
+<p>In this section we will introduce a workflow aimed at combining the results from various AMR tools into a unified analysis. We will compare its results with AMR analysis performed by <em>Pathogenwatch</em>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is <em>Nextflow</em>?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Nextflow</em> is a program designed for building and running complex workflows (also known as pipelines). It simplifies the process of orchestrating complex computational pipelines that involve various tasks, inputs and outputs, and parallel processing. Nextflow is particularly well-suited for bioinformatics, where workflows often involve many steps, tools, and data transformations. It’s designed to work across different environments, including local machines, clusters, and cloud platforms.</p>
+<p>There are many publicly-available <em>Nextflow</em> pipelines available, which users can take advantage of. In particular, <em>nf-core</em> is an community-driven, open-source project aimed at providing <a href="https://nf-co.re/pipelines">high-quality bioinformatics pipelines</a> for a wide range of applications. The project’s goal is to offer standardized and well-documented workflows, allowing researchers to more easily set up and run complex analyses while following best practices and ensuring reproducibility.</p>
+<p>By using <em>nf-core</em> pipelines, researchers can save time and effort that would otherwise be spent developing and fine-tuning their own analysis workflows.</p>
+</div>
+</div>
+</section>
+<section id="sec-funcscan" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="sec-funcscan"><span class="header-section-number">13.2</span> <em>Funcscan</em> workflow</h2>
+<p>Here, we introduce an automated workflow called <strong><a href="https://nf-co.re/funcscan/1.1.2"><code>nf-core/funcscan</code></a></strong> (<a href="#fig-funcscan">Figure&nbsp;<span>13.2</span></a>), which uses <em>Nextflow</em> to manage all the software and analysis steps (see information box above). This pipeline uses five different AMR screening tools: <strong><a href="https://github.com/tseemann/abricate">ABRicate</a></strong>, <strong><a href="https://www.ncbi.nlm.nih.gov/pathogens/antimicrobial-resistance/AMRFinder/">AMRFinderPlus (NCBI Antimicrobial Resistance Gene Finder)</a></strong>, <strong><a href="https://github.com/fannyhb/fargene">fARGene (Fragmented Antibiotic Resistance Gene idENntifiEr)</a></strong>, <strong><a href="https://card.mcmaster.ca/analyze/rgi">RGI (Resistance Gene Identifier)</a></strong>, and <strong><a href="https://readthedocs.org/projects/deeparg/">DeepARG</a></strong>. This is convenient, as we can obtain the results from multiple approaches in one step.</p>
+<div id="fig-funcscan" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/nf-core/funcscan/1.1.2/docs/images/funcscan_metro_workflow.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;13.2: Overview of the <code>nf-core/funcscan</code> workflow. In our case we will run the “Antimicrobial Resistance Genes (ARGs)” analysis, shown in yellow. Image source: https://nf-co.re/funcscan/1.1.2</figcaption>
+</figure>
+</div>
+<p>This pipeline requires us to prepare a samplesheet CSV file with information about the samples we want to analyse. Two columns are required:</p>
+<ul>
+<li><code>sample</code> –&gt; a sample name of our choice (we will use the same name that we used for the assembly).</li>
+<li><code>fasta</code> –&gt; the path to the FASTA file corresponding to that sample.</li>
+</ul>
+<p>You can create this file using a spreadsheet software such as <em>Excel</em>, making sure to save the file as a CSV. Here is an example of our samplesheet, which we saved in a file called <code>samplesheet_funcscan.csv</code>:</p>
+<pre><code>sample,fasta
+isolate01,results/assemblies/isolate01.fasta
+isolate02,results/assemblies/isolate02.fasta
+isolate03,results/assemblies/isolate03.fasta
+isolate04,results/assemblies/isolate04.fasta
+isolate05,results/assemblies/isolate05.fasta
+isolate06,results/assemblies/isolate06.fasta
+isolate07,results/assemblies/isolate07.fasta
+isolate08,results/assemblies/isolate08.fasta
+isolate09,results/assemblies/isolate09.fasta
+isolate10,results/assemblies/isolate10.fasta</code></pre>
+<p>Once we have the samplesheet ready, we can run the <code>nf-core/funcscan</code> workflow using the following commands:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># activate the environment</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate nextflow</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/funcscan</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># run the pipeline</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/funcscan <span class="at">-profile</span> singularity <span class="dt">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_memory</span> 16.GB <span class="at">--max_cpus</span> 8 <span class="dt">\</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> samplesheet_funcscan.csv <span class="dt">\</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> results/funcscan <span class="dt">\</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--run_arg_screening</span> <span class="dt">\</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">--arg_skip_deeparg</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The options we used are:</p>
+<ul>
+<li><code>-profile singularity</code> - indicates we want to use the <em>Singularity</em> program to manage all the software required by the pipeline (another option is to use <code>docker</code>). See <a href="../../setup.html">Data &amp; Setup</a> for details about their installation.</li>
+<li><code>--max_memory</code> and <code>--max_cpus</code> - sets the available RAM memory and CPUs. You can check this with the commands <code>free -h</code> and <code>nproc --all</code>, respectively.</li>
+<li><code>--input</code> - the samplesheet with the input files, as explained above.</li>
+<li><code>--outdir</code> - the output directory for the results.</li>
+<li><code>--run_arg_screening</code> - indicates we want to run the “antimicrobial resistance gene screening tools”. There are also options to run antimicrobial peptide and biosynthetic gene cluster screening (<a href="https://nf-co.re/funcscan/1.1.2/parameters#screening-type-activation">see documentation</a>).</li>
+<li><code>--arg_skip_deeparg</code> - this skips a step in the analysis which uses the software <em>DeepARG</em>. We did this simply because this software takes a very long time to run. But in a real analysis you may want to leave this option on.</li>
+</ul>
+<p>While the pipeline runs, you will get a progress printed on the screen, and then a message once it finishes. Here is an example from our samples:</p>
+<pre><code>[4a/77ac77] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:INPUT_CHECK:SAMPLESHEET_CHECK (samplesheet_funcscan.csv) [100%] 1 of 1 ✔
+[-        ] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:GUNZIP_FASTA_PREP                                        -
+[97/6d505c] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:BIOAWK (isolate09)                                       [100%] 10 of 10 ✔
+[4f/aa117b] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:AMRFINDERPLUS_UPDATE (update)                        [100%] 1 of 1 ✔
+[9b/ba9bf2] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:AMRFINDERPLUS_RUN (isolate10)                        [100%] 10 of 10 ✔
+[15/0eaa8c] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_AMRFINDERPLUS (isolate10)              [100%] 10 of 10 ✔
+[d8/3ed91e] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:FARGENE (isolate10)                                  [100%] 100 of 100 ✔
+[2f/ab7c5c] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_FARGENE (isolate10)                    [100%] 102 of 102 ✔
+[4a/7116be] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:RGI_MAIN (isolate09)                                 [100%] 10 of 10 ✔
+[34/82b92c] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_RGI (isolate09)                        [100%] 10 of 10 ✔
+[5d/c349c5] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:ABRICATE_RUN (isolate09)                             [100%] 10 of 10 ✔
+[93/162a59] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_ABRICATE (isolate09)                   [100%] 10 of 10 ✔
+[79/725687] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:ARG:HAMRONIZATION_SUMMARIZE                              [100%] 1 of 1 ✔
+[4a/1f36ad] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:CUSTOM_DUMPSOFTWAREVERSIONS (1)                          [100%] 1 of 1 ✔
+[be/0d7355] process &gt; NFCORE_FUNCSCAN:FUNCSCAN:MULTIQC                                                  [100%] 1 of 1 ✔
+-[nf-core/funcscan] Pipeline completed successfully-
+Completed at: 10-Aug-2023 11:52:22
+Duration    : 34m 54s
+CPU hours   : 3.0
+Succeeded   : 277</code></pre>
+<section id="funcscan-outputs" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="funcscan-outputs"><span class="header-section-number">13.2.1</span> <code>funcscan</code> outputs</h3>
+<p>The main output of interest from this pipeline is a CSV file, which contains a summary of the results from all the AMR tools used This summary is produced by a software called <a href="https://github.com/pha4ge/hAMRonization"><em>hAMRonization</em></a> and the corresponding CSV file is saved in <code>results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv</code>. You can open this file using any standard spreadsheet software such as <em>Excel</em> (<a href="#fig-hamronization">Figure&nbsp;<span>13.3</span></a>).</p>
+<p>This file is quite large, containing many columns and rows (we detail these columns in the information box below). The easiest way to query this table is to filter the table based on the column “antimicrobial_agent” to remove rows where no AMR gene was detected (<a href="#fig-hamronization">Figure&nbsp;<span>13.3</span></a>). This way you are left with only the results which were positive for the AMR analysis.</p>
+<div id="fig-hamronization" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/amr_hamronization.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;13.3: To analyse the table output by <em>hAMRonization</em> in <em>Excel</em> you can go to “Data” –&gt; “Filter”. Then, select the dropdown button on the “antimicrobial_agent” column and untick the box “blank”. This will only show the genes associated with resistance to antimicrobial drugs.</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<em>hAMRonization</em> report columns (click to expand)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>TODO</p>
+</div>
+</div>
+</div>
+<p>You can also look at the detailed results of each individual tool, which can be found in the directory <code>results/funcscan/arg</code>. This directory contains sub-directories for each of the 5 AMR tools used (in our case only 4 folders, because we skipped the <em>DeepARG</em> step):</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/funcscan/arg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>abricate  amrfinderplus  fargene  hamronization  rgi</code></pre>
+<p>For each individual tool’s output folder shown above, there is a report, which is associated with the predicted AMRs for each of our samples. In most cases, the report is in tab-delimited TSV format, which can be opened in a standard spreadsheet software such as <em>Excel</em>. For instance, the AMR report from <em>Abricate</em> for one of our samples looks like this:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> <span class="at">-S</span> results/funcscan/arg/abricate/isolate02/isolate02.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>#FILE            SEQUENCE  START    END      STRAND  GENE      COVERAGE     COVERAGE_MAP     GAPS  %COVERAGE  %IDENTITY  DATABASE  ACCESSION    PRODUCT                                                         RESISTANCE
+isolate02.fasta  contig_2  1696     2623     -       blaPER-7  1-927/927    ========/======  1/1   100.00     99.89      ncbi      NG_049966.1  class A extended-spectrum beta-lactamase PER-7                  CEPHALOSPORIN
+isolate02.fasta  contig_2  4895     5738     -       sul1      1-840/840    ========/======  4/4   100.00     98.93      ncbi      NG_048091.1  sulfonamide-resistant dihydropteroate synthase Sul1             SULFONAMIDE
+isolate02.fasta  contig_2  6243     7036     -       aadA2     1-792/792    ========/======  2/2   100.00     99.50      ncbi      NG_047343.1  ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2  STREPTOMYCIN
+isolate02.fasta  contig_3  966452   967081   +       catB9     1-630/630    ===============  0/0   100.00     99.84      ncbi      NG_047621.1  type B-5 chloramphenicol O-acetyltransferase CatB9              CHLORAMPHENICOL
+isolate02.fasta  contig_4  778899   780023   +       varG      1-1125/1125  ===============  0/0   100.00     100.00     ncbi      NG_057468.1  VarG family subclass B1-like metallo-beta-lactamase             CARBAPENEM
+isolate02.fasta  contig_4  2573875  2574348  -       dfrA1     1-474/474    ===============  0/0   100.00     100.00     ncbi      NG_047676.1  trimethoprim-resistant dihydrofolate reductase DfrA1            TRIMETHOPRIM
+isolate02.fasta  contig_7  4178     5099     -       mph(A)    1-921/921    ========/======  1/1   100.00     99.35      ncbi      NG_047986.1  Mph(A) family macrolide 2'-phosphotransferase                   MACROLIDE
+isolate02.fasta  contig_7  6594     8069     +       msr(E)    1-1476/1476  ===============  0/0   100.00     100.00     ncbi      NG_048007.1  ABC-F type ribosomal protection protein Msr(E)                  MACROLIDE
+isolate02.fasta  contig_7  8125     9009     +       mph(E)    1-885/885    ===============  0/0   100.00     100.00     ncbi      NG_064660.1  Mph(E) family macrolide 2'-phosphotransferase                   MACROLIDE
+isolate02.fasta  contig_7  131405   132197   +       aadA2     1-792/792    ========/======  1/1   100.00     99.62      ncbi      NG_047343.1  ANT(3'')-Ia family aminoglycoside nucleotidyltransferase AadA2  STREPTOMYCIN</code></pre>
+<p>For this sample there were several putative AMR genes detected by <em>Abricate</em>, with their associated drugs. These genes were identified based on their similarity with annotated sequences from the NCBI database. For example, the gene <em>varG</em> was detected in our sample, matching the NCBI accession <a href="https://www.ncbi.nlm.nih.gov/nuccore/NG_057468.1">NG_057468.1</a>. This is annotated as as a reference for antimicrobial resistance, in this case to the drug “CARBAPENEM”.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Command line trick <i class="fa-solid fa-wand-magic-sparkles"></i>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Here is a trick using standard commands to count how many times each drug was identified by <code>funcscan</code>:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv <span class="kw">|</span> <span class="fu">cut</span> <span class="at">-f</span> 10 <span class="kw">|</span> <span class="fu">sort</span> <span class="kw">|</span> <span class="fu">uniq</span> <span class="at">-c</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>cat</code> prints the content of the file</li>
+<li><code>cut</code> extracts the 10th column from the file</li>
+<li><code>sort</code> and <code>uniq -c</code> are used in combination to count unique output values</li>
+</ul>
+<p>The result of the above command is:</p>
+<pre><code> 9 CARBAPENEM
+ 8 CEPHALOSPORIN
+ 8 CHLORAMPHENICOL
+27 MACROLIDE
+13 QUATERNARY AMMONIUM
+10 STREPTOMYCIN
+ 1 SULFONAMIDE
+10 TRIMETHOPRIM</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="amr-with-pathogenwatch" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="amr-with-pathogenwatch"><span class="header-section-number">13.3</span> AMR with <em>Pathogenwatch</em></h2>
+<p><em>Pathogenwatch</em> also performs AMR prediction using its own <a href="https://cgps.gitbook.io/pathogenwatch/technical-descriptions/antimicrobial-resistance-prediction/pw-amr">algorithm and curated gene sequences</a>. The results from this analysis can be seen from the individual sample report, or summarised in the collection view.</p>
+<div id="fig-amr_pathogenwatch" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/amr_pathogenwatch.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;13.4: AMR analysis from <em>Pathogenwatch</em>. The summary table (top) can be accessed from the sample collections view, by selecting “Antibiotics” from the drop-down on the top-left. The table summarises resistance to a range of antibiotics (red = resistant; yellow = intermediate). More detailed results can be viewed for each individual sample by clicking on its name and opening the sample report (bottom).</figcaption>
+</figure>
+</div>
+</section>
+<section id="which-amr-do-my-isolates-have" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="which-amr-do-my-isolates-have"><span class="header-section-number">13.4</span> Which AMR do my isolates have?</h2>
+<p>At this stage you may notice that different tools will give you a different answer to this question and it is therefore recommended to <strong>compare the results across multiple tools</strong>. For example, <em>Pathogenwatch</em> generally detects AMR for comparatively more antimicrobial drugs compared to the <code>funcscan</code> analysis. However, some of the drugs detected by <code>funcscan</code> were either not reported by <em>Pathogenwatch</em> (possibly because they are not part of its database) or have a disagreeing result.</p>
+<p>Let’s take a specific example. <em>Pathogenwatch</em> determined that none of our isolates were resistant to Streptomycin. However, in the <em>hAMRonization</em> summary table (output by <code>funcscan</code>) we can see that this drug was reported for several of our samples. Upon closer inspection, however, we can see that we only had partial matches to the reference NCBI sequence (<a href="https://www.ncbi.nlm.nih.gov/protein/WP_001206356.1">WP_001206356.1</a>), or in the case of one sample with a higher match the sequence identity was less than 100% (table below, showing some of the columns from the <em>hAMRonization</em> table).</p>
+<pre><code>input_file_name               gene_symbol   reference_accession   antimicrobial_agent   coverage_percentage   sequence_identity  
+isolate01.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate02.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate02.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate04.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate05.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate06.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate07.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate08.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate09.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          68.44                 100                
+isolate10.tsv.amrfinderplus   aadA2         WP_001206356.1        STREPTOMYCIN          100                   92.05              </code></pre>
+<p>It is also important to take into consideration our earlier <a href="../../materials/02-assembly/04-assembly_quality.html">assembly quality assessments</a> as they may result in <strong>false negative results</strong>. For example, we can see that “isolate05” has the lowest AMR detection of all samples. However, this was the sample with the lowest genome coverage (only 21x) and with a resulting highly fragmented genome (229 fragments). Therefore, it is very possible that we missed parts of its genome during assembly, and that some of those contained AMR genes or plasmids.</p>
+<p>In conclusion, always be critical of the analysis of your results at this stage, comparing the output from different tools as well as considering the quality of your assemblies. Ultimately, the safest way to assess AMR is with <strong>experimental validation</strong>, by testing those strains against the relevant antimicrobial agents in the lab. However, computational analysis such as what we did can help inform these experiments and treatment decisions.</p>
+</section>
+<section id="exercises" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.5</span> Exercises</h2>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> For these exercises, you can either use the dataset we provide in <a href="../../setup.html"><strong>Data &amp; Setup</strong></a>, or your own data. You also need to have completed the genome assembly exercise in <a href="../02-assembly/03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>.</p>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Funcscan workflow
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>Run the <code>nf-core/funcscan</code> workflow on the assembled genomes for your samples.</p>
+<ul>
+<li>Using <em>Excel</em>, create a samplesheet CSV file for your samples, required as input for this pipeline. See <a href="#sec-funcscan"><span>Section&nbsp;13.2</span></a> if you need to revise the format of this samplesheet.</li>
+<li>Activate the software environment: <code>mamba activate nextflow</code>.</li>
+<li>Fix the script provided in <code>scripts/07-amr.sh</code>.</li>
+<li>Run the script using <code>bash scripts/07-amr.sh</code>.</li>
+</ul>
+<p>Once the workflow is running it will print a progress message on the screen. This will take a while to run, so you can do the next exercise, and then continue with this one.</p>
+<p>Once the analysis finishes, open the output file <code>results/funcscan/reports/hamronization_summarize/hamronization_combined_report.tsv</code> in <em>Excel</em>. Answer the following questions:</p>
+<ul>
+<li>Did this analysis find evidence for antimicrobial resistance to any drugs?</li>
+<li>Did all your samples show evidence for AMR?</li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>We created a samplesheet for our samples in <em>Excel</em>, making sure to “Save As…” CSV format. The raw file looks like this:</p>
+<pre><code>sample,fasta
+CTMA_1402,results/assemblies/CTMA_1402.fasta
+CTMA_1421,results/assemblies/CTMA_1421.fasta
+CTMA_1427,results/assemblies/CTMA_1427.fasta
+CTMA_1432,results/assemblies/CTMA_1432.fasta
+CTMA_1473,results/assemblies/CTMA_1473.fasta</code></pre>
+<p>The fixed script is:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/funcscan</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># run the pipeline</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run nf-core/funcscan <span class="at">-profile</span> singularity <span class="dt">\</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max_memory</span> 16.GB <span class="at">--max_cpus</span> 8 <span class="dt">\</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> samplesheet_funcscan.csv <span class="dt">\</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--outdir</span> results/funcscan <span class="dt">\</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--run_arg_screening</span> <span class="dt">\</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--arg_skip_deeparg</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>While the script was running we got a progress of the analysis printed on the screen. Once it finished we got a message like this (yours will look slightly different):</p>
+<pre><code>Completed at: 12-Aug-2023 12:24:03
+Duration    : 44m 54s
+CPU hours   : 3.0
+Succeeded   : 277</code></pre>
+<p>We opened the <em>hAMRonization</em> output report file in <em>Excel</em> and filtered it for the column “antimicrobial_agent”. We identified the following (only a few columns shown for simplicity):</p>
+<pre><code>input_file_name              gene_symbol  antimicrobial_agent
+CTMA_1402.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1402.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1402.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1402.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1402.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1402.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1421.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1421.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1421.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1421.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1421.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1421.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1421.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1427.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1427.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1427.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1427.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1427.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1427.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1427.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1432.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1432.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1432.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1432.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1432.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1432.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1432.tsv.amrfinderplus  varG         CARBAPENEM
+CTMA_1473.tsv.amrfinderplus  aph(3'')-Ib  STREPTOMYCIN
+CTMA_1473.tsv.amrfinderplus  aph(6)-Id    STREPTOMYCIN
+CTMA_1473.tsv.amrfinderplus  catB9        CHLORAMPHENICOL
+CTMA_1473.tsv.amrfinderplus  dfrA1        TRIMETHOPRIM
+CTMA_1473.tsv.amrfinderplus  floR         CHLORAMPHENICOL/FLORFENICOL
+CTMA_1473.tsv.amrfinderplus  sul2         SULFONAMIDE
+CTMA_1473.tsv.amrfinderplus  varG         CARBAPENEM</code></pre>
+<p>All 5 of our samples show evidence of AMR to different antimicrobial drugs. All of them are quite similar, with resistance to a similar set of drugs.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+AMR with Pathogenwatch
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>Following from the <em>Pathogenwatch</em> exercise in <a href="01-pathogenwatch.html#sec-ex-pathogenwatch"><span>Section&nbsp;10.4</span></a>, open the “Ambroise 2023” collection that you created and answer the following questions:</p>
+<ul>
+<li>Open the antibiotics summary table.</li>
+<li>Do all your samples have evidence for antibiotic resistance?</li>
+<li>If any samples have resistance to much fewer antibiotics compared to the others, do you think this could be related to assembly quality?</li>
+<li>How do the results from <em>Pathogenwatch</em> compare to those from <code>nf-core/funcscan</code>?</li>
+</ul>
+<p>How do the results compare with Pathogenwatch?</p>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>We can open the “Antibiotics” table from the top-left dropdown menu, as shown in the image below.</p>
+<p><img src="images/pathogenwatch-ambroise04.png" class="img-fluid"></p>
+<p>We can see that <em>Pathogenwatch</em> identified resistance to several antibiotics. All samples are similar, except “1432” doesn’t have resistance to furazolidone and nitrofurantoin. This sample had high completeness, according to <em>CheckM2</em>. However, it was also the sample with the lowest sequencing coverage (from our analysis during the genome assembly in <a href="../02-assembly/03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>), so this could be a “false negative” result due to the inability to cover some of the genes that confer AMR.</p>
+<p>All of the drugs identified by <em>funcscan</em> were also identified by <em>Pathogenwatch</em> (note that sulfamethoxazole and sulfisoxazole identified by <em>Pathogenwatch</em> are both sulfonamide-derived drugs, reported by funcscan). However, <em>Pathogenwatch</em> identified resistance to several other drugs: ampicilin, ceftazidime, cephalosporins, ceftriazone, cefepime, furazolidone and nitrofurantoin.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">13.6</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>AMR poses significant global public health threats by diminishing the effectiveness of antibiotics, making it challenging to treat infectious diseases effectively.</li>
+<li>AMR software aims to identify specific genes or mutations known to confer resistance to antimicrobial agents. These tools compare input genetic sequences to known resistance genes or patterns in their associated databases.</li>
+<li>The <code>nf-core/funcscan</code> workflow performs AMR analysis using several software tools and producing a summary of their results as a CSV file.</li>
+<li><em>Pathogenwatch</em> is a more user-friendly application, which performs AMR using its own curated database.</li>
+<li>AMR prediction can result in false results (either false positives or false negatives). One way to overcome this limitation is to compare the results from multiple tools and, whenever possible, complement it with validation assays in the lab.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/03-typing/03-phylogeny.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/04-report/01-reporting.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

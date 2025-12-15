@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Building phylogenetic trees</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/03-typing/04-amr.html" rel="next">
+<link href="../../materials/03-typing/02-mlst.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/03-typing/01-pathogenwatch.html">Typing, Phylogeny and AMR</a></li><li class="breadcrumb-item"><a href="../../materials/03-typing/03-phylogeny.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#pathogen-phylogenetics" id="toc-pathogen-phylogenetics" class="nav-link active" data-scroll-target="#pathogen-phylogenetics"><span class="header-section-number">12.1</span> Pathogen Phylogenetics</a></li>
+  <li><a href="#sec-phylo-pathogenwatch" id="toc-sec-phylo-pathogenwatch" class="nav-link" data-scroll-target="#sec-phylo-pathogenwatch"><span class="header-section-number">12.2</span> Phylogenies with Pathogenwatch</a></li>
+  <li><a href="#phylogenies-with-local-software" id="toc-phylogenies-with-local-software" class="nav-link" data-scroll-target="#phylogenies-with-local-software"><span class="header-section-number">12.3</span> Phylogenies with local software</a>
+  <ul class="collapse">
+  <li><a href="#sec-panaroo" id="toc-sec-panaroo" class="nav-link" data-scroll-target="#sec-panaroo"><span class="header-section-number">12.3.1</span> Core genome alignment: <code>panaroo</code></a></li>
+  <li><a href="#sec-snp-sites" id="toc-sec-snp-sites" class="nav-link" data-scroll-target="#sec-snp-sites"><span class="header-section-number">12.3.2</span> Extracting variable sites: <code>snp-sites</code></a></li>
+  <li><a href="#sec-iqtree" id="toc-sec-iqtree" class="nav-link" data-scroll-target="#sec-iqtree"><span class="header-section-number">12.3.3</span> Tree inference: <code>iqtree</code></a></li>
+  <li><a href="#visualising-trees-figtree" id="toc-visualising-trees-figtree" class="nav-link" data-scroll-target="#visualising-trees-figtree"><span class="header-section-number">12.3.4</span> Visualising trees: FigTree</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.4</span> Exercises</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">12.5</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Recognise the use of phylogenetic inference in pathogen surveillance.</li>
+<li>Identify the closest lineage(s) to your samples based on phylogenetic tree analysis.</li>
+<li>Explain why a core genome alignment is necessary when working with <em>Vibrio cholerae</em>.</li>
+<li>Generate a core genome alignment from a set of genomes.</li>
+<li>Infer a phylogenetic tree from an alignment.</li>
+<li>Visualise and annotate phylogenetic trees.</li>
+<li>Assess whether errors are likely present in your assemblies based on the phylogenetic trees.</li>
+</ul>
+</div>
+</div>
+<section id="pathogen-phylogenetics" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="pathogen-phylogenetics"><span class="header-section-number">12.1</span> Pathogen Phylogenetics</h2>
+<p>Phylogenetic analysis aims to determine evolutionary relationships among organisms. In the context of pathogenic organisms, it is used to study the origin of human-infecting strains. This involves analyzing sequences from various bacterial/viral species infecting humans and other species. For instance, during the COVID-19 pandemic, inter-species phylogeny was used to <a href="https://doi.org/10.1007/s10311-020-01151-1">trace the origin of the SARS-CoV-2 virus</a> that adapted to infect humans.</p>
+<p>Pathogen surveillance mostly focuses on <strong>intra-species phylogenies</strong>. Here, phylogenies are constructed from sequences within the same pathogenic species. The objective is to understand how specific strains and lineages relate and evolve. By analyzing genetic differences, we can track pathogen spread and identify outbreak sources. This section aims to answer: <strong>How do our Vibrio cholerae isolates relate to each other and to previously sequenced strains?</strong> This sheds light on relationships among isolates and their evolutionary context.</p>
+<p>To construct a phylogeny, two primary steps are necessary:</p>
+<ul>
+<li><strong>Multiple sequence alignment:</strong> to account for variations in sequence lengths due to insertions/deletions, aligning homologous residues of each sequence is the first step.</li>
+<li><strong>Tree inference:</strong> with the aligned sequences, statistical models of sequence evolution are used to infer the most probable relationship between these sequences, based on observed substitutions.</li>
+</ul>
+<p>Multiple sequence alignment is straightforward when dealing with a single gene or closely related species (e.g.&nbsp;clonal bacterial species). However, bacterial species can exhibit substantial differences due to factors like horizontal gene transfer (e.g.&nbsp;through conjugation or bacteriophages), gene duplication, and gene loss. In such cases, alignment focuses on the <strong>core genome</strong>, the gene set present in most species members, enabling inference of evolutionary relationships. This contrasts with the “accessory genome,” consisting of genes present only in some members of the species. The complete collection of core and accessory genomes in a species is referred to as the <strong>pangenome</strong>.</p>
+<p>Given the diversity of <em>Vibrio cholerae</em>, which often acquires resistance genes through horizontal transfer, the phylogenetic process begins with generating a <strong>core genome alignment</strong>, forming the foundation for tree inference. We will explore phylogenetic analysis of <em>Vibrio cholerae</em> using <em>Pathogenwatch</em>, followed by a guide to constructing your own phylogenies using command line tools.</p>
+</section>
+<section id="sec-phylo-pathogenwatch" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="sec-phylo-pathogenwatch"><span class="header-section-number">12.2</span> Phylogenies with Pathogenwatch</h2>
+<p>In the “collection view” screen for your samples, <em>Pathogenwatch</em> shows you a phylogenetic tree on the top-left panel, showing the relationship between the sequences in your collection. This shows how tightly our samples cluster with each other, and outliers may indicate assembly issues. For example, we can see from <a href="#fig-phylo-pathogenwatch1">Figure&nbsp;<span>12.1</span></a> that “isolate05” clusters separately from the rest of the samples. From our <a href="../../materials/02-assembly/04-assembly_quality.html">previous analysis of assembly quality</a> we saw that this sample had poorer sequencing coverage, which may have led to a higher error rate (because fewer sequencing reads were available to identify a consensus sequence).</p>
+<div id="fig-phylo-pathogenwatch1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/phylo_pathogenwatch01.svg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.1: Phylogenetic view of the samples in our collection. You can view the sample names by clicking on the buttons shown.</figcaption>
+</figure>
+</div>
+<p>We can also show how your samples relate to the “reference genomes” available in <em>Pathogenwatch</em> (<a href="#fig-phylo-pathogenwatch2">Figure&nbsp;<span>12.2</span></a>). These are genomes curated by the <a href="https://genomic-surveillance-for-vibrio-cholerae-using-vibriowatch.readthedocs.io/en/latest/mlst.html#compare-your-isolate-to-vibriowatch-s-reference-genomes"><em>Vibriowatch</em> project</a>, which include several genomes that have been assigned to different phylogenetic lineages, and associated with transmission waves/events.</p>
+<div id="fig-phylo-pathogenwatch2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/phylo_pathogenwatch02.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.2: Phylogenetic view of the “Population” samples used in the default phylogenetic analysis from <em>Pathogenwatch</em>. You can choose this view from the top-left dropdown menu as illustrated. The clades on which your samples were clustered with appear in purple.</figcaption>
+</figure>
+</div>
+<p>In <a href="#fig-phylo-pathogenwatch2">Figure&nbsp;<span>12.2</span></a> we can see that all our 10 samples fall in the “W3_T13” clade (wave 3, transmission event 13). This reference clade corresponds to strains from the most recent transmission wave in Africa determined by <a href="https://doi.org/10.1126/science.aad5901">Weill et al.&nbsp;2017</a>. This agrees with other pieces of evidence we aquired so far, that our strains are closely related to the most recent pathogenic strains circulating worldwide.</p>
+<p>You can further “zoom in” on the tree to see how your samples relate to the reference samples present in this clade (<a href="#fig-phylo-pathogenwatch3">Figure&nbsp;<span>12.3</span></a>). This shows that although our samples are related to “W3 T3” reference samples, they have accumulated enough mutations that makes them cluster apart from the reference panel. Note that some of the lineage classification used by <em>Pathogenwatch</em> may be slightly outdated, as new strains emerge that were not part of the 2017 study mentioned above.</p>
+<div id="fig-phylo-pathogenwatch3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/phylo_pathogenwatch03.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.3: Clicking on the “W3_T13” clade shows our samples in the context of the other reference genomes in this clade.</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Sequence divergence or sequencing error?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Phylogenetic analysis is also useful to assess our assembly quality with regards to <strong>validity/correctness</strong> of our sequences. If our sequences are very diverged from other sequences (i.e.&nbsp;several mutations separate them from other sequences), this may indicate a high error rate in our assemblies. However, this is not always easy to assess, as the public collection such as the one from <em>Pathogenwatch</em> (<a href="#fig-phylo-pathogenwatch3">Figure&nbsp;<span>12.3</span></a>) may have older sequences, so this may represent true divergence since the time those samples were collected.</p>
+<p>To fully address if our samples likely have sequencing errors, we can do any of the following:</p>
+<ul>
+<li>Compare your samples with similar (or even the same) samples assembled with higher accuracy data. For example, following the advice given on the “<a href="https://github.com/rrwick/Perfect-bacterial-genome-tutorial/wiki">perfect bacterial genome</a>” pipeline (using a “hybrid assembly” approach with both Illumina and ONT data).</li>
+<li>Using more recent ONT chemistry, flowcells and basecalling software, which <a href="https://nanoporetech.com/accuracy">provide higher accuracy sequences</a>.</li>
+<li>Compare our assemblies with recent samples from the same region/outbreak.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="phylogenies-with-local-software" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="phylogenies-with-local-software"><span class="header-section-number">12.3</span> Phylogenies with local software</h2>
+<p>In the previous section we used <em>Pathogenwatch</em> to perform a phylogenetic analysis, using its inbuilt collection. While <em>Pathogenwatch</em> is user-friendly, it relies on a web-based service that might not always be accessible. Therefore, we introduce an alternative using command line tools suitable for local execution on your computer. The methodology we use here is similar to <em>Pathogenwatch</em>’s, but it employs distinct tools for generating the core genome and performing tree inference. Our toolkit consists of four software components:</p>
+<ul>
+<li><strong><a href="https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart">Panaroo</a></strong> - used to identify a set of “core genes” (genes occurring in most samples) and generate a multiple sequence alignment from them.</li>
+<li><strong><a href="http://sanger-pathogens.github.io/snp-sites/">SNP-sites</a></strong> - used to extract variable sites from the alignment (to save computational time).</li>
+<li><strong><a href="http://www.iqtree.org/doc/">IQ-TREE</a></strong> - used to infer a tree from the aligned core genes.</li>
+<li><strong><a href="http://tree.bio.ed.ac.uk/software/figtree/">Figtree</a></strong> - used to visualise and/or annotate our tree.</li>
+</ul>
+<p>We start our analysis by activating our software environment, to make all the necessary tools available:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mamba</span> activate phylogeny</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="sec-panaroo" class="level3" data-number="12.3.1">
+<h3 data-number="12.3.1" class="anchored" data-anchor-id="sec-panaroo"><span class="header-section-number">12.3.1</span> Core genome alignment: <code>panaroo</code></h3>
+<p>The software <a href="https://gtonkinhill.github.io/panaroo/"><em>Panaroo</em></a> was developed to analyse bacterial pangenomes. It is able to identify orthologous sequences between a set of sequences, which it uses to produce a multiple sequence alignment of the core genome. The output alignment it produces can then be used to build our phylogenetic trees in the next step.</p>
+<p>As input to <em>Panaroo</em> we will use:</p>
+<ul>
+<li>The gene annotations for our newly assembled genomes, which were produced during the <a href="../../materials/02-assembly/03-genome_assembly.html">assembly pipeline</a> using <em>Bakta</em>.</li>
+<li>Annotations from 31 public genomes downloaded from NCBI (see <a href="../02-assembly/01-preparing_data.html#sec-public-genomes"><span>Section&nbsp;6.5</span></a>). These annotations had to be processed to be compatible with <em>Panaroo</em>, which we detail in the information box below.</li>
+</ul>
+<p>To run <em>Panaroo</em> on our samples we can use the following commands:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/panaroo</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run panaroo</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">panaroo</span> <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> results/assemblies/<span class="pp">*</span>.gff resources/vibrio_genomes/<span class="pp">*</span>.gff <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--out_dir</span> results/panaroo <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--clean-mode</span> strict <span class="dt">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--alignment</span> core <span class="dt">\</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--core_threshold</span> 0.98 <span class="dt">\</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--remove-invalid-genes</span> <span class="dt">\</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--threads</span> 8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The options used are:</p>
+<ul>
+<li><code>--input</code> - all the input annotation files, in the <em>Panaroo</em>-compatible GFF format. Notice how we used the <code>*</code> wildcard to match all the files in each folder: the <code>results/assemblies</code> folder contains the annotations for our own genomes; the <code>resources/vibrio_genomes/</code> folder contains the public annotations (suitably converted to <em>Panaroo</em>-compatible format - see information box below).</li>
+<li><code>--out_dir</code> - the output directory we want to save the results into.</li>
+<li><code>--clean-mode</code> - determines the stringency of <em>Panaroo</em> in including genes within its pangenome graph for gene clustering and core gene identification. The available modes are ‘strict’, ‘moderate’, and ‘sensitive’. These modes balance eliminating probable contaminants against preserving valid annotations like infrequent plasmids. In our case we used ‘strict’ mode, as we are interested in building a core gene alignment for phylogenetics, so including rare plasmids is less important for our downstream task.</li>
+<li><code>--alignment</code> - whether we want to produce an alignment of core genes or all genes (pangenome alignment). In our case we want to only consider the core genes, to build a phylogeny.</li>
+<li><code>--core_threshold</code> - the fraction of input genomes where a gene has to be found to be considered a “core gene”. In our case we’ve set this to a very high value, to ensure most of our samples have the gene.</li>
+<li><code>--remove-invalid-genes</code> - this is recommended to remove annotations that are incompatible with the annotation format expected by <em>Panaroo</em>.</li>
+<li><code>--threads</code> - how many CPUs we want to use for parallel computations.</li>
+</ul>
+<p><em>Panaroo</em> takes a long time to run, so be prepared to wait a while for its analysis to finish <i class="fa-solid fa-mug-hot"></i>.</p>
+<p>Once if finishes, we can see the output it produces:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/panaroo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>aligned_gene_sequences/                core_alignment_header.embl        gene_presence_absence_roary.csv
+alignment_entropy.csv                 core_gene_alignment.aln           pan_genome_reference.fa
+combined_DNA_CDS.fasta                core_gene_alignment_filtered.aln  pre_filt_graph.gml
+combined_protein_CDS.fasta            final_graph.gml                   struct_presence_absence.Rtab
+combined_protein_cdhit_out.txt        gene_data.csv                     summary_statistics.txt
+combined_protein_cdhit_out.txt.clstr  gene_presence_absence.Rtab
+core_alignment_filtered_header.embl   gene_presence_absence.csv</code></pre>
+<p>There are several output files generated, which can be generated for more advanced analysis and visualisation (see <a href="https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart"><em>Panaroo</em> documentation</a> for details). For our purpose of creating a phylogeny from the core genome alignment, we need the file <code>core_gene_alignment_filtered.aln</code>, which is a file in FASTA format. We can take a quick look at this file:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span> results/panaroo/core_gene_alignment_filtered.aln</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>&gt;GCF_015482825.1_ASM1548282v1_genomic
+atggctatttatctgactgaattatcgccggaaacgttgacattcccctctccttttact
+gcgttagatgaccctaacggcctgcttgcatttggcggcgatctccgtcttgaacgaatt
+tgggcggcttatcaacaaggcattttcccttggtatggccctgaagacccgattttgtgg
+tggagcccttccccacgtgccgtgtttgaccctactcggtttcaacctgcc-aaaagcgt
+gaagaagttccaacgtaaacatcagtatcgggttagcgtcaatcacgcgacgtcgcaagt
+gattgagcagtgcgcgctcactcgccctgcggatcaacgttggctcaatgactcaatgcg
+ccatgcgtatggcgagttggcgaaacaaggtcgttgccattctgttgaggtgtggcaggg
+cgaacaactggtgggtgggctttatggcatttccgttggccaactgttttgtggcgaatc
+catgtttagcctcgcaaccaatgcctcgaaaattgcgctttggta-tttttgcgaccatt</code></pre>
+<p>We can see this contains a sequence named “GCF_015482825.1_ASM1548282v1_genomic”, which corresponds to one of the NCBI genomes we downloaded. We can look at all the sequence names in the FASTA file:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"&gt;"</span> results/panaroo/core_gene_alignment_filtered.aln</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>&gt;GCF_015482825.1_ASM1548282v1_genomic
+&gt;GCF_019704235.1_ASM1970423v1_genomic
+&gt;GCF_013357625.1_ASM1335762v1_genomic
+&gt;GCF_017948285.1_ASM1794828v1_genomic
+&gt;GCF_009763825.1_ASM976382v1_genomic
+&gt;isolate01
+&gt;GCF_013357665.1_ASM1335766v1_genomic
+&gt;GCF_009762915.1_ASM976291v1_genomic
+&gt;GCF_009762985.1_ASM976298v1_genomic
+
+... more output omitted to save space ...</code></pre>
+<p>We can see each input genome appears once, including the “isolateXX” genomes assembled and annotated by us.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Preparing GFF files for <em>Panaroo</em> (click to see details)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><em>Panaroo</em> requires GFF files in a non-standard format. They are similar to standard GFF files, but they also include the genome sequence itself at the end of the file. By default, <em>Bakta</em> (which we used <a href="../../materials/02-assembly/03-genome_assembly.html">earlier</a> to annotate our assembled genomes) already produces files in this non-standard GFF format.</p>
+<p>However, GFF files downloaded from NCBI will not be in this non-standard format. To convert the files to the required format, the <em>Panaroo</em> developers provide us with a <a href="https://raw.githubusercontent.com/gtonkinhill/panaroo/master/scripts/convert_refseq_to_prokka_gff.py">Python script</a> that can do this conversion:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> convert_refseq_to_prokka_gff.py <span class="at">-g</span> annotation.gff <span class="at">-f</span> genome.fna <span class="at">-o</span> new.gff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li><code>-g</code> is the original GFF (for example downloaded from NCBI).</li>
+<li><code>-f</code> is the corresponding FASTA file with the genome (also downloaded from NCBI).</li>
+<li><code>-o</code> is the name for the output file.</li>
+</ul>
+<p>This is a bit more advanced, and is included here for interested users. We already prepared all the files for performing a phylogeny, so you don’t need to worry about this for the workshop.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-snp-sites" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="sec-snp-sites"><span class="header-section-number">12.3.2</span> Extracting variable sites: <code>snp-sites</code></h3>
+<p>Although you could use the alignment generated by <em>Panaroo</em> directly as input to <em>IQ-TREE</em>, this would be quite computationally heavy, because the core genome alignments tend to be quite big. Instead, what we can do is <strong>extract the variable sites</strong> from the alignment, such that we reduce our FASTA file to only include those positions that are variable across samples.</p>
+<p>Here is a small example illustrating what we are doing. For example, take the following three sequences, where we see 3 variable sites (indicated with an arrow):</p>
+<pre><code>seq1  C G T A G C T G G T
+seq2  C T T A G C A G G T
+seq3  C T T A G C A G A T
+        ↑         ↑   ↑</code></pre>
+<p>For the purposes of phylogenetic tree construction, we only use the variable sites to look at the relationship between our sequences, so we can simplify our alignment by extract only the variable sites:</p>
+<pre><code>seq1  G T G
+seq2  T A G
+seq3  T A A</code></pre>
+<p>This example is very small, but when you have a 4Mb genome, this can make a big difference. To extract variable sites from an alignment we can use the <em>SNP-sites</em> software:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/snp-sites</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run SNP-sites</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-sites</span> results/panaroo/core_gene_alignment_filtered.aln <span class="op">&gt;</span> results/snp-sites/core_gene_alignment_snps.aln</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This command simply takes as input the alignment FASTA file and produces a new file with only the variable sites - which we redirect (<code>&gt;</code>) to an output file. This is the file we will use as input to constructing our tree.</p>
+<p>However, before we move on to that step, we need another piece of information: the <strong>number of constant sites</strong> in the initial alignment (sites that didn’t change). Phylogenetically, it makes a difference if we have 3 mutations in 10 sites (30% variable sites, as in our small example above) or 3 mutations in 1000 sites (0.3% mutations). The <em>IQ-TREE</em> software we will use for tree inference can accept as input 4 numbers, counting the number of A, C, G and T that were constant in the alignment. For our small example these would be, respectively: 1, 2, 2, 2.</p>
+<p>Fortunately, the <code>snp-sites</code> command can also produce these numbers for us (you can check this in the help page by running <code>snp-sites -h</code>). This is how you would do this:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># count invariant sites</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-sites</span> <span class="at">-C</span> results/panaroo/core_gene_alignment_filtered.aln <span class="op">&gt;</span> results/snp-sites/constant_sites.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The key difference is that we use the <code>-C</code> option, which produces these numbers. Again, we redirect (<code>&gt;</code>) the output to a file.</p>
+<p>We can see what these numbers are by printing the content of the file:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> results/snp-sites/constant_sites.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>635254,561931,623994,624125</code></pre>
+<p>As we said earlier, these numbers represent the number of A, C, G, T that were constant in our original alignment. We will use these numbers in the tree inference step detailed next.</p>
+</section>
+<section id="sec-iqtree" class="level3" data-number="12.3.3">
+<h3 data-number="12.3.3" class="anchored" data-anchor-id="sec-iqtree"><span class="header-section-number">12.3.3</span> Tree inference: <code>iqtree</code></h3>
+<p>There are different methods for inferring phylogenetic trees from sequence alignments. Regardless of the method used, the objective is to construct a tree that represents the evolutionary relationships between different species or genetic sequences. Here, we will use the <em>IQ-TREE</em> software, which implements <strong>maximum likelihood methods of tree inference</strong>. Phylogenetic tree inference using maximum likelihood is done by identifying the tree that maximizes the likelihood of observing the given DNA sequences under a chosen evolutionary model.</p>
+<p>In this process, <strong>DNA substitution models</strong> describe how DNA sequences change over time due to mutations. These models consider how frequently different bases (A, T, C, G) are replaced by each other. Another parameter these models can include is <strong>rate heterogeneity</strong>, which accounts for the fact that different DNA sites may evolve at different rates. Some sites might change rapidly, while others remain more stable.</p>
+<p>Maximum likelihood aims to find the tree topology and branch lengths that make the observed DNA sequences most probable, given the chosen model. It does this by exploring various tree shapes and lengths to calculate the likelihood of the observed sequences. The tree with the highest likelihood is considered the best representation of the evolutionary relationships among the sequences. The process involves making educated guesses about the tree’s parameters, calculating the likelihood of the data under these guesses, and refining the parameters iteratively to find the optimal tree that best explains the observed genetic variations.</p>
+<p><em>IQ-TREE</em> offers various sequence evolution models, allowing researchers to match their analyses to different types of data and research questions. Conveniently, this software can identify the most fitting substituion model for a dataset (using a tool called <a href="https://www.nature.com/articles/nmeth.4285"><em>ModelFinder</em></a>), while considering the complexity of each model.</p>
+<p>We run <em>IQ-TREE</em> on the output from <em>SNP-sites</em>, i.e.&nbsp;using the variable sites extracted from the core genome alignment:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> results/iqtree</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># run iqtree2</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="ex">iqtree</span> <span class="at">-s</span> results/snp-sites/core_gene_alignment_snps.aln <span class="at">-fconst</span> 635254,561931,623994,624125 <span class="at">--prefix</span> results/iqtree/awd <span class="at">-nt</span> AUTO <span class="at">-m</span> GTR+F+I</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The options used are:</p>
+<ul>
+<li><code>-s</code> - the input alignment file, in our case using only the variable sites extracted with <code>snp-sites</code>.</li>
+<li><code>--prefix</code> - the name of the output files. This will be used to name all the files with a “prefix”. In this case we are using the “awd” prefix, which is very generic. In your own analysis you may want to use a more specific prefix (for example, the name of the collection batch).</li>
+<li><code>-fconst</code> - these are the counts of invariant sites we estimated in the previous step with <code>snp-sites</code> (see previous section).</li>
+<li><code>-nt AUTO</code> - automatically detect how many CPUs are available on the computer for parallel processing (quicker to run).</li>
+<li><code>-m</code> - specifies the DNA substitution model we’d like to use. We give more details about this option below.</li>
+</ul>
+<p>When not specifying the <code>-m</code> option, <code>iqtree</code> employs <em>ModelFinder</em> to pinpoint the substitution model that best maximizes the data’s likelihood, as previously mentioned. Nevertheless, this can be time-consuming (as <code>iqtree</code> needs to fit trees numerous times). An alternative approach is utilizing a versatile model, like the one chosen here, “GTR+F+I,” which is a <a href="https://en.wikipedia.org/wiki/Substitution_model#Generalised_time_reversible">generalized time reversible (GTR) substitution model</a>. This model requires an estimate of the base frequencies within the sample population, determined in this instance by tallying the base frequencies from the alignment (indicated by “+F” in the model name). Lastly, the model accommodates variations in rates across sites, including a portion of invariant sites (noted by “+I” in the model name).</p>
+<p>We can look at the output folder:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/iqtree</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>awd.bionj  awd.ckp.gz  awd.iqtree  awd.log  awd.mldist  awd.model.gz  awd.treefile</code></pre>
+<p>There are several files with the following extension:</p>
+<ul>
+<li><code>.iqtree</code> - a text file containing a report of the IQ-Tree run, including a representation of the tree in text format.</li>
+<li><code>.treefile</code> - the estimated tree in NEWICK format. We can use this file with other programs, such as <em>FigTree</em>, to visualise our tree.</li>
+<li><code>.log</code> - the log file containing the messages that were also printed on the screen.</li>
+<li><code>.bionj</code> - the initial tree estimated by neighbour joining (NEWICK format).</li>
+<li><code>.mldist</code> - the maximum likelihood distances between every pair of sequences.</li>
+<li><code>.ckp.gz</code> - this is a “checkpoint” file, which IQ-Tree uses to resume a run in case it was interrupted (e.g.&nbsp;if you are estimating very large trees and your job fails half-way through).</li>
+<li><code>.model.gz</code> - this is also a “checkpoint” file for the model testing step.</li>
+</ul>
+<p>The main files of interest are the report file (<code>.iqtree</code>) and the tree file (<code>.treefile</code>) in standard <a href="https://en.wikipedia.org/wiki/Newick_format">Newick format</a>.</p>
+</section>
+<section id="visualising-trees-figtree" class="level3" data-number="12.3.4">
+<h3 data-number="12.3.4" class="anchored" data-anchor-id="visualising-trees-figtree"><span class="header-section-number">12.3.4</span> Visualising trees: FigTree</h3>
+<p>There are many programs that can be used to visualise phylogenetic trees. In this course we will use <em>FigTree</em>, which has a simple graphical user interface. You can open <em>FigTree</em> from the terminal by running the command <code>figtree</code>.</p>
+<p>To open the tree:</p>
+<ul>
+<li>Go to <kbd><kbd>File</kbd> &gt; <kbd>Open…</kbd></kbd> and browse to the folder with the <em>IQ-TREE</em> output files.</li>
+<li>Select the file with <code>.treefile</code> extension and click <kbd>Open</kbd>.</li>
+<li>You will be presented with a visual representation of the tree.</li>
+</ul>
+<p>We can also import a “tab-separated values” (TSV) file with annotations to add to the tree, if you have any available (e.g.&nbsp;country of origin, date of collection, etc.). To add annotations:</p>
+<ul>
+<li>Go to <kbd><kbd>File</kbd> &gt; <kbd>Import annotations…</kbd></kbd> and open the annotation file. This file has to be in tab-delimited format.</li>
+<li>On the menu on the left, click <kbd>Tip Labels</kbd> and under “Display” choose one of the fields of our metadata table.</li>
+</ul>
+<p>There are many ways to further configure the tree, including highlighting clades in the tree, and change the labels. See the <a href="#fig-phylo-figtree">Figure&nbsp;<span>12.4</span></a> for an example.</p>
+<div id="fig-phylo-figtree" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/phylo_figtree.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.4: Annotated phylogenetic tree obtained with <em>FigTree</em>. We identified a clade in the tree that corresponded to our samples, and used the “Highlight” function to give them a distinct colour (pink). We also highlighted the broader clade they are in (purple), which is composed of O1 biotype strains. To do this, change the “Selection Mode” at the top to “Clade”, then select the branch at the base of the clade you want to highlight, and press the “Highlight” button on the top to pick a colour.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.4</span> Exercises</h2>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> For these exercises, you can either use the dataset we provide in <a href="../../setup.html"><strong>Data &amp; Setup</strong></a>, or your own data. You also need to have completed the genome assembly exercise in <a href="../02-assembly/03-genome_assembly.html#sec-ex-assembly"><span>Section&nbsp;8.4</span></a>.</p>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pathogenwatch phylogeny
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>Following from the <em>Pathogenwatch</em> exercise in <a href="01-pathogenwatch.html#sec-ex-pathogenwatch"><span>Section&nbsp;10.4</span></a>, open the “Ambroise 2023” collection that you created and answer the following questions:</p>
+<ul>
+<li>Does any of your sequences look like an outlier (i.e.&nbsp;a very long branch) in the sample tree view?</li>
+<li>Change the tree view to “Population”. Which transmission wave do your samples cluster with?</li>
+<li>Looking within the population(s) where your samples cluster in, do your samples cluster together or are they interspersed between other samples from the <em>Pathogenwatch</em> collection?</li>
+</ul>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>Looking at our samples’ tree doesn’t reveal any sample as a particular outlier.</p>
+<p>Looking at the “Population” view (from the dropdown on the top-left, as shown below), we can see that all of the “Ambroise 2023” samples fall within the “W3_T10” clade. This is a recent transmission wave, confirming our strains are pathogenic and related to other recent strains (<a href="https://doi.org/10.1126/science.aad5901">Weill et al.&nbsp;2017</a>).</p>
+<p><img src="images/phylo_pathogenwatch_ambroise01.png" class="img-fluid"></p>
+<p>Looking inside the clade, we can see that our samples cluster somewhat apart from the rest, suggesting they are more similar to each other than they are with the samples from the <em>Pathogenwatch</em> collection. This might be because our samples are from 2023, whereas the collection from <em>Pathogenwatch</em> is from 2017, so it is likely that these strains have accumulated new mutations since then.</p>
+<p><img src="images/phylo_pathogenwatch_ambroise02.png" class="img-fluid"></p>
+<p>Note that in the image above we changed our tree layout to a “circle”. Sometimes this view is helpful when we have too many sequences.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Core genome alignment
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p>Using <em>Panaroo</em>, perform a core genome alignment for your assembled sequences together with the public genomes we provide in <code>resources/vibrio_genomes/</code>.</p>
+<ul>
+<li>Activate the software environment: <code>mamba activate phylogeny</code>.</li>
+<li>Fix the script we provide in <code>scripts/05-panaroo.sh</code>. See <a href="#sec-panaroo"><span>Section&nbsp;12.3.1</span></a> if you need a hint of how to fix the code in the script.</li>
+<li>Run the script using <code>bash scripts/05-panaroo.sh</code>.</li>
+</ul>
+<p>When the analysis starts you will get several messages and progress bars print on the screen.</p>
+<p><i class="fa-solid fa-triangle-exclamation" style="color: #1e3050;"></i> This analysis takes a long time to run (several hours), so you can leave it running, open a new terminal and continue to the next exercise.</p>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>The fixed code for our script is:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/panaroo/</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run panaroo</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="ex">panaroo</span> <span class="dt">\</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> results/assemblies/<span class="pp">*</span>.gff resources/vibrio_genomes/<span class="pp">*</span>.gff <span class="dt">\</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--out_dir</span> results/panaroo <span class="dt">\</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">--clean-mode</span> strict <span class="dt">\</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">--alignment</span> core <span class="dt">\</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--core_threshold</span> 0.98 <span class="dt">\</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">--remove-invalid-genes</span> <span class="dt">\</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">--threads</span> 8</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We have specified two sets of input files:</p>
+<ul>
+<li><code>results/assemblies/*.gff</code> specifies all the GFF annotation files for our assembled genomes.</li>
+<li><code>resources/vibrio_genomes/*.gff</code> specifies the GFF annotation files for the public genomes downloaded from NCBI.</li>
+</ul>
+<p>In both cases we use the <code>*</code> wildcard to match all the files with <code>.gff</code> extension.</p>
+<p>As it runs, <em>Panaroo</em> prints several messages to the screen. The analysis took 5h to run on our computers! It’s quite a long time, so it is advisable to run it on a high performance computing cluster, if you have one available. Otherwise, you will have to leave it running on your computer overnight.</p>
+<p>We specified <code>results/panaroo</code> as the output file for the core genome aligner <em>Panaroo</em>. We can see all the output files it generated:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/panaroo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>aligned_gene_sequences                core_alignment_header.embl        gene_presence_absence_roary.csv
+alignment_entropy.csv                 core_gene_alignment.aln           pan_genome_reference.fa
+combined_DNA_CDS.fasta                core_gene_alignment_filtered.aln  pre_filt_graph.gml
+combined_protein_CDS.fasta            final_graph.gml                   struct_presence_absence.Rtab
+combined_protein_cdhit_out.txt        gene_data.csv                     summary_statistics.txt
+combined_protein_cdhit_out.txt.clstr  gene_presence_absence.Rtab
+core_alignment_filtered_header.embl   gene_presence_absence.csv</code></pre>
+<p>The script included other code - which we didn’t need to fix - that extracted the variable sites from our alignment (as detailed in <a href="#sec-snp-sites"><span>Section&nbsp;12.3.2</span></a>). These steps took as input the alignment file generated by <em>Panaroo</em>:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># extract variable sites</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-sites</span> results/panaroo/core_gene_alignment.aln <span class="op">&gt;</span> results/snp-sites/core_gene_alignment_snps.aln</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># count invariant sites</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="ex">snp-sites</span> <span class="at">-C</span> results/panaroo/core_gene_alignment.aln <span class="op">&gt;</span> results/snp-sites/constant_sites.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>These two steps of the analysis produce the two files that we want to use in the next exercise.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-exercise no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="true" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tree inference
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse show">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-exercise">
+<p><i class="fa-solid fa-triangle-exclamation"></i> Because <em>Panaroo</em> takes a long time to run, we provide pre-processed results in the folder <code>preprocessed/</code>, which you can use as input to IQ-TREE in this exercise.</p>
+<p>Produce a tree from the core genome alignment from the previous step.</p>
+<ul>
+<li>Activate the software environment: <code>mamba activate phylogeny</code>.</li>
+<li>Fix the script provided in <code>scripts/06-iqtree.sh</code>. See <a href="#sec-iqtree"><span>Section&nbsp;12.3.3</span></a> if you need a hint of how to fix the code in the script.</li>
+<li>Run the script using <code>bash scripts/06-iqtree.sh</code>. Several messages will be printed on the screen while <code>iqtree</code> runs.</li>
+</ul>
+<p>Once the <em>IQ-TREE</em> finishes running:</p>
+<ul>
+<li>Load the generated tree into <em>FigTree</em>.</li>
+<li>Import the annotations we provide in <code>resources/vibrio_genomes/public_genomes_metadata.tsv</code>.</li>
+<li>You can change the annotations shown on the tip labels from the menu panel on the left.</li>
+</ul>
+<p>Answer the following questions:</p>
+<ul>
+<li>Do all your samples cluster together?</li>
+<li>Are they quite distinct (long branch lengths) compared to their closest public sequences?</li>
+<li>Do your samples cluster with the pathogenic O1 biotype?</li>
+<li>Which transmission wave are your samples most closely related to?</li>
+<li>Do these results agree with the result you obtained on <em>Pathogenwatch</em>?</li>
+</ul>
+<div class="callout callout-style-default callout-hint no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hint
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-hint">
+<p>For IQ-TREE:</p>
+<ul>
+<li>The constant sites can be obtained by looking at the output of the <code>snp-sites</code> in <code>results/snp-sites/constant_sites.txt</code> (or in the <code>preprocessed</code> folder if you are still waiting for you <em>Panaroo</em> analysis to finish).</li>
+<li>The input alignment should be the output from the <code>snp-sites</code> program in <code>results/snp-sites/core_gene_alignment_snps.aln</code> (or in the <code>preprocessed</code> folder if you are still waiting for you <em>Panaroo</em> analysis to finish).</li>
+</ul>
+<p>For <em>FigTree</em>:</p>
+<ul>
+<li>To open a tree go to <kbd><kbd>File</kbd> &gt; <kbd>Open…</kbd></kbd> and load the <code>.treefile</code> generated by <em>IQ-TREE</em>.</li>
+<li>To import sample metadata go to <kbd><kbd>File</kbd> &gt; <kbd>Import annotations…</kbd></kbd>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-answer no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Answer
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div>
+<div class="callout-answer">
+<p>The fixed script is:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/bin/bash</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># create output directory</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> results/iqtree/</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run iqtree</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="ex">iqtree</span> <span class="at">-s</span> results/snp-sites/core_gene_alignment_snps.aln <span class="at">-fconst</span> 712485,634106,704469,704109 <span class="at">--prefix</span> results/iqtree/ambroise <span class="at">-nt</span> AUTO</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>We specify as input the <code>core_gene_alignment_snps.aln</code> produced in the previous exercise by running <em>Panaroo</em> followed by <em>SNP-sites</em>.</li>
+<li>We specify the number of constant sites, also generated from the previous exercise. We ran <code>cat results/snp-sites/constant_sites.txt</code> to obtain these numbers.</li>
+<li>We use as prefix for our output files “ambroise” (since we are using the “Ambroise 2023” data), so all the output file names will be named as such.</li>
+<li>We automatically detect the number of threads/CPUs for parallel computation.</li>
+</ul>
+<p>After the analysis runs we get several output files in our directory:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> results/iqtree/</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<pre><code>ambroise.bionj  ambroise.ckp.gz  ambroise.iqtree  
+ambroise.log    ambroise.mldist  ambroise.treefile</code></pre>
+<p>The main file of interest is <code>ambroise.treefile</code>, which contains our tree in the standard <a href="https://en.wikipedia.org/wiki/Newick_format">Newick format</a>. We can load this tree into <em>FigTree</em> from <kbd><kbd>File</kbd> &gt; <kbd>Open…</kbd></kbd>. We also import the annotations provided for the public genomes from <kbd><kbd>File</kbd> &gt; <kbd>Import Annotations…</kbd></kbd>.</p>
+<p>The resulting tree file is shown in the image below:</p>
+<p><img src="images/phylo_figtree_ambroise.png" class="img-fluid"></p>
+<p>We have highlighted the the clades showing our samples (pint) and the main clade they fall into (purple). We can see that:</p>
+<ul>
+<li>Our samples do cluster together, suggesting they are more similar to each other than to any other samples in the dataset.</li>
+<li>They are quite distant from other public sequences in their clade. This could be true divergence if, for example, the public sequences were collected a long time ago and/or from distant locations or outbreaks (we have no information about this). Alternatively, this could be due to sequencing errors, in particular as we are working with an older chemistry of ONT data (R9.4.1 flowcells) with high sequencing error rates.</li>
+<li>Using <em>FigTree</em>, we changed the tip labels to show the “biotype” of the public samples, which confirmed that the closest sequences to ours belong to O1 biotype.</li>
+<li>By changing the tip labels to “clade” we can see the closest sequences are from “W3 T10” transmission event.</li>
+</ul>
+<p>These results suggest that our samples are closely related to other “O1” strains, confirming their classification as also being that strain type. The results are also compatible with the analysis from <em>Pathogenwatch</em>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="summary" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">12.5</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Phylogenetic inference is a crucial tool in pathogen surveillance, enabling us to understand the relatedness of pathogen strains, trace transmission routes, and identify the sources of outbreaks.</li>
+<li>Phylogenetic tree analysis helps identify the closest relatives or lineages of your pathogen samples.</li>
+<li>For <em>Vibrio cholerae</em>, it can crucially identify whether our samples belong to the highly transmissible and virulent 7PET lineage.</li>
+<li>A core genome alignment is essential for <em>Vibrio cholerae</em> due to its high genetic diversity, as it captures conserved genomic regions shared across strains and provides a robust basis for phylogenetic analysis.</li>
+<li>Creating a core genome alignment involves identifying shared genes across genomes and aligning these sequences. This task can be achieved using the <code>panaroo</code> software.</li>
+<li>A phylogenetic tree is constructed from a core genome alignment using algorithms such as maximum likelihood to infer the most likely relationship among strains. This task can be achieved using the <code>iqtree</code> software.</li>
+<li>To reduce the computational burden of the analysis, we can extract variable sites from our alignment using the <code>snp-sites</code> software. Its output can be used with the <code>iqtree</code> mentioned above.</li>
+<li>Phylogenetic trees can be visualized and annotated using software like FigTree.</li>
+<li>Phylogenetic trees can serve as a valuable tool to assess assembly quality by revealing inconsistencies, such as unexpected placements of samples within the tree or high divergence relative to other samples from similar outbreaks. These may indicate potential sequencing errors affecting the accuracy of our assembly.</li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/03-typing/02-mlst.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/03-typing/04-amr.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

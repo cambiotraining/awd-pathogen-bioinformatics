@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; Introduction to NGS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../materials/02-assembly/01-preparing_data.html" rel="next">
+<link href="../../materials/01-introduction/02-unix_intro.html" rel="prev">
+<link href="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university-of-cambridge-favicon.ico" rel="icon">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../site_libs/quarto-contrib/quarto-project/cambiotraining/courseformat/img/university_crest_reversed.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Bioinformatics for AWD-related Pathogens</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/cambiotraining/cholera-genomics" rel="" target=""><i class="bi bi-github" role="img" aria-label="Bioinformatics Training Facility GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/bioinfocambs" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="Bioinformatics Training Facility Twitter">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../materials/01-introduction/02-unix_intro.html">Bioinformatic foundations</a></li><li class="breadcrumb-item"><a href="../../materials/01-introduction/03-ngs_intro.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Welcome</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data &amp; Setup</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/01-awd_genomic_surveillance.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Bioinformatic foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/02-unix_intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/01-introduction/03-ngs_intro.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Genome Assembly</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/01-preparing_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/02-read_content.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Assessing read content</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/03-genome_assembly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Genome assembly</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/02-assembly/04-assembly_quality.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Assembly quality</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Typing, Phylogeny and AMR</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/01-pathogenwatch.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Pathogenwatch</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/02-mlst.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">MLST</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/03-phylogeny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Building phylogenetic trees</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/03-typing/04-amr.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">AMR analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Reporting</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/04-report/01-reporting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Reporting</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../materials/appendices/01-file_formats.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Common file formats</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#next-generation-sequencing" id="toc-next-generation-sequencing" class="nav-link active" data-scroll-target="#next-generation-sequencing"><span class="header-section-number">5.1</span> Next Generation Sequencing</a>
+  <ul class="collapse">
+  <li><a href="#illumina-sequencing" id="toc-illumina-sequencing" class="nav-link" data-scroll-target="#illumina-sequencing"><span class="header-section-number">5.1.1</span> Illumina Sequencing</a></li>
+  <li><a href="#nanopore-sequencing" id="toc-nanopore-sequencing" class="nav-link" data-scroll-target="#nanopore-sequencing"><span class="header-section-number">5.1.2</span> Nanopore Sequencing</a></li>
+  </ul></li>
+  <li><a href="#sec-file-formats" id="toc-sec-file-formats" class="nav-link" data-scroll-target="#sec-file-formats"><span class="header-section-number">5.2</span> Bioinformatics file formats</a>
+  <ul class="collapse">
+  <li><a href="#fast5" id="toc-fast5" class="nav-link" data-scroll-target="#fast5"><span class="header-section-number">5.2.1</span> FAST5</a></li>
+  <li><a href="#fastq" id="toc-fastq" class="nav-link" data-scroll-target="#fastq"><span class="header-section-number">5.2.2</span> FASTQ</a></li>
+  <li><a href="#fasta" id="toc-fasta" class="nav-link" data-scroll-target="#fasta"><span class="header-section-number">5.2.3</span> FASTA</a></li>
+  <li><a href="#gff3" id="toc-gff3" class="nav-link" data-scroll-target="#gff3"><span class="header-section-number">5.2.4</span> GFF3</a></li>
+  <li><a href="#csvtsv" id="toc-csvtsv" class="nav-link" data-scroll-target="#csvtsv"><span class="header-section-number">5.2.5</span> CSV/TSV</a></li>
+  </ul></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">5.3</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Introduction to NGS</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Learning Objectives
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>After this section you should be able to:</p>
+<ul>
+<li>List the main high-throughput sequencing technologies in use.</li>
+<li>Describe the main differences between Illumina and Oxford Nanopore platforms, including their advantages and disadvantages.</li>
+<li>Recognise the structure of common file formats in bioinformatics, in particular FASTQ, FASTA, GFF3 and CSV/TSV.</li>
+</ul>
+</div>
+</div>
+<section id="next-generation-sequencing" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="next-generation-sequencing"><span class="header-section-number">5.1</span> Next Generation Sequencing</h2>
+<p>The sequencing of genomes has become more routine due to the <a href="https://www.genome.gov/about-genomics/fact-sheets/DNA-Sequencing-Costs-Data">rapid drop in DNA sequencing costs</a> seen since the development of Next Generation Sequencing (NGS) technologies in 2007. One main feature of these technologies is that they are <em>high-throughput</em>, allowing one to more fully characterise the genetic material in a sample of interest.</p>
+<p>There are three main technologies in use nowadays, often referred to as 2nd and 3rd generation sequencing:</p>
+<ul>
+<li>Illumina’s sequencing by synthesis (2nd generation)</li>
+<li>Oxford Nanopore Technologies, shortened ONT (3rd generation)</li>
+<li>Pacific Biosciences, shortened PacBio (3rd generation)</li>
+</ul>
+<p>The video below from the iBiology team gives a great overview of these technologies.</p>
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mI0Fo9kaWqo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</p>
+<section id="illumina-sequencing" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="illumina-sequencing"><span class="header-section-number">5.1.1</span> Illumina Sequencing</h3>
+<p>Illumina’s technology has become a widely popular method, with many applications to study transcriptomes (RNA-seq), epigenomes (ATAC-seq, BS-seq), DNA-protein interactions (ChIP-seq), chromatin conformation (Hi-C/3C-Seq), population and quantitative genetics (variant detection, GWAS), de-novo genome assembly, amongst <a href="https://emea.illumina.com/content/dam/illumina-marketing/documents/products/research_reviews/sequencing-methods-review.pdf">many others</a>.</p>
+<p>An overview of the sequencing procedure is shown in the animation video below. Generally, samples are processed to generate so-called sequencing libraries, where the genetic material (DNA or RNA) is processed to generate fragments of DNA with attached oligo adapters necessary for the sequencing procedure (if the starting material is RNA, it can be converted to DNA by a step of reverse transcription). Each of these DNA molecule is then sequenced from both ends, generating pairs of sequences from each molecule, i.e.&nbsp;<strong>paired-end sequencing</strong> (single-end sequencing, where the molecule is only sequenced from one end is also possible, although much less common nowadays).</p>
+<p>This technology is a type of <strong>short-read sequencing</strong>, because we only obtain short sequences from the original DNA molecules. Typical protocols will generate 2x50bp to 2x250bp sequences (the 2x denotes that we sequence from each end of the molecule).</p>
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fCd6B5HRaZ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="">
+</iframe>
+</p>
+<p>The main advantage of Illumina sequencing is that it produces very <strong>high-quality sequence reads</strong> (error rate &lt;1%) at a low cost. However, we only get <strong>very short sequences</strong>, which is a limitations when it comes to resolving problems such as long sequence repeats (e.g.&nbsp;around centromeres or transposon-rich areas of the genome), distinguishing gene isoforms (in RNA-seq), or resolving haplotypes (combinations of variants in each copy of an individual’s diploid genome).</p>
+<p><strong>In summary, Illumina:</strong></p>
+<ul>
+<li>Utilizes sequencing-by-synthesis chemistry.</li>
+<li>Offers short read lengths.</li>
+<li>Known for high accuracy with low error rates (&lt;1%).</li>
+<li>Well-suited for applications like DNA resequencing and variant detection.</li>
+<li>Scalable and cost-effective for large-scale projects.</li>
+<li>Limited in sequencing long DNA fragments.</li>
+<li>Expensive to set up.</li>
+</ul>
+</section>
+<section id="nanopore-sequencing" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="nanopore-sequencing"><span class="header-section-number">5.1.2</span> Nanopore Sequencing</h3>
+<p>Nanopore sequencing, a form of <strong>long-read sequencing technology</strong>, has distinct advantages in the field of genomics. It excels in its ability to sequence exceptionally lengthy DNA molecules, including those reaching megabase sizes, thus effectively addressing that limitation of short-read sequencing. The <strong>portability</strong> of some nanopore sequencing devices is another advantageous feature; some are designed to operate via a simple USB connection to a standard laptop, making it exceptionally adaptable for on-the-go applications, including fieldwork.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs41587-021-01108-x/MediaObjects/41587_2021_1108_Fig1_HTML.png?as=webp" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Overview of Nanopore sequencing showing the highly-portable MinION device. The device contains thousands of nanopores embedded in a membrane where current is applied. As individual DNA molecules pass through these nanopores they cause changes in this current, which is detected by sensors and read by a dedicated computer program. Each DNA base causes different changes in the current, allowing the software to convert this signal into base calls. Source: Fig. 1 in <a href="https://doi.org/10.1038/s41587-021-01108-x">Wang et al.&nbsp;2021</a></figcaption>
+</figure>
+</div>
+<p>However, optimising this technology presents some challenges, notably in the production of sequencing libraries containing high molecular weight and intact DNA. It’s important to note that nanopore sequencing historically exhibited <strong>higher error rates</strong>, approximately 5% for older chemistries, compared to Illumina sequencing. However, significant advancements have emerged, enhancing the accuracy of nanopore sequencing technology, now achieving <a href="https://nanoporetech.com/accuracy">accuracy rates exceeding 99%</a>.</p>
+<p><strong>In summary, ONT:</strong></p>
+<ul>
+<li>Operates on the principle of nanopore technology.</li>
+<li>Provides long read lengths, ranging from thousands to tens of thousands of base pairs.</li>
+<li>Ideal for applications requiring long-range information, such as <em>de novo</em> genome assembly and structural variant analysis.</li>
+<li>Portable, enabling fieldwork and real-time sequencing.</li>
+<li>Exhibits higher error rates (around 5%), with improvements in recent versions.</li>
+<li>Costs can be higher per base, compared to Illumina for certain projects.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Which technology to choose?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both of these platforms have been widely popular for bacterial sequencing. They can both generate data with high-enough quality for the assembly and analysis for most of the pathogen genomic surveillance. Mostly, which one you use will depend on what sequencing facilities you have access to.</p>
+<p>While Illumina provides the cheapest option per sample of the two, it has a higher setup cost, requiring access to the expensive sequencing machines. On the other hand, Nanopore is a very flexible platform, especially its portable MinION devices. They require less up-front cost allowing getting started with sequencing very quickly in a standard molecular biology lab.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-file-formats" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-file-formats"><span class="header-section-number">5.2</span> Bioinformatics file formats</h2>
+<p>Bioinformatics relies on various standard file formats for storing diverse types of data. In this section, we’ll discuss some of the key ones we’ll encounter, although there are numerous others. You can refer to the “<a href="../../materials/appendices/01-file_formats.html">Common file formats</a>” appendix for a more comprehensive list.</p>
+<section id="fast5" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="fast5"><span class="header-section-number">5.2.1</span> FAST5</h3>
+<p>FAST5 is a proprietary format developed by ONT and serves as the standard format generated by its sequencing devices. It is based on the hierarchical data format HDF5, designed for storing extensive and intricate data. Unlike text-based formats like FASTA and FASTQ, FAST5 files are binary, necessitating specialized software for opening and reading.</p>
+<p>Within these files, you’ll find a <code>Raw/</code> field containing the original raw current signal measurements. Additionally, tools like basecallers can add <code>Analyses/</code> fields, converting signals into standard FASTQ data (e.g., Guppy basecaller).</p>
+<p>Typically, manual inspection of these files is unnecessary, as specialized software is used for processing them. For more in-depth information about this format, you can refer to <a href="https://static-content.springer.com/esm/art%3A10.1038%2Fs41587-021-01147-4/MediaObjects/41587_2021_1147_MOESM1_ESM.pdf">this resource</a>.</p>
+</section>
+<section id="fastq" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="fastq"><span class="header-section-number">5.2.2</span> FASTQ</h3>
+<p>FASTQ files are used to store <strong>nucleotide sequences along with a quality score</strong> for each nucleotide of the sequence. These files are the typical format <strong>obtained from NGS sequencing</strong> platforms such as Illumina and Nanopore (after basecalling). Common file extensions used for this format include <code>.fastq</code> and <code>.fq</code>.</p>
+<p>The file format is as follows:</p>
+<pre><code>@SEQ_ID                   &lt;-- SEQUENCE NAME
+AGCGTGTACTGTGCATGTCGATG   &lt;-- SEQUENCE
++                         &lt;-- SEPARATOR
+%%).1***-+*''))**55CCFF   &lt;-- QUALITY SCORES</code></pre>
+<p>In FASTQ files each sequence is always represented across 4 lines. The quality scores are encoded in a compact form, using a single character. They represent a score that can vary between 0 and 40 (see <a href="https://support.illumina.com/help/BaseSpace_OLH_009008/Content/Source/Informatics/BS/QualityScoreEncoding_swBS.htm">Illumina’s Quality Score Encoding</a>). The reason single characters are used to encode the quality scores is that it saves space when storing these large files. Software that work on FASTQ files automatically convert these characters into their score, so we don’t have to worry about doing this conversion ourselves.</p>
+<p>The quality value in common use is called a <strong>Phred score</strong> and it represents the <strong>probability that the base is an error</strong>. For example, a base with quality 20 has a probability <span class="math inline">\(10^{-2} = 0.01 = 1\%\)</span> of being an error. A base with quality 30 has <span class="math inline">\(10^{-3} = 0.001 = 0.1\%\)</span> chance of being an error. Typically, a Phred score threshold of &gt;20 or &gt;30 is used when applying quality filters to sequencing reads.</p>
+<p>Because FASTQ files tend to be quite large, they are <strong>often compressed</strong> to save space. The most common compression format is called <em>gzip</em> and uses the extension <code>.gz</code>. To look at a <em>gzip</em> file, we can use the command <code>zcat</code>, which decompresses the file and prints the output as text.</p>
+<p>For example, we can use the following command to count the number of lines in a compressed FASTQ file:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> sequences.fq.gz <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If we want to know how many sequences there are in the file, we can divide the result by 4 (since each sequence is always represented across four lines).</p>
+</section>
+<section id="fasta" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="fasta"><span class="header-section-number">5.2.3</span> FASTA</h3>
+<p>FASTA files are used to store <strong>nucleotide or amino acid sequences</strong>. Common file extensions used for this format include <code>.fasta</code>, <code>.fa</code>, <code>.fas</code> and <code>.fna</code>.</p>
+<p>The general structure of a FASTA file is illustrated below:</p>
+<pre><code>&gt;sample01                 &lt;-- NAME OF THE SEQUENCE
+AGCGTGTACTGTGCATGTCGATG   &lt;-- SEQUENCE ITSELF</code></pre>
+<p>Each sequence is represented by a name, which always starts with the character <code>&gt;</code>, followed by the actual sequence.</p>
+<p>A FASTA file can contain several sequences, for example:</p>
+<pre><code>&gt;sample01
+AGCGTGTACTGTGCATGTCGATG
+&gt;sample02
+AGCGTGTACTGTGCATGTCGATG</code></pre>
+<p>Each sequence can sometimes span multiple lines, and separate sequences can always be identified by the <code>&gt;</code> character. For example, this contains the same sequences as above:</p>
+<pre><code>&gt;sample01      &lt;-- FIRST SEQUENCE STARTS HERE
+AGCGTGTACTGT
+GCATGTCGATG
+&gt;sample02      &lt;-- SECOND SEQUENCE STARTS HERE
+AGCGTGTACTGT
+GCATGTCGATG</code></pre>
+<p>To count how many sequences there are in a FASTA file, we can use the following command:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="st">"&gt;"</span> sequences.fa <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In two steps:</p>
+<ul>
+<li>find the lines containing the character “&gt;”, and then</li>
+<li>count the number of lines of the result.</li>
+</ul>
+<p>FASTA files are commonly used to <strong>store genome sequences</strong>, after they have been assembled. We will see FASTA files several times throughout these materials, so it’s important to be familiar with them.</p>
+</section>
+<section id="gff3" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="gff3"><span class="header-section-number">5.2.4</span> GFF3</h3>
+<p>The <strong>GFF3 (Generic Feature Format version 3)</strong> is a standardized file format used in bioinformatics to describe genomic features and annotations. It primarily serves as a structured and human-readable way to represent information about genes, transcripts, and other biological elements within a genome. Common file extensions used for this format include <code>.gff</code> and <code>.gff3</code>.</p>
+<p>Key characteristics of the GFF3 format include:</p>
+<ul>
+<li><strong>Tab-delimited columns:</strong> GFF3 files consist of tab-delimited columns, making them easy to read and parse.</li>
+<li><strong>Hierarchical structure:</strong> the format supports a hierarchical structure, allowing the description of complex relationships between features. For instance, it can represent genes containing multiple transcripts, exons, and other elements.</li>
+<li><strong>Nine standard columns:</strong> this includes information such as the sequence identifier (e.g.&nbsp;chromosome), feature type (e.g.&nbsp;gene, exon), start and end coordinates, strand and several attributes.</li>
+<li><strong>Attributes field:</strong> the ninth column, known as the “attributes” field, contains additional information in a key-value format. This field is often used to store details like gene names, IDs, and functional annotations.</li>
+<li><strong>Comments:</strong> GFF3 files can include comment lines starting with a “#” symbol to provide context or documentation.</li>
+</ul>
+<p>GFF3 is widely supported by various bioinformatics tools and databases, making it a versatile format for storing and sharing genomic annotations.</p>
+</section>
+<section id="csvtsv" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="csvtsv"><span class="header-section-number">5.2.5</span> CSV/TSV</h3>
+<p><strong>Comma-separated values</strong> (CSV) and <strong>tab-separated values</strong> (TSV) files are text-based formats commonly used to store <strong>tabular data</strong>. While strictly not specific to bioinformatics, they are commonly used as the output of bioinformatic software. CSV files usually have <code>.csv</code> extension, while TSV files often have <code>.tsv</code> or the more generic <code>.txt</code> extension.</p>
+<p>In both cases, the data is organized into rows and columns. Rows are represented across different lines of the file, while the columns are separated using a <strong>delimiting character</strong>: a command <code>,</code> in the case of CSV files and a tab space (<kbd>tab ↹</kbd>) for TSV files.</p>
+<p>For example, for this table:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>sample</th>
+<th>date</th>
+<th>strain</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>VCH001</td>
+<td>2023-08-01</td>
+<td>O1 El Tor</td>
+</tr>
+<tr class="even">
+<td>VCH002</td>
+<td>2023-08-02</td>
+<td>O1 Classical</td>
+</tr>
+<tr class="odd">
+<td>VCH003</td>
+<td>2023-08-03</td>
+<td>O139</td>
+</tr>
+<tr class="even">
+<td>VCH004</td>
+<td>2023-08-04</td>
+<td>Non-O1 Non-O139</td>
+</tr>
+</tbody>
+</table>
+<p>This would be its representation as a CSV file:</p>
+<pre><code>sample,date,strain
+VCH001,2023-08-01,O1 El Tor
+VCH002,2023-08-02,O1 Classical
+VCH003,2023-08-03,O139
+VCH004,2023-08-04,Non-O1 Non-O139</code></pre>
+<p>And this is its representation as a TSV file (the space between columns is a <kbd>tab ↹</kbd>):</p>
+<pre><code>sample    date        strain
+VCH001    2023-08-01  O1 El Tor
+VCH002    2023-08-02  O1 Classical
+VCH003    2023-08-03  O139
+VCH004    2023-08-04  Non-O1 Non-O139</code></pre>
+<p>CSV and TSV files are human-readable and can be opened and edited using <strong>basic text editors</strong> or <strong>spreadsheet software</strong> like <em>Microsoft Excel</em>.</p>
+<!-- 
+## Exercises
+
+:::{.callout-exercise}
+#### Bioinformatics file formats
+
+In this section we have discussed only four formats. 
+However, there are other important file formats that are quite common in bioinformatics. 
+With your colleague discuss the following file formats in terms of the: 1) information content stored 2) underlying structure. Finally, how any of these can be useful in the genomic surveillance? 
+
+- Sequence Alignment Map (SAM)
+- Variant Calling Format (VCF)
+
+:::{.callout-hint}
+- You can use the following links
+  - + For SAM (https://samtools.github.io/hts-specs/SAMv1.pdf)
+  - + For VCF (https://samtools.github.io/hts-specs/VCFv4.2.pdf)
+:::
+
+:::{.callout-answer}
+
+ 
+:::
+::: 
+-->
+</section>
+</section>
+<section id="summary" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="summary"><span class="header-section-number">5.3</span> Summary</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Key Points
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>High-throughput sequencing technologies, often called next-generation sequencing (NGS), enable rapid and cost-effective genome sequencing.</li>
+<li>Prominent NGS platforms include Illumina, Oxford Nanopore Technologies (ONT) and Pacific Biosciences (PacBio).</li>
+<li>Each platform employs distinct mechanisms for DNA sequencing, leading to variations in read length, error rates, and applications.</li>
+<li>Illumina sequencing:
+<ul>
+<li>Uses sequencing-by-synthesis chemistry, produces short read lenghts and has high accuracy with low error rates (&lt;1%).</li>
+<li>While it is scalable and cost-effective for large-scale projects, it is expensive to set up and limited in sequencing long DNA fragments.</li>
+</ul></li>
+<li>Nanopore sequencing:
+<ul>
+<li>Uses nanopore technology, provides long read lengths, making it ideal for applications such as <em>de novo</em> genome assembly.</li>
+<li>Although the costs can be higher per base, it is cheaper to set up.</li>
+<li>Exhibits higher error rates (around 5%), but with significant improvements in recent versions (1%).</li>
+</ul></li>
+<li>Common file formats in bioinformatics include FASTQ, FASTA and GFF. These are all text-based formats.</li>
+<li>FASTQ format (<code>.fastq</code> or <code>.fq</code>):
+<ul>
+<li>Designed to store sequences along with quality scores.</li>
+<li>Contains a sequence identifier, sequence data, a separator line and quality scores.</li>
+<li>Widely used for storing <strong>sequence reads generated by NGS platforms</strong>.</li>
+</ul></li>
+<li>FASTA format (<code>.fasta</code>, <code>.fa</code>, <code>.fas</code>, <code>.fna</code>):
+<ul>
+<li>Is used for storing biological sequences, including DNA, RNA, and protein.</li>
+<li>It Comprises a sequence identifier (often preceded by “&gt;”) and the sequence data.</li>
+<li>Commonly used for sequence storage and exchange of <strong>genome sequences</strong>.</li>
+</ul></li>
+<li>GFF format (<code>.gff</code> or <code>.gff3</code>):
+<ul>
+<li>A structured, tab-delimited format for describing genomic features and annotations.</li>
+<li>Consists of nine standard columns, including sequence identifier, feature type, start and end coordinates, strand information, and attributes.</li>
+<li>Facilitates the representation of genes, transcripts, and other genomic elements, supporting hierarchical structures and metadata.</li>
+<li>Commonly used for storing and sharing <strong>genomic annotation</strong> data in bioinformatics.</li>
+</ul></li>
+<li>CSV (<code>.csv</code>) and TSV (<code>.tsv</code>):
+<ul>
+<li>Plain text formats to store tables.</li>
+<li>The columns in the CSV format are delimited by comma, whereas in the TSV format by a tab.</li>
+<li>These files can be opened in standard spreadsheet software such as <em>Excel</em>.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../materials/01-introduction/02-unix_intro.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Unix command line</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../materials/02-assembly/01-preparing_data.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Preparing data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> <img src="https://creativecommons.org/images/deed/cc_icon_black_x2.png" class="img-fluid" width="25"> Bioinformatics Training Facility</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
